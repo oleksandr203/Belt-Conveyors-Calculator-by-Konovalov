@@ -20,14 +20,92 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
     /// </summary>
     public partial class MainWindow : Window
     {
+        Calculator calculator = new Calculator();
         public MainWindow()
         {
-            InitializeComponent();
+            InitializeComponent();            
         }
 
         private void resultTextBlock_Scroll(object sender, System.Windows.Controls.Primitives.ScrollEventArgs e)
         {
 
         }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void MenuItem_MouseEnter(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void MenuItem_Click_1(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        private void btnCalculate_Click(object sender, RoutedEventArgs e)
+        {
+            
+            resultTextBlock.Text = $"Result: Productivity: {calculator.Productivity} tons per hour, current belt is {calculator.WidthOfBelt}";
+        }
+
+        private void WidthOfBelt_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+
+        }
+
+        private void productivityValue_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {            
+            
+            
+        }
+
+        private void productivityValue_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            
+        }
+
+        private void productivityValue_TextInput(object sender, TextCompositionEventArgs e)
+        {           
+
+            
+        }
+
+        private void productivityValue_LostFocus(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                calculator.SetProductivity(Convert.ToInt32(productivityValue.Text));
+            }
+            catch(System.FormatException)
+            {
+                MessageBox.Show("Only numbers must be");
+            }
+           
+        }       
+
+        private void widthComboBoxList_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            try
+            {
+                calculator.SetWidthOfBelt(Convert.ToInt32(widthComboBoxList.SelectionBoxItem.ToString()));
+
+            }
+            catch { }
+        }
+
+        //private void widthComboBoxList_Selected(object sender, RoutedEventArgs e)
+        //{
+
+        //   
+        //}
     }
 }

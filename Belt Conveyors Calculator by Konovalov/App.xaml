@@ -8,20 +8,34 @@
         <Style x:Key="textEnterStyle">
             <Setter Property="TextBlock.FontSize" Value="12"/>
             <Setter Property="TextBlock.FontFamily" Value="Cascadia Mono"/>
-            <Setter Property="TextBlock.Height" Value="15"/>
+            <Setter Property="TextBlock.Height" Value="18"/>
             <Setter Property="TextBlock.Margin" Value="5, 10, 5, 5"/>
-            <Setter Property="TextBlock.MinWidth" Value="100"/>
-            <Setter Property="TextBlock.HorizontalAlignment" Value="Center"/>
-            <Setter Property="TextBlock.TextAlignment" Value="Center"/>            
+            <Setter Property="TextBlock.Width" Value="180"/>
+            <Setter Property="TextBlock.HorizontalAlignment" 
+                    Value="Center"/>
+            <Setter Property="TextBlock.TextAlignment" 
+                    Value="Center"/>            
             <Setter Property="TextBlock.Background">
                 <Setter.Value >                   
-                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                            <GradientStop Color="Black" Offset="0"/>
-                            <GradientStop Color="#FFEAE6DF" Offset="0.467"/>
+                        <LinearGradientBrush EndPoint="0.5,1"
+                                             StartPoint="0.5,0">
+                            <GradientStop Color="Black"
+                                          Offset="0"/>
+                            <GradientStop Color="#FFEAE6DF"
+                                          Offset="0.467"/>
                         </LinearGradientBrush>                   
                 </Setter.Value>
             </Setter>
 
+        </Style>
+        <Style x:Key="textBoxStyle">
+            <Setter Property="TextBox.Width" Value="100"/>
+            <Setter Property="TextBox.Height" Value="18"/>
+            <Setter Property="TextBox.TextAlignment" Value="Left"/>
+            <Setter Property="TextBox.FontStretch" Value="UltraCondensed"/>
+            <Setter Property="TextBox.FontWeight" Value="Bold"/>
+            <Setter Property="TextBox.FontFamily" Value="Cascadia Mono"/>
+            <Setter Property="TextBox.FontSize" Value="12"/>
         </Style>
     </Application.Resources>
 </Application>
