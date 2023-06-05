@@ -21,19 +21,27 @@
             </LinearGradientBrush>
         </Grid.Background>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="2.5*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*" />
             <RowDefinition Height="auto"/>
-        </Grid.RowDefinitions>
-        <Viewbox Grid.Row="1"
-                    Grid.Column="0"
-                 HorizontalAlignment="Center">
+        </Grid.RowDefinitions>        
             <StackPanel
-                    Orientation="Vertical" Height="325">
+                Grid.Row="1"
+                    Grid.Column="0"
+                 HorizontalAlignment="Center"
+                    Orientation="Vertical" Height="auto">
+                <TextBlock x:Name="ProductDensity"
+                       Text="Density of cargo, t/m3"
+                       Style ="{StaticResource textEnterStyle}"/>
+                <TextBox 
+                    x:Name="densityValue"
+                    HorizontalAlignment="Center"
+                         Style="{StaticResource textBoxStyle}"
+                    Text="1600"/>
                 <TextBlock x:Name="ProductivityOfBelt"
                        Text="Productivity, t/h"
                        Style ="{StaticResource textEnterStyle}"/>
@@ -42,8 +50,9 @@
                     HorizontalAlignment="Center"
                          Style="{StaticResource textBoxStyle}"
                  Text="0"
-                    DataContextChanged="productivityValue_DataContextChanged" TextChanged="productivityValue_TextChanged" TextInput="productivityValue_TextInput" LostFocus="productivityValue_LostFocus"
-                    />
+                    DataContextChanged="productivityValue_DataContextChanged" 
+                    TextChanged="productivityValue_TextChanged" 
+                    LostFocus="productivityValue_LostFocus"/>
                 <TextBlock x:Name="WidthOfBelt"
                        Text="Wight of belt, mm"
                        Style ="{StaticResource textEnterStyle}"/>
@@ -55,12 +64,14 @@
                           HorizontalAlignment="Center"
                           HorizontalContentAlignment="Left"
                           Height="20"
-                          Width="100"
-                         SelectedItem="widthComboBoxList_Selected" DataContextChanged="widthComboBoxList_DataContextChanged">
-                    <ComboBoxItem Content="650">
+                          Width="100"                          
+                          DataContextChanged="widthComboBoxList_DataContextChanged">
+                    <ComboBoxItem Content="650"
+                                  Selected="ComboBoxItem_Selected_1">
                         
                     </ComboBoxItem>
-                    <ComboBoxItem Content="800">
+                    <ComboBoxItem Content="800"
+                                  Selected="ComboBoxItem_Selected">
 
                     </ComboBoxItem>
                     <ComboBoxItem Content="1000">
@@ -102,15 +113,19 @@
                         Margin="15"
                         Click="btnCalculate_Click"/>
             </StackPanel>
-        </Viewbox>
-        <TextBlock Grid.Row="1"
+        <Viewbox Grid.Row="1"
+                   Grid.Column="1"                 
+                   Margin="10, 10, 22, 22">
+            <TextBlock Grid.Row="1"
                    Grid.Column="1"
                    x:Name="resultTextBlock"
+                       VerticalAlignment="Top"
                    Background="AliceBlue"
-                   Margin="10, 22, 22, 22"
+                   Margin="5, 5, 5, 5"
                    Text="Here will be result of calculations!"
                    FontSize="16">
-        </TextBlock>
+            </TextBlock>
+        </Viewbox>        
 
         <Menu Height="auto" Grid.ColumnSpan="2">
             <MenuItem Header="_File" 

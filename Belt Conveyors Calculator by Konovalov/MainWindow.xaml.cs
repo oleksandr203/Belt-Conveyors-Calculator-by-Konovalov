@@ -23,7 +23,8 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
         Calculator calculator = new Calculator();
         public MainWindow()
         {
-            InitializeComponent();            
+            InitializeComponent();   
+            
         }
 
         private void resultTextBlock_Scroll(object sender, System.Windows.Controls.Primitives.ScrollEventArgs e)
@@ -54,12 +55,8 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
         private void btnCalculate_Click(object sender, RoutedEventArgs e)
         {
             
-            resultTextBlock.Text = $"Result: Productivity: {calculator.Productivity} tons per hour, current belt is {calculator.WidthOfBelt}";
-        }
-
-        private void WidthOfBelt_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-
+            resultTextBlock.Text = $"Result: Productivity: {calculator.Productivity} tons per hour, current belt is {calculator.WidthOfBelt}, test {Calculator.AngleInRadian(18)}";
+            
         }
 
         private void productivityValue_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -70,12 +67,6 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
 
         private void productivityValue_TextChanged(object sender, TextChangedEventArgs e)
         {
-            
-        }
-
-        private void productivityValue_TextInput(object sender, TextCompositionEventArgs e)
-        {           
-
             
         }
 
@@ -102,10 +93,14 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
             catch { }
         }
 
-        //private void widthComboBoxList_Selected(object sender, RoutedEventArgs e)
-        //{
+        private void ComboBoxItem_Selected(object sender, RoutedEventArgs e)
+        {
 
-        //   
-        //}
+        }
+
+        private void ComboBoxItem_Selected_1(object sender, RoutedEventArgs e)
+        {
+
+        }        
     }
 }
