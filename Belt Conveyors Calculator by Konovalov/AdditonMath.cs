@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace Belt_Conveyors_Calculator_by_Konovalov
 {
-    static class Static_calc
+    internal class AdditonMath
     {
-        
     }
 }

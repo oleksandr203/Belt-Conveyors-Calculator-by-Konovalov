@@ -49,9 +49,8 @@
                     x:Name="productivityValue"
                     HorizontalAlignment="Center"
                          Style="{StaticResource textBoxStyle}"
-                 Text="0"
-                    DataContextChanged="productivityValue_DataContextChanged" 
-                    TextChanged="productivityValue_TextChanged" 
+                 Text="10"
+                    DataContextChanged="productivityValue_DataContextChanged"                    
                     LostFocus="productivityValue_LostFocus"/>
                 <TextBlock x:Name="WidthOfBelt"
                        Text="Wight of belt, mm"
@@ -64,15 +63,13 @@
                           HorizontalAlignment="Center"
                           HorizontalContentAlignment="Left"
                           Height="20"
-                          Width="100"                          
+                          Width="100"
+                          Loaded="widthComboBoxList_Loaded"
                           DataContextChanged="widthComboBoxList_DataContextChanged">
-                    <ComboBoxItem Content="650"
-                                  Selected="ComboBoxItem_Selected_1">
-                        
+                    <ComboBoxItem Content="650">                        
                     </ComboBoxItem>
-                    <ComboBoxItem Content="800"
-                                  Selected="ComboBoxItem_Selected">
-
+                    
+                    <ComboBoxItem Content="800">
                     </ComboBoxItem>
                     <ComboBoxItem Content="1000">
 
@@ -88,13 +85,16 @@
                 <TextBlock x:Name="LengthOfBelt"
                        Text="Length of conveyor, m"
                        Style ="{StaticResource textEnterStyle}"/>
-                <TextBox HorizontalAlignment="Center"
+                <TextBox x:Name="lenghtOfConveyor" 
+                    HorizontalAlignment="Center"
                          Style="{StaticResource textBoxStyle}"
-                 Text="0"/>
+                         LostFocus="TextBox_LostFocus"
+                 Text="10"/>
                 <TextBlock x:Name="AngleOfBelt"
                        Text="Angle of conveyor, grad"
                        Style ="{StaticResource textEnterStyle}"/>
-                <TextBox HorizontalAlignment="Center"
+                <TextBox x:Name="angleOfBelt"
+                    HorizontalAlignment="Center"
                          Style="{StaticResource textBoxStyle}"
                  Text="0"/>
                 <TextBlock x:Name="DesirableSpeedOfBelt"

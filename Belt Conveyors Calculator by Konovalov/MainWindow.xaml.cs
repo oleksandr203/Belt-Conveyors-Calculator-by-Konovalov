@@ -20,10 +20,11 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
     /// </summary>
     public partial class MainWindow : Window
     {
-        Calculator calculator = new Calculator();
+        Calculator calculator;
+
         public MainWindow()
         {
-            InitializeComponent();   
+            InitializeComponent();
             
         }
 
@@ -49,13 +50,15 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            
+            calculator = new Calculator();
         }
 
         private void btnCalculate_Click(object sender, RoutedEventArgs e)
         {
             
-            resultTextBlock.Text = $"Result: Productivity: {calculator.Productivity} tons per hour, current belt is {calculator.WidthOfBelt}, test {Calculator.AngleInRadian(18)}";
+            calculator.CalculateSimpleEnginePower();
+            resultTextBlock.Text = $"Result: Productivity: {calculator.Productivity} tons per hour, current belt is {calculator.WidthOfBelt}, test of simple {calculator.SimpleMethodEnginePower}; " +
+                $" test of extended {calculator.ExtendedMethodEnginePower}";
             
         }
 
@@ -79,8 +82,7 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
             catch(System.FormatException)
             {
                 MessageBox.Show("Only numbers must be");
-            }
-           
+            }           
         }       
 
         private void widthComboBoxList_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -101,6 +103,25 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
         private void ComboBoxItem_Selected_1(object sender, RoutedEventArgs e)
         {
 
-        }        
+        }
+
+        private void TextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                calculator.LenghtOfConvProjection = Convert.ToInt32(productivityValue.Text);
+            }
+            catch (System.FormatException)
+            {
+                MessageBox.Show("Only numbers must be");
+            }
+        }
+
+        private void widthComboBoxList_Loaded(object sender, RoutedEventArgs e)
+        {
+           
+            //widthComboBoxList.ItemsSource = calculator.standartBeltWidth;
+            widthComboBoxList.Items.Contains(1);
+        }
     }
 }
