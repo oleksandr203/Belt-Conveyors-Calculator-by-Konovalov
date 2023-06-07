@@ -48,9 +48,7 @@
                 <TextBox 
                     x:Name="productivityValue"
                     HorizontalAlignment="Center"
-                         Style="{StaticResource textBoxStyle}"
-                 Text="10"
-                    DataContextChanged="productivityValue_DataContextChanged"                    
+                         Style="{StaticResource textBoxStyle}" 
                     LostFocus="productivityValue_LostFocus"/>
                 <TextBlock x:Name="WidthOfBelt"
                        Text="Wight of belt, mm"
@@ -64,23 +62,7 @@
                           HorizontalContentAlignment="Left"
                           Height="20"
                           Width="100"
-                          Loaded="widthComboBoxList_Loaded"
-                          DataContextChanged="widthComboBoxList_DataContextChanged">
-                    <ComboBoxItem Content="650">                        
-                    </ComboBoxItem>
-                    
-                    <ComboBoxItem Content="800">
-                    </ComboBoxItem>
-                    <ComboBoxItem Content="1000">
-
-                    </ComboBoxItem>
-                    <ComboBoxItem Content="1200">
-
-                    </ComboBoxItem>
-                    <ComboBoxItem Content="1400">
-
-                    </ComboBoxItem>
-                    
+                          LostFocus="widthComboBoxList_LostFocus">                                      
                 </ComboBox>
                 <TextBlock x:Name="LengthOfBelt"
                        Text="Length of conveyor, m"
@@ -88,21 +70,21 @@
                 <TextBox x:Name="lenghtOfConveyor" 
                     HorizontalAlignment="Center"
                          Style="{StaticResource textBoxStyle}"
-                         LostFocus="TextBox_LostFocus"
-                 Text="10"/>
+                         LostFocus="TextBox_LostFocus"/>
                 <TextBlock x:Name="AngleOfBelt"
                        Text="Angle of conveyor, grad"
                        Style ="{StaticResource textEnterStyle}"/>
                 <TextBox x:Name="angleOfBelt"
                     HorizontalAlignment="Center"
                          Style="{StaticResource textBoxStyle}"
-                 Text="0"/>
+                         LostFocus="angleOfBelt_LostFocus"/>
                 <TextBlock x:Name="DesirableSpeedOfBelt"
                        Text="Speed, m/s"
                        Style ="{StaticResource textEnterStyle}"/>
-                <TextBox HorizontalAlignment="Center"
+                <TextBox x:Name="speedOfBelt"
+                    HorizontalAlignment="Center"
                          Style="{StaticResource textBoxStyle}"
-                 Text="1.6"/>
+                         LostFocus="speedOfBelt_LostFocus"/>
                 <Button x:Name="btnCalculate"
                         Content="Calculate"
                         Foreground="Red"
@@ -125,8 +107,7 @@
                    Text="Here will be result of calculations!"
                    FontSize="16">
             </TextBlock>
-        </Viewbox>        
-
+        </Viewbox>
         <Menu Height="auto" Grid.ColumnSpan="2">
             <MenuItem Header="_File" 
                       Height="22"
@@ -135,18 +116,14 @@
                 <MenuItem Command ="ApplicationCommands.Save"/>
                 <MenuItem Command ="ApplicationCommands.Print"/>
                 <Separator/>
-                <MenuItem Header ="_Exit"
-                          MouseEnter ="MenuItem_MouseEnter"
-                          MouseLeave ="MenuItem_MouseEnter" 
-                          Click ="MenuItem_Click"/>
+                <MenuItem Header ="_Exit"/>
             </MenuItem>
             <Separator Width="2"/>
 
             <MenuItem Header="_About"
                       Height="22"
                       FontSize="14">
-                <MenuItem Header="_About me"
-                          Click ="MenuItem_Click_1"/>
+                <MenuItem Header="_About me" />
             </MenuItem>
         </Menu>
         <StatusBar Grid.Row="2"

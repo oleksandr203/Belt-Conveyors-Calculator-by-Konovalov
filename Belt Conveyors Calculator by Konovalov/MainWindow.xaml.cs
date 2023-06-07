@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static Belt_Conveyors_Calculator_by_Konovalov.AdditonMath;
 
 namespace Belt_Conveyors_Calculator_by_Konovalov
 {
@@ -24,104 +25,107 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
 
         public MainWindow()
         {
-            InitializeComponent();
-            
-        }
-
-        private void resultTextBlock_Scroll(object sender, System.Windows.Controls.Primitives.ScrollEventArgs e)
-        {
-
-        }
-
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void MenuItem_MouseEnter(object sender, MouseEventArgs e)
-        {
-
-        }
-
-        private void MenuItem_Click_1(object sender, RoutedEventArgs e)
-        {
-
+            InitializeComponent();            
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             calculator = new Calculator();
+            widthComboBoxList.ItemsSource = calculator.standartBeltWidth;
+            productivityValue.Text = calculator.Productivity.ToString();
+            widthComboBoxList.SelectedIndex = 0;
+            lenghtOfConveyor.Text = calculator.LenghtOfConveyor.ToString();
+            angleOfBelt.Text = calculator.AngleOfConveyor.ToString();
+            speedOfBelt.Text = calculator.SpeedOfConveyor.ToString();
         }
 
         private void btnCalculate_Click(object sender, RoutedEventArgs e)
-        {
-            
-            calculator.CalculateSimpleEnginePower();
-            resultTextBlock.Text = $"Result: Productivity: {calculator.Productivity} tons per hour, current belt is {calculator.WidthOfBelt}, test of simple {calculator.SimpleMethodEnginePower}; " +
-                $" test of extended {calculator.ExtendedMethodEnginePower}";
-            
-        }
-
-        private void productivityValue_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {            
-            
-            
-        }
-
-        private void productivityValue_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            
-        }
+            calculator.CalculateSimpleEnginePower();
+            calculator.CalculateExtendedEnginePower();
+            resultTextBlock.Text = $"Result: \r\n Result of simple method: {calculator.SimpleMethodEnginePower:F2}kWt\r\n " +
+                 $"Result of extension method: {calculator.ExtendedMethodEnginePower:F2} kWt.";              
+        }       
 
         private void productivityValue_LostFocus(object sender, RoutedEventArgs e)
         {
-            try
+            if (productivityValue.Text != "")
             {
-                calculator.SetProductivity(Convert.ToInt32(productivityValue.Text));
+                try
+                {
+                    calculator.SetProductivity(Convert.ToInt32(productivityValue.Text));
+                }
+                catch (System.FormatException)
+                {
+                    MessageBox.Show("Only numbers must be");
+                }
             }
-            catch(System.FormatException)
+            else
             {
-                MessageBox.Show("Only numbers must be");
-            }           
-        }       
-
-        private void widthComboBoxList_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            try
-            {
-                calculator.SetWidthOfBelt(Convert.ToInt32(widthComboBoxList.SelectionBoxItem.ToString()));
-
+                productivityValue.Text = "0";
             }
-            catch { }
-        }
-
-        private void ComboBoxItem_Selected(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void ComboBoxItem_Selected_1(object sender, RoutedEventArgs e)
-        {
-
         }
 
         private void TextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            try
+            if (lenghtOfConveyor.Text != "")
             {
-                calculator.LenghtOfConvProjection = Convert.ToInt32(productivityValue.Text);
+                try
+                {
+                    calculator.SetLenght(Convert.ToInt32(lenghtOfConveyor.Text));
+                }
+                catch (FormatException)
+                {
+                    MessageBox.Show("Only numbers must be");
+                }
             }
-            catch (System.FormatException)
+            else
             {
-                MessageBox.Show("Only numbers must be");
+                lenghtOfConveyor.Text = "0";
+            }            
+        }
+
+        private void widthComboBoxList_LostFocus(object sender, RoutedEventArgs e)
+        {
+            calculator.SetWidthOfBelt(Convert.ToInt32(widthComboBoxList.Text));
+        }
+
+        private void angleOfBelt_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (angleOfBelt.Text != "")
+            {
+                try
+                {
+                    calculator.SetAngle(Convert.ToInt32(angleOfBelt.Text));
+                }
+                catch
+                {
+                    MessageBox.Show("Only numbers must be");
+                }
+            }
+            else
+            {
+                angleOfBelt.Text = "0";
             }
         }
 
-        private void widthComboBoxList_Loaded(object sender, RoutedEventArgs e)
+        private void speedOfBelt_LostFocus(object sender, RoutedEventArgs e)
         {
-           
-            //widthComboBoxList.ItemsSource = calculator.standartBeltWidth;
-            widthComboBoxList.Items.Contains(1);
+            if (speedOfBelt.Text != "")
+            {
+                try
+                {
+                    calculator.SetSpeed(Convert.ToDouble(speedOfBelt.Text));
+                }
+                catch
+                {
+                    MessageBox.Show("Only numbers must be");
+                }
+            }
+            else
+            {
+                speedOfBelt.Text = "0";
+            }
         }
     }
 }
