@@ -10,7 +10,8 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
 {
     class Calculator
     {
-        public readonly int[] standartBeltWidth = new int[] { 650, 800, 1000, 1200, 1400};
+        public readonly int[] standartBeltWidth = new int[] { 650, 800, 1000, 1200, 1400 };
+        List<Reducer> reducerList = new List<Reducer>();
         private int _producticity = 200;        
         private int _angleOfConveyor = 10;
         private int _lenghtOfConveyor = 15;
@@ -20,7 +21,8 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
         private int _weightOfI_Roller = 20;       
         private int _stepOfWorkingRoller = 1000;
         private int _stepOfIdleRoller = 3000;
-        private int _thicknessOfBelt = 20;       
+        private int _thicknessOfBelt = 20;
+        private int[] _speedOfDrive = new int[] { 735, 950, 1450, 3000 };
         private double _lenghtOfConvProjection;
         private double _simpleMethodEnginePower;
         private double _extendedMethodEnginePower;       
@@ -30,10 +32,10 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
         public int Productivity { get; private set; }   
         public int WidthOfBelt { get; private set; }
         public int AngleOfConveyor { get; private set; }
-        public double SpeedOfConveyor { get; private set; }  
-        
+        public double SpeedOfConveyor { get; private set; }        
         public double SimpleMethodEnginePower { get; private set; }  
         public double ExtendedMethodEnginePower { get; private set; }
+        public int CalculatedTorque { get; private set; }
 
         public Calculator()
         {
@@ -173,6 +175,50 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
                 + LoadOfCargoPerMeter(Productivity, SpeedOfConveyor) * HeightOfConveyor(LenghtOfConveyor, AngleOfConveyor);
 
             ExtendedMethodEnginePower = 1.1 * forseOnDrivePulley / 0.8 / 1000;
+        }
+
+        public void CalculateTorque(int speedIndex)
+        {
+            CalculatedTorque = (int)(ExtendedMethodEnginePower * 9549 * 1.2 / _speedOfDrive[3] * 31.5);            
+        }
+
+        public void FillListOfReducer()
+        {
+            Reducer reducer1 = new Reducer(1, "Ц2У-100", 315, 31.5);
+            reducerList.Add(reducer1);
+            Reducer reducer2 = new Reducer(2, "Ц2У-160", 630, 31.5);
+            reducerList.Add(reducer2);
+            Reducer reducer3 = new Reducer(3, "Ц2У-200", 1250, 31.5);
+            reducerList.Add(reducer3);
+            Reducer reducer4 = new Reducer(4, "Ц2У-250", 2500, 31.5);
+            reducerList.Add(reducer3);            
+        }
+
+        public void SelectReducer()
+        {
+            if (ExtendedMethodEnginePower == 0)
+            {
+                MessageBox.Show("First calculate power");
+            }
+            else
+            {
+                FillListOfReducer();
+                CalculateTorque(1450);
+                bool isResult = false;
+                foreach (var reducer in reducerList)
+                {
+                    if (reducer != null & reducer._maxTorque > CalculatedTorque & reducer._maxTorque / CalculatedTorque < 1.25)
+                    {
+                        MessageBox.Show($"{reducer._name}-31.5 fullfills your requires");
+                        isResult = true;
+                        break;
+                    }
+                }
+                if (!isResult)
+                {
+                    MessageBox.Show($"No fits in data base");
+                }
+            }        
         }
     }
 }

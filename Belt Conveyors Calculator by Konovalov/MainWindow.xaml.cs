@@ -34,6 +34,7 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
             widthComboBoxList.ItemsSource = calculator.standartBeltWidth;
             productivityValue.Text = calculator.Productivity.ToString();
             widthComboBoxList.SelectedIndex = 0;
+            btnSelectReducer.IsEnabled = false;
             lenghtOfConveyor.Text = calculator.LenghtOfConveyor.ToString();
             angleOfBelt.Text = calculator.AngleOfConveyor.ToString();
             speedOfBelt.Text = calculator.SpeedOfConveyor.ToString();
@@ -44,7 +45,8 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
             calculator.CalculateSimpleEnginePower();
             calculator.CalculateExtendedEnginePower();
             resultTextBlock.Text = $"Result: \r\n Result of simple method: {calculator.SimpleMethodEnginePower:F2}kWt\r\n " +
-                 $"Result of extension method: {calculator.ExtendedMethodEnginePower:F2} kWt.";              
+                 $"Result of extension method: {calculator.ExtendedMethodEnginePower:F2} kWt.";
+            btnSelectReducer.IsEnabled = true;
         }       
 
         private void productivityValue_LostFocus(object sender, RoutedEventArgs e)
@@ -126,6 +128,11 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
             {
                 speedOfBelt.Text = "0";
             }
+        }
+
+        private void btnSelectReducer_Click(object sender, RoutedEventArgs e)
+        {
+            calculator.SelectReducer();
         }
     }
 }

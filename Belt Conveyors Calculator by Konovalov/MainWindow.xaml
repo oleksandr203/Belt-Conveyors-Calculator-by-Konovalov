@@ -86,15 +86,22 @@
                          Style="{StaticResource textBoxStyle}"
                          LostFocus="speedOfBelt_LostFocus"/>
                 <Button x:Name="btnCalculate"
-                        Content="Calculate"
-                        Foreground="Red"
-                                              
+                        Content="Calculate power"
+                        Foreground="Red"                                              
                         FontWeight="ExtraBold"
-                        Width="100"
+                        Width="120"
                         Height="30"
-                        Margin="15"
+                        Margin="10"
                         Click="btnCalculate_Click"/>
-            </StackPanel>
+            <Button x:Name="btnSelectReducer"
+                        Content="Select reducer"
+                        Foreground="Red"                                              
+                        FontWeight="ExtraBold"
+                        Width="120"
+                        Height="30"
+                        Margin="10"
+                        Click="btnSelectReducer_Click"/>
+        </StackPanel>
         <Viewbox Grid.Row="1"
                    Grid.Column="1"                 
                    Margin="10, 10, 22, 22">
