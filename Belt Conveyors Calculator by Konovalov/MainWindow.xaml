@@ -8,10 +8,10 @@
         Title="Belt Calculator 1.0"
         Height="500"
         Width="800"
-        MinHeight="500"
+        MinHeight="550"
         MinWidth="800"
         Loaded="Window_Loaded">
-    <Grid>        
+    <Grid>
         <Grid.Background>
             <LinearGradientBrush EndPoint="0.5,1" 
                                  StartPoint="0.5,0">
@@ -21,10 +21,10 @@
             </LinearGradientBrush>
         </Grid.Background>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>           
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>            
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="*" />
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
@@ -90,7 +90,7 @@
                                   HorizontalContentAlignment="Left"
                                   Height="20"
                                   Width="100"
-                          LostFocus="widthComboBoxList_LostFocus">                            
+                          LostFocus="widthComboBoxList_LostFocus">
                         </ComboBox>
                         <TextBlock x:Name="LengthOfBelt"
                                    Text="Length of conveyor, m"
@@ -129,38 +129,73 @@
                                 Height="30"
                                 Margin="10"
                         Click="btnSelectReducer_Click"/>
-                    </StackPanel>
-                    <Viewbox Grid.Row="0"
+                    </StackPanel>                    
+                        <Grid Grid.Row="0"
                              VerticalAlignment="Top"
                              Grid.Column="1"                
                              Margin="10, 10, 22, 10">
-                        <TextBlock Grid.Row="1"
-                                   Grid.Column="1"
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="2*"/>
+                                <RowDefinition Height="5*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0"
+                                   Grid.Column="0"
                                    x:Name="resultTextBlock"
                                    VerticalAlignment="Top"
-                                   Background="AliceBlue"
                                    Margin="5, 5, 5, 5"
                                    Text="Here will be result of calculations!"
-                                   FontSize="16">                           
-                        </TextBlock>
-                    </Viewbox>
-                    <Button Grid.Column="1" Content="Button" HorizontalAlignment="Left" Margin="266,171,0,0" VerticalAlignment="Top" Click="Button_Click"/>
-                </Grid> 
+                                   FontSize="16">                               
+                            </TextBlock>
+                            <Canvas Grid.Row="1" Grid.Column="0" 
+                                    VerticalAlignment="Bottom">
+                                    <Image Source="/Images/conv1.png" Stretch="Fill" HorizontalAlignment="Left" VerticalAlignment="Center" Width="542"/>
+                                </Canvas>
+                            
+                        </Grid>
+                </Grid>
             </TabItem>
             <TabItem Header="SELECT REDUCER">
-                <Grid Background="LightYellow"/>
+                <Grid Background="LightYellow" 
+                      Margin="1">
+                    <Grid.ColumnDefinitions >
+                        <ColumnDefinition Width="auto" 
+                                          MinWidth="30"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="25"/>
+                        <RowDefinition Height="25"/>
+                        <RowDefinition Height="25"/>
+                        <RowDefinition Height="25"/>
+                        <RowDefinition Height="25"/>
+                        <RowDefinition Height="25"/>
+                        <RowDefinition Height="25"/>
+                        <RowDefinition Height="25"/>
+                        <RowDefinition Height="25"/>
+                        <RowDefinition Height="25"/>
+                        <RowDefinition Height="25"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="Id"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               FontSize="15"/>
+                </Grid>
             </TabItem>
             <TabItem Header="SELECT DRIVE">
                 <Grid Background="LightYellow"/>
             </TabItem>
-        </TabControl>        
+        </TabControl>
         <StatusBar Grid.Row="2"
                    Grid.Column="0"
                    Grid.ColumnSpan="2"
                    Margin="2"
                    Background="AliceBlue">
             <StatusBarItem x:Name="statusBar_1"
-                           Content="Ready, enter data please"/>            
+                           Content="Ready, enter data please"/>
         </StatusBar>
     </Grid>
 </Window>

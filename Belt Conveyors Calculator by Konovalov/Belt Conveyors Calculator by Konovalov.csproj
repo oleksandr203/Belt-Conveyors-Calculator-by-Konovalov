@@ -9,7 +9,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\conv1.png" />
+    <None Remove="Images\power1.png" />
+    <None Remove="Images\reducer1.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\conv1.png" />
+    <Resource Include="Images\power1.png" />
+    <Resource Include="Images\reducer1.png" />
   </ItemGroup>
 
 </Project>

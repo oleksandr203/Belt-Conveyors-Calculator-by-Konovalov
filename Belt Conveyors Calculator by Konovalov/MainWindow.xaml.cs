@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 using System;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 
@@ -28,7 +29,7 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
             angleOfBelt.Text = calculator.AngleOfConveyor.ToString();
             speedOfBelt.Text = calculator.SpeedOfConveyor.ToString();
         }
-        private void ConnectDB()
+        private async Task ConnectDB()
         {
             var cStringBuilder = new SqlConnectionStringBuilder
             {
@@ -40,8 +41,7 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
             };
             SqlConnection connection = new SqlConnection();
             connection.ConnectionString = cStringBuilder.ConnectionString;
-            connection.Open();
-            ShowConnectionStatus(connection);
+            connection.Open();           
             string sql = "Select * From Models";
             SqlCommand sqlCommand = new SqlCommand(sql, connection);
             using(SqlDataReader sqlDataReader = sqlCommand.ExecuteReader())
@@ -54,18 +54,15 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
             }
         }
 
-        private void ShowConnectionStatus(SqlConnection connection)
-        {
-            statusBar_1.Content = $"Database location: {connection.DataSource}";           
-        }
-
-        private void btnCalculate_Click(object sender, RoutedEventArgs e)
+        private async void btnCalculate_Click(object sender, RoutedEventArgs e)
         {
             calculator.CalculateSimpleEnginePower();
             calculator.CalculateExtendedEnginePower();
             resultTextBlock.Text = $"Result: \r\n Result of simple method: {calculator.SimpleMethodEnginePower:F2}kWt\r\n " +
                  $"Result of extension method: {calculator.ExtendedMethodEnginePower:F2} kWt.";
-            btnSelectReducer.IsEnabled = true;
+            statusBar_1.Content = "Done!";
+            await Task.Run(() => ConnectDB());
+            btnSelectReducer.IsEnabled = true;            
         }
 
         private void productivityValue_LostFocus(object sender, RoutedEventArgs e)
@@ -152,11 +149,6 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
         private void btnSelectReducer_Click(object sender, RoutedEventArgs e)
         {
             calculator.SelectReducer();
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            ConnectDB();
-        }
+        }       
     }
 }
