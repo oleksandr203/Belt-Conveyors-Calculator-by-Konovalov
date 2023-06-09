@@ -1,18 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Data.SqlClient;
+using System;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using static Belt_Conveyors_Calculator_by_Konovalov.AdditonMath;
+using System.Windows.Controls.Primitives;
 
 namespace Belt_Conveyors_Calculator_by_Konovalov
 {
@@ -25,7 +14,7 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
 
         public MainWindow()
         {
-            InitializeComponent();            
+            InitializeComponent();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -39,15 +28,45 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
             angleOfBelt.Text = calculator.AngleOfConveyor.ToString();
             speedOfBelt.Text = calculator.SpeedOfConveyor.ToString();
         }
+        private void ConnectDB()
+        {
+            var cStringBuilder = new SqlConnectionStringBuilder
+            {
+                InitialCatalog = "reducers",
+                DataSource = @"COKONOVALOV",
+                ConnectTimeout = 25,
+                IntegratedSecurity = true,
+                TrustServerCertificate = true
+            };
+            SqlConnection connection = new SqlConnection();
+            connection.ConnectionString = cStringBuilder.ConnectionString;
+            connection.Open();
+            ShowConnectionStatus(connection);
+            string sql = "Select * From Models";
+            SqlCommand sqlCommand = new SqlCommand(sql, connection);
+            using(SqlDataReader sqlDataReader = sqlCommand.ExecuteReader())
+            {
+                while (sqlDataReader.Read())
+                {
+                    Reducer reducer = new Reducer((int)sqlDataReader["Id"], (string)sqlDataReader["Name"], (int)sqlDataReader["Torque"], (double)sqlDataReader["Ratio"]); 
+                    calculator.reducerList.Add(reducer);
+                }
+            }
+        }
+
+        private void ShowConnectionStatus(SqlConnection connection)
+        {
+            statusBar_1.Content = $"Database location: {connection.DataSource}";           
+        }
 
         private void btnCalculate_Click(object sender, RoutedEventArgs e)
-        {            
+        {
             calculator.CalculateSimpleEnginePower();
             calculator.CalculateExtendedEnginePower();
             resultTextBlock.Text = $"Result: \r\n Result of simple method: {calculator.SimpleMethodEnginePower:F2}kWt\r\n " +
                  $"Result of extension method: {calculator.ExtendedMethodEnginePower:F2} kWt.";
             btnSelectReducer.IsEnabled = true;
-        }       
+        }
 
         private void productivityValue_LostFocus(object sender, RoutedEventArgs e)
         {
@@ -84,7 +103,7 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
             else
             {
                 lenghtOfConveyor.Text = "0";
-            }            
+            }
         }
 
         private void widthComboBoxList_LostFocus(object sender, RoutedEventArgs e)
@@ -133,6 +152,11 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
         private void btnSelectReducer_Click(object sender, RoutedEventArgs e)
         {
             calculator.SelectReducer();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            ConnectDB();
         }
     }
 }

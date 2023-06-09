@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Belt_Conveyors_Calculator_by_Konovalov
 {
@@ -27,7 +23,7 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
         {
             return (int)(10 * productivity / 3.6 / speed);
         }
-       
+
         public static double CoefficientOfLenght(int lenght)
         {
             if (lenght >= 400)

@@ -1,39 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Configuration;
 using System.Windows;
+using System.Data;
+using System.Data.SqlClient;
 using static Belt_Conveyors_Calculator_by_Konovalov.AdditonMath;
+using System.Xml;
 
 namespace Belt_Conveyors_Calculator_by_Konovalov
 {
     class Calculator
     {
         public readonly int[] standartBeltWidth = new int[] { 650, 800, 1000, 1200, 1400 };
-        List<Reducer> reducerList = new List<Reducer>();
-        private int _producticity = 200;        
+        public List<Reducer> reducerList = new List<Reducer>();
+        private int _producticity = 200;
         private int _angleOfConveyor = 10;
         private int _lenghtOfConveyor = 15;
         private double _speedOfBeltLinear = 1.5;
         private int _desitity = 1600;
         private int _weightOfV_Roller = 20;
-        private int _weightOfI_Roller = 20;       
+        private int _weightOfI_Roller = 20;
         private int _stepOfWorkingRoller = 1000;
         private int _stepOfIdleRoller = 3000;
         private int _thicknessOfBelt = 20;
         private int[] _speedOfDrive = new int[] { 735, 950, 1450, 3000 };
         private double _lenghtOfConvProjection;
         private double _simpleMethodEnginePower;
-        private double _extendedMethodEnginePower;       
+        private double _extendedMethodEnginePower;
 
         public int Density { get; private set; }
-        public int LenghtOfConveyor { get; private set;}        
-        public int Productivity { get; private set; }   
+        public int LenghtOfConveyor { get; private set; }
+        public int Productivity { get; private set; }
         public int WidthOfBelt { get; private set; }
         public int AngleOfConveyor { get; private set; }
-        public double SpeedOfConveyor { get; private set; }        
-        public double SimpleMethodEnginePower { get; private set; }  
+        public double SpeedOfConveyor { get; private set; }
+        public double SimpleMethodEnginePower { get; private set; }
         public double ExtendedMethodEnginePower { get; private set; }
         public int CalculatedTorque { get; private set; }
 
@@ -48,9 +48,9 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
 
         public void SetDensity(int density)
         {
-            if(density < 0)
+            if (density < 0)
             {
-                MessageBox.Show("Incorrect input");                
+                MessageBox.Show("Incorrect input");
             }
             else
             {
@@ -60,9 +60,9 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
 
         public void SetProductivity(int productivity)
         {
-            if(productivity < 0)
+            if (productivity < 0)
             {
-                MessageBox.Show("Incorrect value");               
+                MessageBox.Show("Incorrect value");
             }
             else
             {
@@ -74,19 +74,19 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
         {
             if (widthOfBelt <= 200)
             {
-                MessageBox.Show("Incorrect value");               
+                MessageBox.Show("Incorrect value");
             }
             else
             {
                 WidthOfBelt = widthOfBelt;
-            }           
-        }  
-        
+            }
+        }
+
         public void SetAngle(int angle)
         {
-            if(angle < 0)
+            if (angle < 0)
             {
-                MessageBox.Show("Incorrect value!");               
+                MessageBox.Show("Incorrect value!");
             }
             else
             {
@@ -98,7 +98,7 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
         {
             if (lenght <= 0)
             {
-                MessageBox.Show("Incorrect value!");               
+                MessageBox.Show("Incorrect value!");
             }
             else
             {
@@ -108,9 +108,9 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
 
         public void SetSpeed(double speed)
         {
-            if((speed < 0) || (speed > 5))
+            if ((speed < 0) || (speed > 5))
             {
-                MessageBox.Show("Incorrect value!");                
+                MessageBox.Show("Incorrect value!");
             }
             else
             {
@@ -119,11 +119,11 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
         }
         private double GetForseOfV_Roller()
         {
-            if(WidthOfBelt == 650 || WidthOfBelt == 800)
+            if (WidthOfBelt == 650 || WidthOfBelt == 800)
             {
                 _weightOfV_Roller = 18;
             }
-            else               
+            else
             {
                 _weightOfV_Roller = 24;
             }
@@ -146,7 +146,7 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
         public int GetForseWeightOfBelt()
         {
             return (int)(1.13 * 0.001 * WidthOfBelt * 2 * _thicknessOfBelt * 10);
-            
+
         }
 
         public double ForseForAllRollers()
@@ -156,9 +156,9 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
 
         public void CalculateSimpleEnginePower()
         {
-            double powerUseful = ((Productivity * ProjectionLengthOfConveyor(LenghtOfConveyor, AngleOfConveyor) * 0.042 / 367) + (Productivity * HeightOfConveyor(LenghtOfConveyor, AngleOfConveyor)/ 367));
+            double powerUseful = ((Productivity * ProjectionLengthOfConveyor(LenghtOfConveyor, AngleOfConveyor) * 0.042 / 367) + (Productivity * HeightOfConveyor(LenghtOfConveyor, AngleOfConveyor) / 367));
             double powerParasite = (SpeedOfConveyor * ProjectionLengthOfConveyor(LenghtOfConveyor, AngleOfConveyor) * 0.042);
-            SimpleMethodEnginePower = (powerUseful + powerParasite) * 1.1 / 0.8;               
+            SimpleMethodEnginePower = (powerUseful + powerParasite) * 1.1 / 0.8;
         }
 
         public void CalculateExtendedEnginePower()
@@ -170,7 +170,7 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
             var e = GetForseWeightOfBelt();
             var f = HeightOfConveyor(LenghtOfConveyor, AngleOfConveyor);
 
-            double forseOnDrivePulley = (CoefficientOfLenght(LenghtOfConveyor) * ProjectionLengthOfConveyor(LenghtOfConveyor, AngleOfConveyor) * 0.045 * 
+            double forseOnDrivePulley = (CoefficientOfLenght(LenghtOfConveyor) * ProjectionLengthOfConveyor(LenghtOfConveyor, AngleOfConveyor) * 0.045 *
                 (LoadOfCargoPerMeter(Productivity, SpeedOfConveyor) + ForseForAllRollers() + 2 * GetForseWeightOfBelt()))
                 + LoadOfCargoPerMeter(Productivity, SpeedOfConveyor) * HeightOfConveyor(LenghtOfConveyor, AngleOfConveyor);
 
@@ -179,19 +179,22 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
 
         public void CalculateTorque(int speedIndex)
         {
-            CalculatedTorque = (int)(ExtendedMethodEnginePower * 9549 * 1.2 / _speedOfDrive[3] * 31.5);            
+            CalculatedTorque = (int)(ExtendedMethodEnginePower * 9549 * 1.2 / _speedOfDrive[3] * 31.5);
         }
-
+       
         public void FillListOfReducer()
-        {
-            Reducer reducer1 = new Reducer(1, "Ц2У-100", 315, 31.5);
-            reducerList.Add(reducer1);
-            Reducer reducer2 = new Reducer(2, "Ц2У-160", 630, 31.5);
-            reducerList.Add(reducer2);
-            Reducer reducer3 = new Reducer(3, "Ц2У-200", 1250, 31.5);
-            reducerList.Add(reducer3);
-            Reducer reducer4 = new Reducer(4, "Ц2У-250", 2500, 31.5);
-            reducerList.Add(reducer3);            
+        {           
+            if(reducerList ==  null)
+            {
+                Reducer reducer1 = new Reducer(1, "Ц2У-100", 315, 31.5);
+                reducerList.Add(reducer1);
+                Reducer reducer2 = new Reducer(2, "Ц2У-160", 630, 31.5);
+                reducerList.Add(reducer2);
+                Reducer reducer3 = new Reducer(3, "Ц2У-200", 1250, 31.5);
+                reducerList.Add(reducer3);
+                Reducer reducer4 = new Reducer(4, "Ц2У-250", 2500, 31.5);
+                reducerList.Add(reducer3);
+            }            
         }
 
         public void SelectReducer()
@@ -218,7 +221,7 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
                 {
                     MessageBox.Show($"No fits in data base");
                 }
-            }        
+            }
         }
     }
 }

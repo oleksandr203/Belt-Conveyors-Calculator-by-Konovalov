@@ -38,4 +38,5 @@
             <Setter Property="TextBox.FontSize" Value="12"/>
         </Style>
     </Application.Resources>
+    
 </Application>

@@ -11,7 +11,7 @@
         MinHeight="500"
         MinWidth="800"
         Loaded="Window_Loaded">
-    <Grid>
+    <Grid>        
         <Grid.Background>
             <LinearGradientBrush EndPoint="0.5,1" 
                                  StartPoint="0.5,0">
@@ -21,100 +21,13 @@
             </LinearGradientBrush>
         </Grid.Background>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="2.5*"/>
+            <ColumnDefinition Width="*"/>           
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>            
             <RowDefinition Height="*" />
             <RowDefinition Height="auto"/>
-        </Grid.RowDefinitions>        
-            <StackPanel
-                Grid.Row="1"
-                    Grid.Column="0"
-                 HorizontalAlignment="Center"
-                    Orientation="Vertical" Height="auto">
-                <TextBlock x:Name="ProductDensity"
-                       Text="Density of cargo, t/m3"
-                       Style ="{StaticResource textEnterStyle}"/>
-                <TextBox 
-                    x:Name="densityValue"
-                    HorizontalAlignment="Center"
-                         Style="{StaticResource textBoxStyle}"
-                    Text="1600"/>
-                <TextBlock x:Name="ProductivityOfBelt"
-                       Text="Productivity, t/h"
-                       Style ="{StaticResource textEnterStyle}"/>
-                <TextBox 
-                    x:Name="productivityValue"
-                    HorizontalAlignment="Center"
-                         Style="{StaticResource textBoxStyle}" 
-                    LostFocus="productivityValue_LostFocus"/>
-                <TextBlock x:Name="WidthOfBelt"
-                       Text="Wight of belt, mm"
-                       Style ="{StaticResource textEnterStyle}"/>
-                <ComboBox x:Name="widthComboBoxList"
-                          Style="{StaticResource textBoxStyle}"                          
-                  Grid.Column="0" 
-                  Grid.Row="1" 
-                  VerticalAlignment="Center" 
-                          HorizontalAlignment="Center"
-                          HorizontalContentAlignment="Left"
-                          Height="20"
-                          Width="100"
-                          LostFocus="widthComboBoxList_LostFocus">                                      
-                </ComboBox>
-                <TextBlock x:Name="LengthOfBelt"
-                       Text="Length of conveyor, m"
-                       Style ="{StaticResource textEnterStyle}"/>
-                <TextBox x:Name="lenghtOfConveyor" 
-                    HorizontalAlignment="Center"
-                         Style="{StaticResource textBoxStyle}"
-                         LostFocus="TextBox_LostFocus"/>
-                <TextBlock x:Name="AngleOfBelt"
-                       Text="Angle of conveyor, grad"
-                       Style ="{StaticResource textEnterStyle}"/>
-                <TextBox x:Name="angleOfBelt"
-                    HorizontalAlignment="Center"
-                         Style="{StaticResource textBoxStyle}"
-                         LostFocus="angleOfBelt_LostFocus"/>
-                <TextBlock x:Name="DesirableSpeedOfBelt"
-                       Text="Speed, m/s"
-                       Style ="{StaticResource textEnterStyle}"/>
-                <TextBox x:Name="speedOfBelt"
-                    HorizontalAlignment="Center"
-                         Style="{StaticResource textBoxStyle}"
-                         LostFocus="speedOfBelt_LostFocus"/>
-                <Button x:Name="btnCalculate"
-                        Content="Calculate power"
-                        Foreground="Red"                                              
-                        FontWeight="ExtraBold"
-                        Width="120"
-                        Height="30"
-                        Margin="10"
-                        Click="btnCalculate_Click"/>
-            <Button x:Name="btnSelectReducer"
-                        Content="Select reducer"
-                        Foreground="Red"                                              
-                        FontWeight="ExtraBold"
-                        Width="120"
-                        Height="30"
-                        Margin="10"
-                        Click="btnSelectReducer_Click"/>
-        </StackPanel>
-        <Viewbox Grid.Row="1"
-                   Grid.Column="1"                 
-                   Margin="10, 10, 22, 22">
-            <TextBlock Grid.Row="1"
-                   Grid.Column="1"
-                   x:Name="resultTextBlock"
-                       VerticalAlignment="Top"
-                   Background="AliceBlue"
-                   Margin="5, 5, 5, 5"
-                   Text="Here will be result of calculations!"
-                   FontSize="16">
-            </TextBlock>
-        </Viewbox>
+        </Grid.RowDefinitions>
         <Menu Height="auto" Grid.ColumnSpan="2">
             <MenuItem Header="_File" 
                       Height="22"
@@ -126,13 +39,121 @@
                 <MenuItem Header ="_Exit"/>
             </MenuItem>
             <Separator Width="2"/>
-
             <MenuItem Header="_About"
                       Height="22"
                       FontSize="14">
                 <MenuItem Header="_About me" />
             </MenuItem>
         </Menu>
+        <TabControl x:Name="tabControl"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Grid.Row="1"
+                    Grid.Column="0"                    
+                    Margin="10, 0, 10, 0">
+            <TabItem Header="CALCULATE POWER">
+                <Grid Background="LightYellow">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel
+                Grid.Row="1"
+                    Grid.Column="0"
+                 HorizontalAlignment="Center"
+                    Orientation="Vertical" Height="auto">
+                        <TextBlock x:Name="ProductDensity"
+                       Text="Density of cargo, t/m3"
+                       Style ="{StaticResource textEnterStyle}"/>
+                        <TextBox
+                            x:Name="densityValue"
+                            HorizontalAlignment="Center"
+                            Style="{StaticResource textBoxStyle}"
+                            Text="1600"/>
+                        <TextBlock x:Name="ProductivityOfBelt"
+                                   Text="Productivity, t/h"
+                       Style ="{StaticResource textEnterStyle}"/>
+                        <TextBox 
+                            x:Name="productivityValue"
+                            HorizontalAlignment="Center"
+                            Style="{StaticResource textBoxStyle}" 
+                            LostFocus="productivityValue_LostFocus"/>
+                        <TextBlock x:Name="WidthOfBelt"
+                                   Text="Wight of belt, mm"
+                       Style ="{StaticResource textEnterStyle}"/>
+                        <ComboBox x:Name="widthComboBoxList"
+                                  Style="{StaticResource textBoxStyle}" 
+                                  Grid.Column="0" 
+                                  Grid.Row="0" 
+                  VerticalAlignment="Center"
+                                  HorizontalAlignment="Center"
+                                  HorizontalContentAlignment="Left"
+                                  Height="20"
+                                  Width="100"
+                          LostFocus="widthComboBoxList_LostFocus">                            
+                        </ComboBox>
+                        <TextBlock x:Name="LengthOfBelt"
+                                   Text="Length of conveyor, m"
+                                   Style ="{StaticResource textEnterStyle}"/>
+                        <TextBox x:Name="lenghtOfConveyor" 
+                                 HorizontalAlignment="Center"
+                         Style="{StaticResource textBoxStyle}"
+                                 LostFocus="TextBox_LostFocus"/>
+                        <TextBlock x:Name="AngleOfBelt"
+                                   Text="Angle of conveyor, grad"
+                       Style ="{StaticResource textEnterStyle}"/>
+                        <TextBox x:Name="angleOfBelt"
+                                 HorizontalAlignment="Center"
+                         Style="{StaticResource textBoxStyle}"
+                                 LostFocus="angleOfBelt_LostFocus"/>
+                        <TextBlock x:Name="DesirableSpeedOfBelt"
+                                   Text="Speed, m/s"
+                                   Style ="{StaticResource textEnterStyle}"/>
+                        <TextBox x:Name="speedOfBelt"
+                                 HorizontalAlignment="Center"
+                         Style="{StaticResource textBoxStyle}"
+                                 LostFocus="speedOfBelt_LostFocus"/>
+                        <Button x:Name="btnCalculate"
+                                Content="Calculate power"
+                                Foreground="Red"
+                                FontWeight="ExtraBold"
+                                Width="120"
+                                Height="30"
+                                Margin="10"
+                                Click="btnCalculate_Click"/>
+                        <Button x:Name="btnSelectReducer"
+                                Content="Select reducer"
+                                Foreground="Red"
+                                FontWeight="ExtraBold"
+                                Width="120"
+                                Height="30"
+                                Margin="10"
+                        Click="btnSelectReducer_Click"/>
+                    </StackPanel>
+                    <Viewbox Grid.Row="0"
+                             VerticalAlignment="Top"
+                             Grid.Column="1"                
+                             Margin="10, 10, 22, 10">
+                        <TextBlock Grid.Row="1"
+                                   Grid.Column="1"
+                                   x:Name="resultTextBlock"
+                                   VerticalAlignment="Top"
+                                   Background="AliceBlue"
+                                   Margin="5, 5, 5, 5"
+                                   Text="Here will be result of calculations!"
+                                   FontSize="16">                           
+                        </TextBlock>
+                    </Viewbox>
+                    <Button Grid.Column="1" Content="Button" HorizontalAlignment="Left" Margin="266,171,0,0" VerticalAlignment="Top" Click="Button_Click"/>
+                </Grid> 
+            </TabItem>
+            <TabItem Header="SELECT REDUCER">
+                <Grid Background="LightYellow"/>
+            </TabItem>
+            <TabItem Header="SELECT DRIVE">
+                <Grid Background="LightYellow"/>
+            </TabItem>
+        </TabControl>        
         <StatusBar Grid.Row="2"
                    Grid.Column="0"
                    Grid.ColumnSpan="2"
@@ -143,3 +164,5 @@
         </StatusBar>
     </Grid>
 </Window>
+
+
