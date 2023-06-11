@@ -58,10 +58,11 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <StackPanel
-                Grid.Row="1"
-                    Grid.Column="0"
-                 HorizontalAlignment="Center"
-                    Orientation="Vertical" Height="auto">
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        HorizontalAlignment="Center"
+                        Orientation="Vertical" 
+                        Height="auto">
                         <TextBlock x:Name="ProductDensity"
                        Text="Density of cargo, t/m3"
                        Style ="{StaticResource textEnterStyle}"/>
@@ -80,17 +81,17 @@
                             LostFocus="productivityValue_LostFocus"/>
                         <TextBlock x:Name="WidthOfBelt"
                                    Text="Wight of belt, mm"
-                       Style ="{StaticResource textEnterStyle}"/>
+                                   Style ="{StaticResource textEnterStyle}"/>
                         <ComboBox x:Name="widthComboBoxList"
                                   Style="{StaticResource textBoxStyle}" 
                                   Grid.Column="0" 
                                   Grid.Row="0" 
-                  VerticalAlignment="Center"
+                                  VerticalAlignment="Center"
                                   HorizontalAlignment="Center"
                                   HorizontalContentAlignment="Left"
                                   Height="20"
                                   Width="100"
-                          LostFocus="widthComboBoxList_LostFocus">
+                                  LostFocus="widthComboBoxList_LostFocus">
                         </ComboBox>
                         <TextBlock x:Name="LengthOfBelt"
                                    Text="Length of conveyor, m"
@@ -101,7 +102,7 @@
                                  LostFocus="TextBox_LostFocus"/>
                         <TextBlock x:Name="AngleOfBelt"
                                    Text="Angle of conveyor, grad"
-                       Style ="{StaticResource textEnterStyle}"/>
+                                   Style ="{StaticResource textEnterStyle}"/>
                         <TextBox x:Name="angleOfBelt"
                                  HorizontalAlignment="Center"
                          Style="{StaticResource textBoxStyle}"
@@ -129,64 +130,71 @@
                                 Height="30"
                                 Margin="10"
                         Click="btnSelectReducer_Click"/>
-                    </StackPanel>                    
-                        <Grid Grid.Row="0"
-                             VerticalAlignment="Top"
-                             Grid.Column="1"                
-                             Margin="10, 10, 22, 10">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="2*"/>
-                                <RowDefinition Height="5*"/>
-                            </Grid.RowDefinitions>
-                            <TextBlock Grid.Row="0"
-                                   Grid.Column="0"
+                    </StackPanel>
+                    <TextBlock Grid.Row="0"
+                                   Grid.Column="1"
                                    x:Name="resultTextBlock"
                                    VerticalAlignment="Top"
                                    Margin="5, 5, 5, 5"
                                    Text="Here will be result of calculations!"
-                                   FontSize="16">                               
-                            </TextBlock>
-                            <Canvas Grid.Row="1" Grid.Column="0" 
-                                    VerticalAlignment="Bottom">
-                                    <Image Source="/Images/conv1.png" Stretch="Fill" HorizontalAlignment="Left" VerticalAlignment="Center" Width="542"/>
-                                </Canvas>
-                            
-                        </Grid>
+                                   FontSize="16">
+                    </TextBlock>
+                    <StackPanel Grid.Column="1"                               
+                               VerticalAlignment="Stretch">
+                        
+                        <Button Content="FFF"
+                                Margin="5"/>
+                        <Button Content="FFF"
+                                Margin="5"/>
+                        <Button Content="FFF"
+                                Margin="5"/>
+                        <Button Content="FFF" Height="80"
+                                Margin="5"/>
+                        <Image                                                        
+                            Margin="5"
+                            Source="/Images/conv1.png"
+                            Stretch="Uniform" 
+                            ClipToBounds="True"  
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Bottom"
+                            Grid.Row="0"
+                            Grid.Column="1">
+                        </Image>
+                    </StackPanel>
+                                       
                 </Grid>
             </TabItem>
             <TabItem Header="SELECT REDUCER">
                 <Grid Background="LightYellow" 
-                      Margin="1">
-                    <Grid.ColumnDefinitions >
-                        <ColumnDefinition Width="auto" 
-                                          MinWidth="30"/>
-                        <ColumnDefinition Width="auto"/>
-                        <ColumnDefinition Width="auto"/>
-                        <ColumnDefinition Width="auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="25"/>
-                        <RowDefinition Height="25"/>
-                        <RowDefinition Height="25"/>
-                        <RowDefinition Height="25"/>
-                        <RowDefinition Height="25"/>
-                        <RowDefinition Height="25"/>
-                        <RowDefinition Height="25"/>
-                        <RowDefinition Height="25"/>
-                        <RowDefinition Height="25"/>
-                        <RowDefinition Height="25"/>
-                        <RowDefinition Height="25"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
+                      Margin="1">                    
                     <TextBlock Text="Id"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"
                                FontSize="15"/>
+                    <Image                                                        
+                            Margin="5"
+                            Source="/Images/power1.png"
+                            Stretch="Uniform" 
+                            ClipToBounds="True"  
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Bottom">
+                    </Image>
                 </Grid>
             </TabItem>
             <TabItem Header="SELECT DRIVE">
-                <Grid Background="LightYellow"/>
+                <Grid Background="LightYellow">
+                    <Image                                                        
+                            Margin="5"
+                            Source="/Images/power2.png"
+                            Stretch="Uniform" 
+                            ClipToBounds="True"  
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Bottom"
+                            Grid.Row="11"
+                            Grid.Column="5">
+                    </Image>
+                </Grid>
+                
             </TabItem>
         </TabControl>
         <StatusBar Grid.Row="2"
