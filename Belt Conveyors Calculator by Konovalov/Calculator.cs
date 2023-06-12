@@ -178,7 +178,7 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
             ExtendedMethodEnginePower = 1.1 * forseOnDrivePulley / 0.8 / 1000;
         }
 
-        public void CalculateTorque(int speedIndex)
+        public void CalculateTorque()
         {
             CalculatedTorque = (int)(ExtendedMethodEnginePower * 9549 * 1.2 / _speedOfDrive[3] * 31.5);
         }
@@ -219,7 +219,7 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
             else
             {
                 FillListOfReducer();
-                CalculateTorque(1450);
+                CalculateTorque();
                 bool isResult = false;
                 foreach (var reducer in reducerList)
                 {

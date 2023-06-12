@@ -29,7 +29,7 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
             angleOfBelt.Text = calculator.AngleOfConveyor.ToString();
             speedOfBelt.Text = calculator.SpeedOfConveyor.ToString();
         }
-        private async Task ConnectDB()
+        private async Task ConnectDB()//to realize right configuration
         {
             var cStringBuilder = new SqlConnectionStringBuilder
             {
@@ -41,17 +41,21 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
             };
             SqlConnection connection = new SqlConnection();
             connection.ConnectionString = cStringBuilder.ConnectionString;
-            connection.Open();           
-            string sql = "Select * From Models";
-            SqlCommand sqlCommand = new SqlCommand(sql, connection);
-            using(SqlDataReader sqlDataReader = sqlCommand.ExecuteReader())
+            try
             {
-                while (sqlDataReader.Read())
+                connection.Open();
+                string sql = "Select * From Models";
+                SqlCommand sqlCommand = new SqlCommand(sql, connection);
+                using (SqlDataReader sqlDataReader = sqlCommand.ExecuteReader())
                 {
-                    Reducer reducer = new Reducer((int)sqlDataReader["Id"], (string)sqlDataReader["Name"], (int)sqlDataReader["Torque"], (double)sqlDataReader["Ratio"]); 
-                    calculator.reducerList.Add(reducer);
+                    while (sqlDataReader.Read())
+                    {
+                        Reducer reducer = new Reducer((int)sqlDataReader["Id"], (string)sqlDataReader["Name"], (int)sqlDataReader["Torque"], (double)sqlDataReader["Ratio"]);
+                        calculator.reducerList.Add(reducer);
+                    }
                 }
             }
+            catch(SqlException ex) { MessageBox.Show(ex.Message); }           
         }
 
         private async void btnCalculate_Click(object sender, RoutedEventArgs e)
@@ -63,6 +67,7 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
                 $"result of extension method: {calculator.ExtendedMethodEnginePower:F2} kWt.\r\n" +
                 $"Standart electric motor: {calculator.SelectMotorPower()} kWt";            
             statusBar_1.Content = "Done!";
+            CalculatedTorque.Text = calculator.CalculatedTorque.ToString();
             await Task.Run(() => ConnectDB());
             btnSelectReducer.IsEnabled = true;            
         }
