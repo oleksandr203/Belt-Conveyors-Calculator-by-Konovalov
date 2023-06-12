@@ -6,10 +6,10 @@
         xmlns:local="clr-namespace:Belt_Conveyors_Calculator_by_Konovalov"
         mc:Ignorable="d"
         Title="Belt Calculator 1.0"
-        Height="500"
+        Height="550"
         Width="800"
         MinHeight="550"
-        MinWidth="800"
+        MinWidth="800"       
         Loaded="Window_Loaded">
     <Grid>
         <Grid.Background>
@@ -45,44 +45,42 @@
                 <MenuItem Header="_About me" />
             </MenuItem>
         </Menu>
-        <TabControl x:Name="tabControl"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Stretch"
-                    Grid.Row="1"
-                    Grid.Column="0"                    
-                    Margin="10, 0, 10, 0">
-            <TabItem Header="CALCULATE POWER">
-                <Grid Background="LightYellow">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <StackPanel
-                        Grid.Row="1"
+        <Viewbox  Grid.Row="1"
+                  Grid.Column="0"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Top">
+            <TabControl x:Name="tabControl">
+                <TabItem Header="CALCULATE POWER">
+                    <Grid Width="1000">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel                       
                         Grid.Column="0"
                         HorizontalAlignment="Center"
-                        Orientation="Vertical" 
-                        Height="auto">
-                        <TextBlock x:Name="ProductDensity"
-                       Text="Density of cargo, t/m3"
-                       Style ="{StaticResource textEnterStyle}"/>
-                        <TextBox
+                        VerticalAlignment="Top"
+                        Orientation="Vertical">
+                            <TextBlock x:Name="ProductDensity"
+                                   Text="Density of cargo, t/m3"
+                                   Style ="{StaticResource textEnterStyle}"/>
+                            <TextBox
                             x:Name="densityValue"
                             HorizontalAlignment="Center"
                             Style="{StaticResource textBoxStyle}"
                             Text="1600"/>
-                        <TextBlock x:Name="ProductivityOfBelt"
+                            <TextBlock x:Name="ProductivityOfBelt"
                                    Text="Productivity, t/h"
-                       Style ="{StaticResource textEnterStyle}"/>
-                        <TextBox 
+                                   Style ="{StaticResource textEnterStyle}"/>
+                            <TextBox 
                             x:Name="productivityValue"
                             HorizontalAlignment="Center"
                             Style="{StaticResource textBoxStyle}" 
                             LostFocus="productivityValue_LostFocus"/>
-                        <TextBlock x:Name="WidthOfBelt"
+                            <TextBlock x:Name="WidthOfBelt"
                                    Text="Wight of belt, mm"
                                    Style ="{StaticResource textEnterStyle}"/>
-                        <ComboBox x:Name="widthComboBoxList"
+                            <ComboBox x:Name="widthComboBoxList"
                                   Style="{StaticResource textBoxStyle}" 
                                   Grid.Column="0" 
                                   Grid.Row="0" 
@@ -92,29 +90,29 @@
                                   Height="20"
                                   Width="100"
                                   LostFocus="widthComboBoxList_LostFocus">
-                        </ComboBox>
-                        <TextBlock x:Name="LengthOfBelt"
+                            </ComboBox>
+                            <TextBlock x:Name="LengthOfBelt"
                                    Text="Length of conveyor, m"
                                    Style ="{StaticResource textEnterStyle}"/>
-                        <TextBox x:Name="lenghtOfConveyor" 
+                            <TextBox x:Name="lenghtOfConveyor" 
                                  HorizontalAlignment="Center"
                          Style="{StaticResource textBoxStyle}"
                                  LostFocus="TextBox_LostFocus"/>
-                        <TextBlock x:Name="AngleOfBelt"
+                            <TextBlock x:Name="AngleOfBelt"
                                    Text="Angle of conveyor, grad"
                                    Style ="{StaticResource textEnterStyle}"/>
-                        <TextBox x:Name="angleOfBelt"
+                            <TextBox x:Name="angleOfBelt"
                                  HorizontalAlignment="Center"
                          Style="{StaticResource textBoxStyle}"
                                  LostFocus="angleOfBelt_LostFocus"/>
-                        <TextBlock x:Name="DesirableSpeedOfBelt"
+                            <TextBlock x:Name="DesirableSpeedOfBelt"
                                    Text="Speed, m/s"
                                    Style ="{StaticResource textEnterStyle}"/>
-                        <TextBox x:Name="speedOfBelt"
+                            <TextBox x:Name="speedOfBelt"
                                  HorizontalAlignment="Center"
                          Style="{StaticResource textBoxStyle}"
                                  LostFocus="speedOfBelt_LostFocus"/>
-                        <Button x:Name="btnCalculate"
+                            <Button x:Name="btnCalculate"
                                 Content="Calculate power"
                                 Foreground="Red"
                                 FontWeight="ExtraBold"
@@ -122,68 +120,84 @@
                                 Height="30"
                                 Margin="10"
                                 Click="btnCalculate_Click"/>
-                        <Button x:Name="btnSelectReducer"
-                                Content="Select reducer"
-                                Foreground="Red"
-                                FontWeight="ExtraBold"
-                                Width="120"
-                                Height="30"
+                           
+                        </StackPanel>
+                        <StackPanel x:Name="canvasResultShow"
+                            Grid.Column="1">
+                            <TextBlock Text="Result:"
+                                       FontSize="30"
+                                       FontWeight="DemiBold"
+                                       FontFamily="Times"                                       
+                                       Margin="15, 15, 5, 5"
+                                       Loaded="TextBlock_Loaded"/>
+                            <Border BorderThickness="4"
+                                    Height="155"
+                                BorderBrush="LightGray"
                                 Margin="10"
-                        Click="btnSelectReducer_Click"/>
-                    </StackPanel>
-                    <TextBlock Grid.Row="0"
+                                Background="FloralWhite">
+                                <TextBlock Grid.Row="0"
                                    Grid.Column="1"
                                    x:Name="resultTextBlock"
                                    VerticalAlignment="Top"
-                                   Margin="5, 5, 5, 5"
-                                   Text="Here will be result of calculations!"
-                                   FontSize="16">
-                    </TextBlock>
-                    <StackPanel Grid.Column="1"                               
-                               VerticalAlignment="Stretch">
-                        
-                        <Button Content="FFF"
-                                Margin="5"/>
-                        <Button Content="FFF"
-                                Margin="5"/>
-                        <Button Content="FFF"
-                                Margin="5"/>
-                        <Button Content="FFF" Height="80"
-                                Margin="5"/>
-                        <Image                                                        
+                                   Margin="5, 5, 5, 5"                                   
+                                   FontSize="24">
+                                </TextBlock>
+                            </Border>
+                            <Image                                                        
                             Margin="5"
                             Source="/Images/conv1.png"
-                            Stretch="Uniform" 
-                            ClipToBounds="True"  
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Bottom"
+                            Stretch="Fill" 
+                            ClipToBounds="True"
                             Grid.Row="0"
-                            Grid.Column="1">
-                        </Image>
-                    </StackPanel>
-                                       
-                </Grid>
-            </TabItem>
-            <TabItem Header="SELECT REDUCER">
-                <Grid Background="LightYellow" 
-                      Margin="1">                    
-                    <TextBlock Text="Id"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               FontSize="15"/>
-                    <Image                                                        
-                            Margin="5"
+                            Grid.Column="1"/>
+                        </StackPanel>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="SELECT REDUCER" >                   
+                        <Viewbox>
+                        <Grid Width="1000">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0">
+                                <Button x:Name="btnSelectReducer"
+                                        Content="Select reducer"
+                                        Foreground="Red"
+                                        FontWeight="ExtraBold"
+                                        Width="120"
+                                        Height="30"
+                                        Margin="10"
+                                        Click="btnSelectReducer_Click"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1">
+                                <Border BorderThickness="4"
+                                        Height="155"
+                                        BorderBrush="LightGray"
+                                        Margin="10"
+                                        Background="FloralWhite">
+                                    <TextBlock x:Name="textBlock" Grid.Column="1"
+                                               Text="Result:" 
+                                               FontSize="25">                                        
+                                    </TextBlock>                                   
+                                </Border>  
+                                <Image                                                        
+                            Margin="30"
                             Source="/Images/power1.png"
                             Stretch="Uniform" 
                             ClipToBounds="True"  
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Bottom">
-                    </Image>
-                </Grid>
-            </TabItem>
-            <TabItem Header="SELECT DRIVE">
-                <Grid Background="LightYellow">
-                    <Image                                                        
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center" Grid.ColumnSpan="3">
+                                </Image>
+                            </StackPanel> 
+                        </Grid>
+                    </Viewbox>  
+                </TabItem>
+                <TabItem Header="SELECT DRIVE">
+                    <Viewbox>
+                        <Grid Width="1000">
+                            <StackPanel>
+                                <Image                                                        
                             Margin="5"
                             Source="/Images/power2.png"
                             Stretch="Uniform" 
@@ -192,11 +206,14 @@
                             VerticalAlignment="Bottom"
                             Grid.Row="11"
                             Grid.Column="5">
-                    </Image>
-                </Grid>
-                
-            </TabItem>
-        </TabControl>
+                                </Image>
+                            </StackPanel>
+                        </Grid>
+                    </Viewbox>                        
+                </TabItem>
+            </TabControl>
+        </Viewbox>
+
         <StatusBar Grid.Row="2"
                    Grid.Column="0"
                    Grid.ColumnSpan="2"

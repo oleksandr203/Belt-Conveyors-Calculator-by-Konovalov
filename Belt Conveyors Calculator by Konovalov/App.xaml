@@ -9,7 +9,7 @@
             <Setter Property="TextBlock.FontSize" Value="12"/>
             <Setter Property="TextBlock.FontFamily" Value="Cascadia Mono"/>
             <Setter Property="TextBlock.Height" Value="18"/>
-            <Setter Property="TextBlock.Margin" Value="5, 10, 5, 5"/>
+            <Setter Property="TextBlock.Margin" Value="5, 12, 5, 12"/>
             <Setter Property="TextBlock.Width" Value="180"/>
             <Setter Property="TextBlock.HorizontalAlignment" 
                     Value="Center"/>

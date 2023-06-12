@@ -58,8 +58,10 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
         {
             calculator.CalculateSimpleEnginePower();
             calculator.CalculateExtendedEnginePower();
-            resultTextBlock.Text = $"Result: \r\n Result of simple method: {calculator.SimpleMethodEnginePower:F2}kWt\r\n " +
-                 $"Result of extension method: {calculator.ExtendedMethodEnginePower:F2} kWt.";
+            resultTextBlock.Text = $"Required power of engine: \r\n" +
+                $"result of simple method: {calculator.SimpleMethodEnginePower:F2} kWt\r\n" +
+                $"result of extension method: {calculator.ExtendedMethodEnginePower:F2} kWt.\r\n" +
+                $"Standart electric motor: {calculator.SelectMotorPower()} kWt";            
             statusBar_1.Content = "Done!";
             await Task.Run(() => ConnectDB());
             btnSelectReducer.IsEnabled = true;            
@@ -149,6 +151,11 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
         private void btnSelectReducer_Click(object sender, RoutedEventArgs e)
         {
             calculator.SelectReducer();
-        }       
+        }
+
+        private void TextBlock_Loaded(object sender, RoutedEventArgs e)
+        {
+            statusBar_1.Content = "Ready, enter data please";
+        }
     }
 }

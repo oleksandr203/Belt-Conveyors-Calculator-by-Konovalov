@@ -11,6 +11,7 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
     class Calculator
     {
         public readonly int[] standartBeltWidth = new int[] { 650, 800, 1000, 1200, 1400 };
+        public readonly double[] randeOfElectricMotors = new double[] { 1.1, 1.5, 2.2, 3, 4, 5.5, 7.5, 11, 15, 18.5, 22, 30, 37, 45, 55, 75, 90, 110, 132, 160, 200, 250, 315};
         public List<Reducer> reducerList = new List<Reducer>();
         private int _producticity = 200;
         private int _angleOfConveyor = 10;
@@ -163,12 +164,12 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
 
         public void CalculateExtendedEnginePower()
         {
-            var a = CoefficientOfLenght(LenghtOfConveyor);
-            var b = ProjectionLengthOfConveyor(LenghtOfConveyor, AngleOfConveyor);
-            var c = LoadOfCargoPerMeter(Productivity, SpeedOfConveyor);
-            var d = ForseForAllRollers();
-            var e = GetForseWeightOfBelt();
-            var f = HeightOfConveyor(LenghtOfConveyor, AngleOfConveyor);
+        //    var a = CoefficientOfLenght(LenghtOfConveyor);
+        //    var b = ProjectionLengthOfConveyor(LenghtOfConveyor, AngleOfConveyor);
+        //    var c = LoadOfCargoPerMeter(Productivity, SpeedOfConveyor);
+        //    var d = ForseForAllRollers();
+        //    var e = GetForseWeightOfBelt();
+        //    var f = HeightOfConveyor(LenghtOfConveyor, AngleOfConveyor);
 
             double forseOnDrivePulley = (CoefficientOfLenght(LenghtOfConveyor) * ProjectionLengthOfConveyor(LenghtOfConveyor, AngleOfConveyor) * 0.045 *
                 (LoadOfCargoPerMeter(Productivity, SpeedOfConveyor) + ForseForAllRollers() + 2 * GetForseWeightOfBelt()))
@@ -195,6 +196,18 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
                 Reducer reducer4 = new Reducer(4, "Ц2У-250", 2500, 31.5);
                 reducerList.Add(reducer3);
             }            
+        }
+
+        public string SelectMotorPower()
+        {
+            foreach (var m in randeOfElectricMotors)
+            {
+                if (ExtendedMethodEnginePower - m <= 0 && ExtendedMethodEnginePower / m < 1.3)
+                {
+                    return m.ToString();
+                }                
+            }
+           return "No fitting engine is found";
         }
 
         public void SelectReducer()
