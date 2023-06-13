@@ -3,8 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Belt_Conveyors_Calculator_by_Konovalov"
              StartupUri="MainWindow.xaml">
-    <Application.Resources>
-
+    <Application.Resources>       
         <Style x:Key="textEnterStyle">
             <Setter Property="TextBlock.FontSize" Value="12"/>
             <Setter Property="TextBlock.FontFamily" Value="Cascadia Mono"/>

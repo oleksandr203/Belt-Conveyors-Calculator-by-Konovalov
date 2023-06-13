@@ -22,14 +22,13 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
         {
             calculator = new Calculator();
             widthComboBoxList.ItemsSource = calculator.standartBeltWidth;
-            productivityValue.Text = calculator.Productivity.ToString();
+            productivityValueTextBox.Text = calculator.Productivity.ToString();
             widthComboBoxList.SelectedIndex = 0;
-            btnSelectReducer.IsEnabled = false;
-            lenghtOfConveyor.Text = calculator.LenghtOfConveyor.ToString();
-            angleOfBelt.Text = calculator.AngleOfConveyor.ToString();
-            speedOfBelt.Text = calculator.SpeedOfConveyor.ToString();
+            lenghtOfConveyorTextBox.Text = calculator.LenghtOfConveyor.ToString();
+            angleOfBeltTextBox.Text = calculator.AngleOfConveyor.ToString();
+            speedOfBeltTextBox.Text = calculator.SpeedOfConveyor.ToString();
         }
-        private async Task ConnectDB()//to realize right configuration
+        private void ConnectDB()//to realize right configuration
         {
             var cStringBuilder = new SqlConnectionStringBuilder
             {
@@ -62,22 +61,24 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
         {
             calculator.CalculateSimpleEnginePower();
             calculator.CalculateExtendedEnginePower();
-            resultTextBlock.Text = $"Required power of engine: \r\n" +
-                $"result of simple method: {calculator.SimpleMethodEnginePower:F2} kWt\r\n" +
-                $"result of extension method: {calculator.ExtendedMethodEnginePower:F2} kWt.\r\n" +
-                $"Standart electric motor: {calculator.SelectMotorPower()} kWt";            
+            resultTextBlock.Text = $"Required power (simple method): {calculator.SimpleMethodEnginePower:F2} kW\r\n" +
+                $"Required power (extension method): {calculator.ExtendedMethodEnginePower:F2} kW";                
+            resultTextBlockMotor.Text = $"Standart electric motor: {calculator.SelectMotorPower()} kW {calculator.rpmBase[2]} rpm";
             statusBar_1.Content = "Done!";            
             await Task.Run(() => ConnectDB());
-            btnSelectReducer.IsEnabled = true;            
+            calculator.SelectReducer();
+            resultTextBlockReducer.Text = calculator.FittingReducer;
+            calculator.CalculateSpeedCharacteristics();
+            TextBlockHeadPulley.Text = $"Preffered diameter of pulley: {calculator.MainPulleyDiameter:F2} m";
         }
 
         private void productivityValue_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (productivityValue.Text != "")
+            if (productivityValueTextBox.Text != "")
             {
                 try
                 {
-                    calculator.SetProductivity(Convert.ToInt32(productivityValue.Text));
+                    calculator.SetProductivity(Convert.ToInt32(productivityValueTextBox.Text));
                 }
                 catch (System.FormatException)
                 {
@@ -86,17 +87,17 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
             }
             else
             {
-                productivityValue.Text = "0";
+                productivityValueTextBox.Text = "0";
             }
         }
 
         private void TextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (lenghtOfConveyor.Text != "")
+            if (lenghtOfConveyorTextBox.Text != "")
             {
                 try
                 {
-                    calculator.SetLenght(Convert.ToInt32(lenghtOfConveyor.Text));
+                    calculator.SetLenght(Convert.ToInt32(lenghtOfConveyorTextBox.Text));
                 }
                 catch (FormatException)
                 {
@@ -105,7 +106,7 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
             }
             else
             {
-                lenghtOfConveyor.Text = "0";
+                lenghtOfConveyorTextBox.Text = "0";
             }
         }
 
@@ -116,11 +117,11 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
 
         private void angleOfBelt_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (angleOfBelt.Text != "")
+            if (angleOfBeltTextBox.Text != "")
             {
                 try
                 {
-                    calculator.SetAngle(Convert.ToInt32(angleOfBelt.Text));
+                    calculator.SetAngle(Convert.ToInt32(angleOfBeltTextBox.Text));
                 }
                 catch
                 {
@@ -129,17 +130,17 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
             }
             else
             {
-                angleOfBelt.Text = "0";
+                angleOfBeltTextBox.Text = "0";
             }
         }
 
         private void speedOfBelt_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (speedOfBelt.Text != "")
+            if (speedOfBeltTextBox.Text != "")
             {
                 try
                 {
-                    calculator.SetSpeed(Convert.ToDouble(speedOfBelt.Text));
+                    calculator.SetSpeed(Convert.ToDouble(speedOfBeltTextBox.Text));
                 }
                 catch
                 {
@@ -148,18 +149,28 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
             }
             else
             {
-                speedOfBelt.Text = "0";
+                speedOfBeltTextBox.Text = "0";
             }
         }
-
-        private void btnSelectReducer_Click(object sender, RoutedEventArgs e)
-        {
-            calculator.SelectReducer();
-        }
-
+        
         private void TextBlock_Loaded(object sender, RoutedEventArgs e)
         {
             statusBar_1.Content = "Ready, enter data please";
+        }
+
+        private void densityValue_LostFocus(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ratioTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void diameterOfHeadPulley_LostFocus(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

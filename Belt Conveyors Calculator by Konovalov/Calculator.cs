@@ -5,6 +5,7 @@ using System.Data;
 using System.Data.SqlClient;
 using static Belt_Conveyors_Calculator_by_Konovalov.AdditonMath;
 using System.Xml;
+using System;
 
 namespace Belt_Conveyors_Calculator_by_Konovalov
 {
@@ -12,6 +13,7 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
     {
         public readonly int[] standartBeltWidth = new int[] { 650, 800, 1000, 1200, 1400 };
         public readonly double[] randeOfElectricMotors = new double[] { 1.1, 1.5, 2.2, 3, 4, 5.5, 7.5, 11, 15, 18.5, 22, 30, 37, 45, 55, 75, 90, 110, 132, 160, 200, 250, 315};
+        public readonly int[] rpmBase = new int[] { 750, 1000, 1500, 3000 };
         public List<Reducer> reducerList = new List<Reducer>();
         private int _producticity = 200;
         private int _angleOfConveyor = 10;
@@ -27,6 +29,8 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
         private double _lenghtOfConvProjection;
         private double _simpleMethodEnginePower;
         private double _extendedMethodEnginePower;
+        private double _ratio = 31.5;
+        private double _mainPulleyDiameter = 0;
 
         public int Density { get; private set; }
         public int LenghtOfConveyor { get; private set; }
@@ -37,6 +41,9 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
         public double SimpleMethodEnginePower { get; private set; }
         public double ExtendedMethodEnginePower { get; private set; }
         public int CalculatedTorque { get; private set; }
+        public string FittingReducer { get; private set; }
+        public double Ratio { get; private set; }
+        public double MainPulleyDiameter { get; private set; }
 
         public Calculator()
         {
@@ -45,6 +52,8 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
             AngleOfConveyor = _angleOfConveyor;
             WidthOfBelt = standartBeltWidth[0];
             SpeedOfConveyor = _speedOfBeltLinear;
+            Ratio = _ratio;
+            MainPulleyDiameter = _mainPulleyDiameter;
         }
 
         public void SetDensity(int density)
@@ -85,11 +94,12 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
 
         public void SetAngle(int angle)
         {
-            if (angle < 0)
+            string msg = "Set angle from 0 to 19 degrees";
+            if (angle < 0 || angle > 19)
             {
-                MessageBox.Show("Incorrect value!");
-            }
-            else
+                MessageBox.Show(msg);
+            }            
+            else 
             {
                 AngleOfConveyor = angle;
             }
@@ -97,9 +107,10 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
 
         public void SetLenght(int lenght)
         {
+            string msg = "Set lenght from 1 to 999 m"; 
             if (lenght <= 0)
             {
-                MessageBox.Show("Incorrect value!");
+                MessageBox.Show(msg);
             }
             else
             {
@@ -109,10 +120,11 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
 
         public void SetSpeed(double speed)
         {
-            if ((speed < 0) || (speed > 5))
+            string msg = "Set speed from 0,1 to 2 m/s";
+            if ((speed < 0) || (speed > 2))
             {
-                MessageBox.Show("Incorrect value!");
-            }
+                MessageBox.Show(msg);
+            }            
             else
             {
                 SpeedOfConveyor = speed;
@@ -184,16 +196,17 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
         }
        
         public void FillListOfReducer()
-        {           
+        {     
+            
             if(reducerList ==  null)
             {
-                Reducer reducer1 = new Reducer(1, "Ц2У-100", 315, 31.5);
+                Reducer reducer1 = new Reducer(1, "Ц2У-100", 315, Ratio);
                 reducerList.Add(reducer1);
-                Reducer reducer2 = new Reducer(2, "Ц2У-160", 630, 31.5);
+                Reducer reducer2 = new Reducer(2, "Ц2У-160", 630, Ratio);
                 reducerList.Add(reducer2);
-                Reducer reducer3 = new Reducer(3, "Ц2У-200", 1250, 31.5);
+                Reducer reducer3 = new Reducer(3, "Ц2У-200", 1250, Ratio);
                 reducerList.Add(reducer3);
-                Reducer reducer4 = new Reducer(4, "Ц2У-250", 2500, 31.5);
+                Reducer reducer4 = new Reducer(4, "Ц2У-250", 2500, Ratio);
                 reducerList.Add(reducer3);
             }            
         }
@@ -214,7 +227,7 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
         {
             if (ExtendedMethodEnginePower == 0)
             {
-                MessageBox.Show("First calculate power");
+                FittingReducer = "First calculate power";
             }
             else
             {
@@ -225,15 +238,27 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
                 {
                     if (reducer != null & reducer._maxTorque > CalculatedTorque & reducer._maxTorque / CalculatedTorque < 1.25)
                     {
-                        MessageBox.Show($"{reducer._name}-31.5 fullfills your requires");
+                        FittingReducer = $"{reducer._name}-{Ratio} fullfills your requires";                        
                         isResult = true;
                         break;
                     }
                 }
                 if (!isResult)
                 {
-                    MessageBox.Show($"No fits in data base");
+                    FittingReducer = ($"No fits in data base");
                 }
+            }
+        }
+
+        public void CalculateSpeedCharacteristics()
+        {
+            if(MainPulleyDiameter == 0)
+            {                
+                MainPulleyDiameter = SpeedOfConveyor / (rpmBase[2] / Ratio / 60 )/ Math.PI;
+            }
+            if (Ratio == 0)
+            {
+                Ratio = 31.5;
             }
         }
     }
