@@ -25,8 +25,7 @@
                                           Offset="0.467"/>
                         </LinearGradientBrush>                   
                 </Setter.Value>
-            </Setter>
-
+            </Setter>            
         </Style>
         <Style x:Key="textBoxStyle">
             <Setter Property="TextBox.Width" Value="100"/>

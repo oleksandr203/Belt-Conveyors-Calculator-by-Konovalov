@@ -66,8 +66,7 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
                 $"result of simple method: {calculator.SimpleMethodEnginePower:F2} kWt\r\n" +
                 $"result of extension method: {calculator.ExtendedMethodEnginePower:F2} kWt.\r\n" +
                 $"Standart electric motor: {calculator.SelectMotorPower()} kWt";            
-            statusBar_1.Content = "Done!";
-            CalculatedTorque.Text = calculator.CalculatedTorque.ToString();
+            statusBar_1.Content = "Done!";            
             await Task.Run(() => ConnectDB());
             btnSelectReducer.IsEnabled = true;            
         }

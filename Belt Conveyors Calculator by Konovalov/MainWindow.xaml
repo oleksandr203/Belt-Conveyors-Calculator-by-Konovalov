@@ -126,90 +126,151 @@
                                         Width="120"
                                         Height="30"
                                         Margin="8"/>
-        </StackPanel>       
-            <TabControl x:Name="tabControl"
+        </StackPanel>
+        <Image
+            Margin="5,250,5,5"
+            Source="/Images/conv1.png"
+            Stretch="Uniform" 
+            ClipToBounds="True"
+            VerticalAlignment="Bottom"
+            Grid.Row="1"
+            Grid.Column="1" 
+            Opacity="0.4" 
+            RenderTransformOrigin="0.5,0.5">
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="0"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Image.RenderTransform>
+        </Image>
+        <StackPanel 
+            Grid.Column="1"
+            Grid.Row="1"
+            Orientation="Vertical">
+            <TextBlock x:Name="CalculatedTorque"
+                       Text="Main characteristics of conveyor"
+                   Style ="{StaticResource textEnterStyle}"
+                       Width="300"
+                       Margin="15"/>
+            <Border Background="AliceBlue"
+                    BorderThickness="3"
+                    Margin="10">
+                <Border.BorderBrush>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="Black" Offset="1"/>
+                        <GradientStop Color="#FF4DFA0F" Offset="0"/>
+                    </LinearGradientBrush>
+                </Border.BorderBrush>
+                <WrapPanel Orientation="Vertical">
+                    <TextBlock Text="Power:"
+                               VerticalAlignment="Center"
+                           Margin="25, 5, 5, 5"
+                           FontSize="20">
+                    </TextBlock>
+                    <TextBlock Grid.Row="1"                           
+                           Grid.Column="1"
+                           x:Name="resultTextBlock"
+                           VerticalAlignment="Center"
+                           Margin="50, 5, 5, 5"
+                           FontSize="16"
+                               Text="No data">
+                    </TextBlock>
+                    <TextBlock Text="Reducer:"
+                               VerticalAlignment="Center"
+                           Margin="25, 5, 5, 5"
+                           FontSize="20">
+                    </TextBlock>
+                    <TextBlock Grid.Row="1"                           
+                           Grid.Column="1"
+                           x:Name="resultTextBlock1"
+                           VerticalAlignment="Top"
+                           Margin="50, 5, 5, 5"
+                           FontSize="16"
+                               Text="No data:">
+                    </TextBlock>
+                    <TextBlock Text="Driver:"
+                               VerticalAlignment="Center"
+                           Margin="25, 5, 5, 5"
+                           FontSize="20">
+                    </TextBlock>
+                    <TextBlock Grid.Row="1"                           
+                           Grid.Column="1"
+                           x:Name="resultTextBlock2"
+                           VerticalAlignment="Top"
+                           Margin="50, 5, 5, 5"
+                           FontSize="16"
+                               Text="No data">
+                    </TextBlock>
+                </WrapPanel>
+                
+            </Border>
+
+
+
+        </StackPanel>
+
+        <!--<TabControl x:Name="tabControl"
                         Grid.Row="1"
                  Grid.Column="1"
                  HorizontalAlignment="Left"
                  VerticalAlignment="Top">
-                <TabItem Header="CALCULATE POWER">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        
-                        <WrapPanel x:Name="canvasResultShow"
+            
+            <TabItem Header="CALCULATE POWER">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel x:Name="canvasResultShow"
                             Grid.Column="1">
-                            <TextBlock Text="Result:"
-                                       FontSize="25"
-                                       FontWeight="DemiBold"                            
-                                       Margin="15, 10, 5, 5"
-                                       Loaded="TextBlock_Loaded"/>
-                            <Border BorderThickness="4"
+                        <Grid>
+                            <GridSplitter/>
+                        </Grid>
+                        <Border BorderThickness="4"
                                     Height="155"
                                 BorderBrush="LightGray"
                                 Margin="10"
                                 Background="FloralWhite">
-                                <TextBlock Grid.Row="0"
-                                   Grid.Column="1"
-                                   x:Name="resultTextBlock"
-                                   VerticalAlignment="Top"
-                                   Margin="5, 5, 5, 5"                                   
-                                   FontSize="24">
-                                </TextBlock>
-                            </Border>
-                            <Image                                                        
-                            Margin="5"
-                            Source="/Images/conv1.png"
-                            Stretch="Fill" 
-                            ClipToBounds="True"
-                            Grid.Row="0"
-                            Grid.Column="1"/>
-                        </WrapPanel>
-                    </Grid>
-                </TabItem>
-                <TabItem Header="SELECT REDUCER" >                   
-                        <Viewbox>
-                        <Grid Width="1000">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="0">
-                                <TextBlock x:Name="CalculatedTorque"                                   
-                                   Style ="{StaticResource textEnterStyle}"/>
-                                
-                            </StackPanel>
-                            <StackPanel Grid.Column="1">
-                                <Border BorderThickness="4"
+                            
+                        </Border>                        
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <TabItem Header="SELECT REDUCER" >
+                <Viewbox>
+                    <Grid Width="1000">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            
+
+                        </StackPanel>
+                        <StackPanel Grid.Column="1">
+                            <Border BorderThickness="4"
                                         Height="155"
                                         BorderBrush="LightGray"
                                         Margin="10"
                                         Background="FloralWhite">
-                                    <TextBlock x:Name="textBlock" Grid.Column="1"
+                                <TextBlock x:Name="textBlock" Grid.Column="1"
                                                Text="Result:" 
-                                               FontSize="25">                                        
-                                    </TextBlock>                                   
-                                </Border>  
-                                <Image                                                        
-                            Margin="30"
-                            Source="/Images/power1.png"
-                            Stretch="Uniform" 
-                            ClipToBounds="True"  
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center" Grid.ColumnSpan="3">
-                                </Image>
-                            </StackPanel> 
-                        </Grid>
-                    </Viewbox>  
-                </TabItem>
-                <TabItem Header="SELECT DRIVE">
-                    <Viewbox>
-                        <Grid Width="1000">
-                            <StackPanel>
-                                <Image                                                        
-                            Margin="5"
+                                               FontSize="25">
+                                </TextBlock>
+                            </Border>                            
+                        </StackPanel>
+                    </Grid>
+                </Viewbox>
+            </TabItem>
+            <TabItem Header="SELECT DRIVE">
+                <Viewbox>
+                    <Grid Width="1000">
+                        <StackPanel>
+                            <Image                                                        
+                            Margin="50"
                             Source="/Images/power2.png"
                             Stretch="Uniform" 
                             ClipToBounds="True"  
@@ -217,12 +278,12 @@
                             VerticalAlignment="Bottom"
                             Grid.Row="11"
                             Grid.Column="5">
-                                </Image>
-                            </StackPanel>
-                        </Grid>
-                    </Viewbox>                        
-                </TabItem>
-            </TabControl>        
+                            </Image>
+                        </StackPanel>
+                    </Grid>
+                </Viewbox>
+            </TabItem>
+        </TabControl>-->
         <StatusBar Grid.Row="2"
                    Grid.Column="0"
                    Grid.ColumnSpan="2"
