@@ -8,11 +8,12 @@
         Title="Belt Calculator 1.0"
         Height="800"
         Width="800"
-        MinHeight="560"
-        MinWidth="800"  
+        MinHeight="500"
+        MinWidth="700"  
         FontFamily="Bodoni mt"
+        FontSize="25"
         WindowStartupLocation="CenterScreen"
-        Loaded="Window_Loaded">
+        Loaded="Window_Loaded" Icon="/conveyor1_122376.ico">
     <Grid>
         <Grid.Background>
             <LinearGradientBrush EndPoint="0.5,1" 
@@ -23,7 +24,7 @@
             </LinearGradientBrush>
         </Grid.Background>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="220"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -51,20 +52,10 @@
         <StackPanel
             Grid.Column="0"
             Grid.Row="1"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Stretch"
-            Orientation="Vertical" 
-            ScrollViewer.HorizontalScrollBarVisibility="Auto">
-            <TextBlock Margin="0, 60, 0, 10"
-                       Text="Density of cargo, t/m3"
-                       Style ="{StaticResource textEnterStyle}"/>
-            <TextBox
-                x:Name="densityValue"
-                HorizontalAlignment="Center"
-                Style="{StaticResource textBoxStyle}"
-                Text="1600"
-                LostFocus="densityValue_LostFocus"/>
+            HorizontalAlignment="Center"            
+            Orientation="Vertical">            
             <TextBlock Text="Productivity, t/h"
+                       Margin="5, 60, 0, 10"                       
                        Style ="{StaticResource textEnterStyle}"/>
             <TextBox 
                 x:Name="productivityValueTextBox"
@@ -97,24 +88,25 @@
                      Style="{StaticResource textBoxStyle}"
                      LostFocus="angleOfBelt_LostFocus"/>
             <TextBlock Text="Speed, m/s"
-                                   Style ="{StaticResource textEnterStyle}"/>
+                       Style ="{StaticResource textEnterStyle}"/>
             <TextBox x:Name="speedOfBeltTextBox"
                      HorizontalAlignment="Center"
                      Style="{StaticResource textBoxStyle}"
-                                 LostFocus="speedOfBelt_LostFocus"/>
-            <TextBlock Text="Ratio"
-                       Style ="{StaticResource textEnterStyle}"/>
-            <TextBox x:Name="ratioTextBoxTextBox"
+                     LostFocus="speedOfBelt_LostFocus"/>
+            <ComboBox x:Name="ratioOrDiameterComboBox"
+                      Style="{StaticResource textEnterStyle}"                      
+                      HorizontalAlignment="Center"
+                      Height="20"
+                      HorizontalContentAlignment="Center"
+                      VerticalContentAlignment="Top"
+                      SelectedIndex="0">
+                <ComboBoxItem Content="Ratio"/>
+                <ComboBoxItem Content="Pulley diameter, mm"/>
+            </ComboBox>
+            <TextBox x:Name="TextBoxRatioOrDiametr"
                      HorizontalAlignment="Center"
                      Style="{StaticResource textBoxStyle}"
-                     LostFocus="ratioTextBox_LostFocus"/>
-            <TextBlock Text="Diameter of head pulley, m"
-                       Style ="{StaticResource textEnterStyle}"/>
-            <TextBox x:Name="diameterOfHeadPulleyTextBox"
-                     HorizontalAlignment="Center"
-                     Style="{StaticResource textBoxStyle}"
-                     LostFocus="diameterOfHeadPulley_LostFocus"/>
-
+                     LostFocus="ratioTextBox_LostFocus"/> 
         </StackPanel>        
         <Grid Grid.Column="1"
             Grid.Row="1"             
@@ -148,7 +140,7 @@
                     </Border.BorderBrush>
                 <ScrollViewer 
                     TextBlock.FontSize="20"
-                    TextBlock.FontFamily="Bodoni mt"
+                    TextBlock.FontFamily="Bodoni mt"                    
                     VerticalAlignment="Top"
                     TextBlock.TextAlignment="Left" VerticalScrollBarVisibility="Auto">
                     <StackPanel Orientation="Vertical"
@@ -165,6 +157,11 @@
                            FontSize="16"
                                Text="No data">
                         </TextBlock>
+                        <Separator
+                            Margin="20, 4, 20, 4"
+                            BorderThickness="2"
+                            BorderBrush="Black">
+                        </Separator>
                         <TextBlock Text="Motor:"                               
                            Margin="25, 5, 5, 5">
                         </TextBlock>
@@ -175,6 +172,11 @@
                            FontSize="16"
                                Text="No data">
                         </TextBlock>
+                        <Separator
+                            Margin="20, 4, 20, 4"
+                            BorderThickness="2"
+                            BorderBrush="Black">
+                        </Separator>
                         <TextBlock Text="Reducer:"
                            Margin="25, 5, 5, 5">
                         </TextBlock>
@@ -185,27 +187,63 @@
                            FontSize="16"
                                Text="No data">
                         </TextBlock>
+                        <Separator
+                            Margin="20, 4, 20, 4"
+                            BorderThickness="2"
+                            BorderBrush="Black">
+                        </Separator>
+                        <TextBlock Text="Ratio:"
+                           Margin="25, 5, 5, 5">
+                        </TextBlock>
+                        <TextBlock Grid.Row="1"                           
+                           Grid.Column="1"
+                           x:Name="textBlockRatio"
+                           Margin="50, 5, 5, 5"
+                           FontSize="16"
+                               Text="No data">
+                        </TextBlock>
+                        <Separator
+                            Margin="20, 4, 20, 4"
+                            BorderThickness="2"
+                            BorderBrush="Black">
+                        </Separator>
                         <TextBlock Text="Head pulley:"
                            Margin="25, 5, 5, 5">
                         </TextBlock>
                         <TextBlock Grid.Row="1"                           
                            Grid.Column="1"
-                           x:Name="TextBlockHeadPulley"
+                           x:Name="textBlockHeadPulley"
                            Margin="50, 5, 5, 5"
                            FontSize="16"
                                Text="No data">
                         </TextBlock>
-                        <TextBlock Text="Head pulley:"
-                           Margin="25, 5, 5, 5">
+                        <Separator
+                           Margin="20, 4, 20, 4"
+                            BorderThickness="2"
+                            BorderBrush="Black">                            
+                        </Separator>
+                        <TextBlock 
+                                   FontSize="16"
+                            Text="Used in calculation:"
+                           Margin="25, 10, 5, 5">
                         </TextBlock>
-                        <TextBlock Text="Head pulley:"
-                           Margin="25, 5, 5, 5"
-                           FontSize="20">
+                        <TextBlock x:Name="TextBlockAddiotionInfo"
+                                   FontSize="14"
+                                   TextWrapping="WrapWithOverflow"
+                                   Text="No data"
+                           Margin="50, 5, 5, 5">
                         </TextBlock>
-                        <TextBlock Text="Head pulley:"
-                           Margin="25, 5, 5, 5">
-                        </TextBlock>
-                       
+                        <Separator
+                            Margin="20, 4, 20, 4"
+                            BorderThickness="2"
+                            BorderBrush="Black">
+                        </Separator>
+                        <TextBlock x:Name="Info"
+                                   FontSize="14"
+                                   TextWrapping="WrapWithOverflow"
+                                   HorizontalAlignment="Right"
+                                   Text="* Recomended value"
+                           Margin="5, 5, 5, 5"/>
                     </StackPanel>
                 </ScrollViewer>                   
              </Border>
@@ -213,7 +251,7 @@
                     Grid.Row="2"
                     Height="90"
                     Click="btnCalculate_Click"
-                    Content="Calc"
+                    Content="Calculate"
                     Margin="10">
             </Button>
         </Grid>         

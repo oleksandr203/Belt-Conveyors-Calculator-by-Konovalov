@@ -2,6 +2,7 @@
 using System;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 
 namespace Belt_Conveyors_Calculator_by_Konovalov
@@ -27,7 +28,9 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
             lenghtOfConveyorTextBox.Text = calculator.LenghtOfConveyor.ToString();
             angleOfBeltTextBox.Text = calculator.AngleOfConveyor.ToString();
             speedOfBeltTextBox.Text = calculator.SpeedOfConveyor.ToString();
+            TextBoxRatioOrDiametr.Text = calculator.Ratio.ToString();
         }
+
         private void ConnectDB()//to realize right configuration
         {
             var cStringBuilder = new SqlConnectionStringBuilder
@@ -62,14 +65,32 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
             calculator.CalculateSimpleEnginePower();
             calculator.CalculateExtendedEnginePower();
             resultTextBlock.Text = $"Required power (simple method): {calculator.SimpleMethodEnginePower:F2} kW\r\n" +
-                $"Required power (extension method): {calculator.ExtendedMethodEnginePower:F2} kW";                
+                $"Required power (extension method): {calculator.ExtendedMethodEnginePower:F2} kW *";                
             resultTextBlockMotor.Text = $"Standart electric motor: {calculator.SelectMotorPower()} kW {calculator.rpmBase[2]} rpm";
             statusBar_1.Content = "Done!";            
             await Task.Run(() => ConnectDB());
             calculator.SelectReducer();
             resultTextBlockReducer.Text = calculator.FittingReducer;
-            calculator.CalculateSpeedCharacteristics();
-            TextBlockHeadPulley.Text = $"Preffered diameter of pulley: {calculator.MainPulleyDiameter:F2} m";
+
+            GetRatioOrPulleyDiamenet();
+            textBlockHeadPulley.Text = $"Diameter of pulley: {((double)calculator.HeadPulleyDiameter/1000):F2} m";
+            textBlockRatio.Text = $"Ratio of reducer: {calculator.Ratio:F1}";
+            TextBlockAddiotionInfo.Text = $"Step of idlers = {calculator._stepOfWorkingIdler} mm, step of return  = {calculator._stepOfIdleIdler} mm, thickness of belt = {calculator._thicknessOfBelt} mm";
+        }
+
+        private void GetRatioOrPulleyDiamenet()
+        {
+            if (ratioOrDiameterComboBox.SelectedIndex == 0)
+            {
+                //calculator.SetDiameterOfHeadPulley(0);
+                calculator.CalculateHaedPulleyCharacteristics();
+            }
+            else
+            if (ratioOrDiameterComboBox.SelectedIndex == 1)
+            {
+                //calculator.SetRatio(0);
+                calculator.CalculateRatio();
+            }
         }
 
         private void productivityValue_LostFocus(object sender, RoutedEventArgs e)
@@ -80,7 +101,7 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
                 {
                     calculator.SetProductivity(Convert.ToInt32(productivityValueTextBox.Text));
                 }
-                catch (System.FormatException)
+                catch (FormatException)
                 {
                     MessageBox.Show("Only numbers must be");
                 }
@@ -156,21 +177,32 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
         private void TextBlock_Loaded(object sender, RoutedEventArgs e)
         {
             statusBar_1.Content = "Ready, enter data please";
-        }
-
-        private void densityValue_LostFocus(object sender, RoutedEventArgs e)
-        {
-
-        }
+        }        
 
         private void ratioTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-
-        }
-
-        private void diameterOfHeadPulley_LostFocus(object sender, RoutedEventArgs e)
-        {
-
+            if (ratioOrDiameterComboBox.SelectedIndex == 0)
+            {
+                try
+                {
+                    calculator.SetRatio(Convert.ToDouble(TextBoxRatioOrDiametr.Text));
+                }
+                catch
+                {
+                    MessageBox.Show("Only numbers must be");
+                }
+            }
+            else if(ratioOrDiameterComboBox.SelectedIndex == 1)
+            {
+                try
+                {
+                    calculator.SetDiameterOfHeadPulley (Convert.ToInt32(TextBoxRatioOrDiametr.Text));
+                }
+                catch
+                {
+                    MessageBox.Show("Only numbers must be");
+                }
+            }            
         }
     }
 }

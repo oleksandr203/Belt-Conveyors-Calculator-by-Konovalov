@@ -19,18 +19,14 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
         private int _angleOfConveyor = 10;
         private int _lenghtOfConveyor = 15;
         private double _speedOfBeltLinear = 1.5;
-        private int _desitity = 1600;
-        private int _weightOfV_Roller = 20;
-        private int _weightOfI_Roller = 20;
-        private int _stepOfWorkingRoller = 1000;
-        private int _stepOfIdleRoller = 3000;
-        private int _thicknessOfBelt = 20;
-        private int[] _speedOfDrive = new int[] { 735, 950, 1450, 3000 };
-        private double _lenghtOfConvProjection;
-        private double _simpleMethodEnginePower;
-        private double _extendedMethodEnginePower;
+        private int _weightOfV_Idler = 20;
+        private int _weightOfI_Idler = 20;
+        public readonly int _stepOfWorkingIdler = 1000;
+        public readonly int _stepOfIdleIdler = 3000;
+        public readonly int _thicknessOfBelt = 20;
+        private int[] _speedOfDrive = new int[] { 735, 950, 1450, 3000 };        
         private double _ratio = 31.5;
-        private double _mainPulleyDiameter = 0;
+        private int _mainPulleyDiameter = 600;
 
         public int Density { get; private set; }
         public int LenghtOfConveyor { get; private set; }
@@ -43,7 +39,7 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
         public int CalculatedTorque { get; private set; }
         public string FittingReducer { get; private set; }
         public double Ratio { get; private set; }
-        public double MainPulleyDiameter { get; private set; }
+        public int HeadPulleyDiameter { get; private set; }
 
         public Calculator()
         {
@@ -53,7 +49,7 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
             WidthOfBelt = standartBeltWidth[0];
             SpeedOfConveyor = _speedOfBeltLinear;
             Ratio = _ratio;
-            MainPulleyDiameter = _mainPulleyDiameter;
+            HeadPulleyDiameter = _mainPulleyDiameter;
         }
 
         public void SetDensity(int density)
@@ -130,30 +126,57 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
                 SpeedOfConveyor = speed;
             }
         }
+
+        public void SetRatio(double ratio)
+        {
+            string msg = "Set ratio from 1 to 50 m/s";
+            if ((ratio <= 1 ) || (ratio > 50))
+            {
+                MessageBox.Show(msg);
+            }
+            else
+            {
+                Ratio = ratio;
+            }
+        }
+
+        public void SetDiameterOfHeadPulley(int diameter)
+        {
+            string msg = "Set diameter from 100 to 2500 mm";
+            if ((diameter <= 100) || (diameter > 2500))
+            {
+                MessageBox.Show(msg);
+            }
+            else
+            {
+                HeadPulleyDiameter = diameter;
+            }
+        }
+
         private double GetForseOfV_Roller()
         {
             if (WidthOfBelt == 650 || WidthOfBelt == 800)
             {
-                _weightOfV_Roller = 18;
+                _weightOfV_Idler = 18;
             }
             else
             {
-                _weightOfV_Roller = 24;
+                _weightOfV_Idler = 24;
             }
-            return _weightOfV_Roller * 9.8 / 10 / 1.2;
+            return _weightOfV_Idler * 9.8 / 10 / 1.2;
         }
 
         private double GetForseOfI_Roller()
         {
             if (WidthOfBelt == 650 || WidthOfBelt == 800)
             {
-                _weightOfI_Roller = 15;
+                _weightOfI_Idler = 15;
             }
             else
             {
-                _weightOfI_Roller = 18;
+                _weightOfI_Idler = 18;
             }
-            return _weightOfI_Roller * 9.8 / 10 / 1.2;
+            return _weightOfI_Idler * 9.8 / 10 / 1.2;
         }
 
         public int GetForseWeightOfBelt()
@@ -176,13 +199,6 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
 
         public void CalculateExtendedEnginePower()
         {
-        //    var a = CoefficientOfLenght(LenghtOfConveyor);
-        //    var b = ProjectionLengthOfConveyor(LenghtOfConveyor, AngleOfConveyor);
-        //    var c = LoadOfCargoPerMeter(Productivity, SpeedOfConveyor);
-        //    var d = ForseForAllRollers();
-        //    var e = GetForseWeightOfBelt();
-        //    var f = HeightOfConveyor(LenghtOfConveyor, AngleOfConveyor);
-
             double forseOnDrivePulley = (CoefficientOfLenght(LenghtOfConveyor) * ProjectionLengthOfConveyor(LenghtOfConveyor, AngleOfConveyor) * 0.045 *
                 (LoadOfCargoPerMeter(Productivity, SpeedOfConveyor) + ForseForAllRollers() + 2 * GetForseWeightOfBelt()))
                 + LoadOfCargoPerMeter(Productivity, SpeedOfConveyor) * HeightOfConveyor(LenghtOfConveyor, AngleOfConveyor);
@@ -200,13 +216,13 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
             
             if(reducerList ==  null)
             {
-                Reducer reducer1 = new Reducer(1, "Ц2У-100", 315, Ratio);
+                Reducer reducer1 = new Reducer(1, "Ц2У-100", 315, 31.5);
                 reducerList.Add(reducer1);
-                Reducer reducer2 = new Reducer(2, "Ц2У-160", 630, Ratio);
+                Reducer reducer2 = new Reducer(2, "Ц2У-160", 630, 31.5);
                 reducerList.Add(reducer2);
-                Reducer reducer3 = new Reducer(3, "Ц2У-200", 1250, Ratio);
+                Reducer reducer3 = new Reducer(3, "Ц2У-200", 1250, 31.5);
                 reducerList.Add(reducer3);
-                Reducer reducer4 = new Reducer(4, "Ц2У-250", 2500, Ratio);
+                Reducer reducer4 = new Reducer(4, "Ц2У-250", 2500, 31.5);
                 reducerList.Add(reducer3);
             }            
         }
@@ -238,7 +254,7 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
                 {
                     if (reducer != null & reducer._maxTorque > CalculatedTorque & reducer._maxTorque / CalculatedTorque < 1.25)
                     {
-                        FittingReducer = $"{reducer._name}-{Ratio} fullfills your requires";                        
+                        FittingReducer = $"{reducer._name} fullfills your requires";                        
                         isResult = true;
                         break;
                     }
@@ -250,16 +266,15 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
             }
         }
 
-        public void CalculateSpeedCharacteristics()
-        {
-            if(MainPulleyDiameter == 0)
-            {                
-                MainPulleyDiameter = SpeedOfConveyor / (rpmBase[2] / Ratio / 60 )/ Math.PI;
-            }
-            if (Ratio == 0)
-            {
-                Ratio = 31.5;
-            }
+        public void CalculateHaedPulleyCharacteristics()
+        {   
+            HeadPulleyDiameter = (int)(1000 * SpeedOfConveyor / (rpmBase[2] / Ratio / 60 )/ Math.PI); 
+        }
+
+        public void CalculateRatio()
+        {            
+            double n2 = (SpeedOfConveyor * 1000 * 60) / (3.14 * HeadPulleyDiameter);
+            Ratio = rpmBase[2] /n2;
         }
     }
 }

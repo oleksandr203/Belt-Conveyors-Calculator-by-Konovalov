@@ -7,9 +7,9 @@
         <Style x:Key="textEnterStyle">
             <Setter Property="TextBlock.FontSize" Value="12"/>
             <Setter Property="TextBlock.FontFamily" Value="Cascadia Mono"/>
-            <Setter Property="TextBlock.Height" Value="18"/>
+            <Setter Property="TextBlock.Height" Value="17"/>
             <Setter Property="TextBlock.Margin" Value="5, 10, 5, 10"/>
-            <Setter Property="TextBlock.Width" Value="180"/>
+            <Setter Property="TextBlock.Width" Value="200"/>
             <Setter Property="TextBlock.HorizontalAlignment" 
                     Value="Center"/>
             <Setter Property="TextBlock.TextAlignment" 
@@ -30,6 +30,7 @@
             <Setter Property="TextBox.Width" Value="100"/>
             <Setter Property="TextBox.Height" Value="18"/>
             <Setter Property="TextBox.TextAlignment" Value="Left"/>
+            <Setter Property="TextBox.VerticalAlignment" Value ="Center"/>
             <Setter Property="TextBox.FontStretch" Value="UltraCondensed"/>
             <Setter Property="TextBox.FontWeight" Value="Bold"/>
             <Setter Property="TextBox.FontFamily" Value="Cascadia Mono"/>
