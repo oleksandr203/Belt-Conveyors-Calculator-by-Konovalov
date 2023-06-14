@@ -57,7 +57,11 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
                     }
                 }
             }
-            catch(SqlException ex) { MessageBox.Show(ex.Message); }           
+            catch(SqlException ex)
+            {
+                MessageBox.Show(ex.Message);
+                calculator.FillListOfReducer();
+            }           
         }
 
         private async void btnCalculate_Click(object sender, RoutedEventArgs e)
@@ -71,24 +75,23 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
             await Task.Run(() => ConnectDB());
             calculator.SelectReducer();
             resultTextBlockReducer.Text = calculator.FittingReducer;
-
             GetRatioOrPulleyDiamenet();
             textBlockHeadPulley.Text = $"Diameter of pulley: {((double)calculator.HeadPulleyDiameter/1000):F2} m";
             textBlockRatio.Text = $"Ratio of reducer: {calculator.Ratio:F1}";
             TextBlockAddiotionInfo.Text = $"Step of idlers = {calculator._stepOfWorkingIdler} mm, step of return  = {calculator._stepOfIdleIdler} mm, thickness of belt = {calculator._thicknessOfBelt} mm";
+            await Task.Delay(3000);
+            statusBar_1.Content = "Ready";
         }
 
         private void GetRatioOrPulleyDiamenet()
         {
             if (ratioOrDiameterComboBox.SelectedIndex == 0)
             {
-                //calculator.SetDiameterOfHeadPulley(0);
                 calculator.CalculateHaedPulleyCharacteristics();
             }
             else
             if (ratioOrDiameterComboBox.SelectedIndex == 1)
             {
-                //calculator.SetRatio(0);
                 calculator.CalculateRatio();
             }
         }

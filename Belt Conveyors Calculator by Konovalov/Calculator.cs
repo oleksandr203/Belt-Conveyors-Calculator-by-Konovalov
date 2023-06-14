@@ -51,19 +51,7 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
             Ratio = _ratio;
             HeadPulleyDiameter = _mainPulleyDiameter;
         }
-
-        public void SetDensity(int density)
-        {
-            if (density < 0)
-            {
-                MessageBox.Show("Incorrect input");
-            }
-            else
-            {
-                Density = density;
-            }
-        }
-
+        
         public void SetProductivity(int productivity)
         {
             if (productivity < 0)
@@ -182,7 +170,6 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
         public int GetForseWeightOfBelt()
         {
             return (int)(1.13 * 0.001 * WidthOfBelt * 2 * _thicknessOfBelt * 10);
-
         }
 
         public double ForseForAllRollers()
@@ -212,8 +199,7 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
         }
        
         public void FillListOfReducer()
-        {     
-            
+        {                 
             if(reducerList ==  null)
             {
                 Reducer reducer1 = new Reducer(1, "Ц2У-100", 315, 31.5);
@@ -231,7 +217,7 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
         {
             foreach (var m in randeOfElectricMotors)
             {
-                if (ExtendedMethodEnginePower - m <= 0 && ExtendedMethodEnginePower / m < 1.3)
+                if (ExtendedMethodEnginePower - m <= 0 && ExtendedMethodEnginePower / m < 1.2)
                 {
                     return m.ToString();
                 }                
@@ -241,28 +227,24 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
 
         public void SelectReducer()
         {
-            if (ExtendedMethodEnginePower == 0)
+            CalculateTorque();
+            string resultReducer = "";
+            bool isResult = false;
+            foreach (var reducer in reducerList)
             {
-                FittingReducer = "First calculate power";
+                if (reducer != null & reducer._maxTorque > CalculatedTorque & reducer._maxTorque / CalculatedTorque < 1.25)
+                {
+                    resultReducer += $"{reducer._name} fullfills your requires\r\n";                       
+                        isResult = true;                        
+                }
+            } 
+            if (!isResult)
+            {
+                FittingReducer = ($"No fits in data base");
             }
             else
             {
-                FillListOfReducer();
-                CalculateTorque();
-                bool isResult = false;
-                foreach (var reducer in reducerList)
-                {
-                    if (reducer != null & reducer._maxTorque > CalculatedTorque & reducer._maxTorque / CalculatedTorque < 1.25)
-                    {
-                        FittingReducer = $"{reducer._name} fullfills your requires";                        
-                        isResult = true;
-                        break;
-                    }
-                }
-                if (!isResult)
-                {
-                    FittingReducer = ($"No fits in data base");
-                }
+                FittingReducer = resultReducer;
             }
         }
 
