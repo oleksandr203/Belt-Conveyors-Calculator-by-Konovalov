@@ -27,6 +27,7 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
         private int[] _speedOfDrive = new int[] { 735, 950, 1450, 3000 };        
         private double _ratio = 31.5;
         private int _mainPulleyDiameter = 600;
+        List<string> fittingReductors = new List<string>();
 
         public int Density { get; private set; }
         public int LenghtOfConveyor { get; private set; }
@@ -229,22 +230,26 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
         {
             CalculateTorque();
             string resultReducer = "";
-            bool isResult = false;
+            fittingReductors.Clear();               
             foreach (var reducer in reducerList)
             {
-                if (reducer != null & reducer._maxTorque > CalculatedTorque & reducer._maxTorque / CalculatedTorque < 1.25)
+                if (reducer != null && reducer._maxTorque > CalculatedTorque && reducer._maxTorque / CalculatedTorque < 1.25)
                 {
-                    resultReducer += $"{reducer._name} fullfills your requires\r\n";                       
-                        isResult = true;                        
+                    fittingReductors.Add(reducer._name);                     
                 }
             } 
-            if (!isResult)
+            if (fittingReductors.Count == 0)
             {
                 FittingReducer = ($"No fits in data base");
             }
             else
-            {
-                FittingReducer = resultReducer;
+            {  
+                foreach(var reducer in fittingReductors)
+                {    
+                    resultReducer += reducer + "\n";
+                }
+                FittingReducer = resultReducer.Remove(resultReducer.Length - 2, 2);
+               
             }
         }
 

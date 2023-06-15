@@ -19,7 +19,7 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
             InitializeComponent();
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             calculator = new Calculator();
             widthComboBoxList.ItemsSource = calculator.standartBeltWidth;
@@ -29,6 +29,7 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
             angleOfBeltTextBox.Text = calculator.AngleOfConveyor.ToString();
             speedOfBeltTextBox.Text = calculator.SpeedOfConveyor.ToString();
             TextBoxRatioOrDiametr.Text = calculator.Ratio.ToString();
+            await Task.Run(() => ConnectDB());
         }
 
         private void ConnectDB()//to realize right configuration
@@ -64,22 +65,20 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
             }           
         }
 
-        private async void btnCalculate_Click(object sender, RoutedEventArgs e)
+        private  void btnCalculate_Click(object sender, RoutedEventArgs e)
         {
             calculator.CalculateSimpleEnginePower();
             calculator.CalculateExtendedEnginePower();
             resultTextBlock.Text = $"Required power (simple method): {calculator.SimpleMethodEnginePower:F2} kW\r\n" +
                 $"Required power (extension method): {calculator.ExtendedMethodEnginePower:F2} kW *";                
             resultTextBlockMotor.Text = $"Standart electric motor: {calculator.SelectMotorPower()} kW {calculator.rpmBase[2]} rpm";
-            statusBar_1.Content = "Done!";            
-            await Task.Run(() => ConnectDB());
-            calculator.SelectReducer();
+            statusBar_1.Content = "Done!";
+            calculator.SelectReducer();            
             resultTextBlockReducer.Text = calculator.FittingReducer;
             GetRatioOrPulleyDiamenet();
             textBlockHeadPulley.Text = $"Diameter of pulley: {((double)calculator.HeadPulleyDiameter/1000):F2} m";
             textBlockRatio.Text = $"Ratio of reducer: {calculator.Ratio:F1}";
-            TextBlockAddiotionInfo.Text = $"Step of idlers = {calculator._stepOfWorkingIdler} mm, step of return  = {calculator._stepOfIdleIdler} mm, thickness of belt = {calculator._thicknessOfBelt} mm";
-            await Task.Delay(3000);
+            TextBlockAddiotionInfo.Text = $"Step of idlers = {calculator._stepOfWorkingIdler} mm, step of return  = {calculator._stepOfIdleIdler} mm, thickness of belt = {calculator._thicknessOfBelt} mm";            
             statusBar_1.Content = "Ready";
         }
 
