@@ -6,14 +6,14 @@
         xmlns:local="clr-namespace:Belt_Conveyors_Calculator_by_Konovalov"
         mc:Ignorable="d"
         Title="Belt Calculator 1.0"
-        Height="800"
-        Width="800"
+        Height="820"
+        Width="820"
         MinHeight="500"
         MinWidth="700"  
         FontFamily="Bodoni mt"
-        FontSize="25"
+        FontSize="25"        
         WindowStartupLocation="CenterScreen"
-        Loaded="Window_Loaded" Icon="/conveyor1_122376.ico">
+        Loaded="Window_Loaded" Icon="/conveyor1_122376.ico" KeyUp="Window_KeyUp">
     <Grid>
         <Grid.Background>
             <LinearGradientBrush EndPoint="0.5,1" 
@@ -49,7 +49,7 @@
                 <MenuItem Header="_About me" />
             </MenuItem>
         </Menu>
-        <StackPanel
+        <StackPanel           
             Grid.Column="0"
             Grid.Row="1"
             HorizontalAlignment="Center"            
@@ -100,7 +100,7 @@
                       HorizontalContentAlignment="Center"
                       VerticalContentAlignment="Top"
                       SelectedIndex="0">
-                <ComboBoxItem Content="Ratio"/>
+                <ComboBoxItem Content="Ratio of reducer"/>
                 <ComboBoxItem Content="Pulley diameter, mm"/>
             </ComboBox>
             <TextBox x:Name="TextBoxRatioOrDiametr"
@@ -109,8 +109,8 @@
                      LostFocus="ratioTextBox_LostFocus"/> 
         </StackPanel>        
         <Grid Grid.Column="1"
-            Grid.Row="1"             
-                ScrollViewer.HorizontalScrollBarVisibility="Visible"
+            Grid.Row="1"
+              ScrollViewer.HorizontalScrollBarVisibility="Visible"
               ScrollViewer.VerticalScrollBarVisibility="Auto">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
@@ -121,7 +121,7 @@
             <TextBlock x:Name="CalculatedTorque"
                        Grid.Row="0"
                        Text="Main characteristics of conveyor"
-                   Style ="{StaticResource textEnterStyle}"
+                       Style ="{StaticResource textEnterStyle}"
                        FontSize="20"
                        VerticalAlignment="Center"
                        Width="400"
@@ -244,16 +244,22 @@
                                    HorizontalAlignment="Right"
                                    Text="* Recomended value"
                            Margin="5, 5, 5, 5"/>
+                        <TextBlock x:Name="textBlockTest"
+                                   FontSize="14"
+                                   TextWrapping="WrapWithOverflow"
+                                   Text="No data"
+                           Margin="50, 5, 5, 5"/>
                     </StackPanel>
                 </ScrollViewer>                   
              </Border>
             <Button x:Name="btnCalculate"
                     Grid.Row="2"
                     Height="90"
-                    Click="btnCalculate_Click"
                     Content="Calculate"
-                    Margin="10">
-            </Button>
+                    Margin="10"
+                    IsDefault="True"
+                    Click="btnCalculate_Click">
+            </Button>           
         </Grid>         
         <StatusBar Grid.Row="2"
                    Grid.Column="0"
@@ -263,7 +269,5 @@
             <StatusBarItem x:Name="statusBar_1"
                            Content="Ready, enter data please"/>
         </StatusBar>
-    </Grid>
+    </Grid>    
 </Window>
-
-

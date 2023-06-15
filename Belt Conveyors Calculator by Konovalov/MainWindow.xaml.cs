@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 using System;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -13,6 +14,8 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
     public partial class MainWindow : Window
     {
         Calculator calculator;
+        Window1 win = new Window1();
+        private StringBuilder sb = new StringBuilder();
 
         public MainWindow()
         {
@@ -29,16 +32,20 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
             angleOfBeltTextBox.Text = calculator.AngleOfConveyor.ToString();
             speedOfBeltTextBox.Text = calculator.SpeedOfConveyor.ToString();
             TextBoxRatioOrDiametr.Text = calculator.Ratio.ToString();
-            await Task.Run(() => ConnectDB());
+            //sb.Append("00004llihgi");
+            //sb.AppendLine("000ourst");
+            //sb.AppendLine(" ");            
+            textBlockTest.Text = sb.ToString();
+            await Task.Run(() => ConnectDB());            
         }
 
-        private void ConnectDB()//to realize right configuration
+        private async void ConnectDB()//to realize right configuration
         {
             var cStringBuilder = new SqlConnectionStringBuilder
             {
-                InitialCatalog = "reducers",
+                InitialCatalog = "reducer0s",
                 DataSource = @"COKONOVALOV",
-                ConnectTimeout = 25,
+                ConnectTimeout = 10,
                 IntegratedSecurity = true,
                 TrustServerCertificate = true
             };
@@ -46,7 +53,7 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
             connection.ConnectionString = cStringBuilder.ConnectionString;
             try
             {
-                connection.Open();
+                connection.Open();                
                 string sql = "Select * From Models";
                 SqlCommand sqlCommand = new SqlCommand(sql, connection);
                 using (SqlDataReader sqlDataReader = sqlCommand.ExecuteReader())
@@ -57,15 +64,19 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
                         calculator.reducerList.Add(reducer);
                     }
                 }
+                this.Dispatcher.Invoke(() => statusBar_1.Content = "DB onnection success");
+                await Task.Delay(3000);
+                this.Dispatcher.Invoke(() => statusBar_1.Content = "Ready!");
             }
             catch(SqlException ex)
             {
                 MessageBox.Show(ex.Message);
-                calculator.FillListOfReducer();
+                this.Dispatcher.Invoke(() => win.Show());                
+                calculator.FillListOfReducerByConfigBase();
             }           
         }
 
-        private  void btnCalculate_Click(object sender, RoutedEventArgs e)
+        private void btnCalculate_Click(object sender, RoutedEventArgs e)
         {
             calculator.CalculateSimpleEnginePower();
             calculator.CalculateExtendedEnginePower();
@@ -78,7 +89,7 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
             GetRatioOrPulleyDiamenet();
             textBlockHeadPulley.Text = $"Diameter of pulley: {((double)calculator.HeadPulleyDiameter/1000):F2} m";
             textBlockRatio.Text = $"Ratio of reducer: {calculator.Ratio:F1}";
-            TextBlockAddiotionInfo.Text = $"Step of idlers = {calculator._stepOfWorkingIdler} mm, step of return  = {calculator._stepOfIdleIdler} mm, thickness of belt = {calculator._thicknessOfBelt} mm";            
+            TextBlockAddiotionInfo.Text = $" step of idlers = {calculator._stepOfWorkingIdler} mm,\n step of return  = {calculator._stepOfIdleIdler} mm,\n thickness of belt = {calculator._thicknessOfBelt} mm";            
             statusBar_1.Content = "Ready";
         }
 
@@ -94,6 +105,7 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
                 calculator.CalculateRatio();
             }
         }
+
 
         private void productivityValue_LostFocus(object sender, RoutedEventArgs e)
         {
@@ -205,6 +217,14 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
                     MessageBox.Show("Only numbers must be");
                 }
             }            
+        }
+
+        private void Window_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if(e.Key == System.Windows.Input.Key.Escape)
+            {
+                this.Close();
+            }
         }
     }
 }

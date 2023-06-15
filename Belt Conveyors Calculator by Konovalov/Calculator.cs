@@ -199,9 +199,9 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
             CalculatedTorque = (int)(ExtendedMethodEnginePower * 9549 * 1.2 / _speedOfDrive[3] * 31.5);
         }
        
-        public void FillListOfReducer()
+        public void FillListOfReducerByConfigBase()
         {                 
-            if(reducerList ==  null)
+            if(reducerList.Count == 0)
             {
                 Reducer reducer1 = new Reducer(1, "Ц2У-100", 315, 31.5);
                 reducerList.Add(reducer1);
@@ -229,8 +229,7 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
         public void SelectReducer()
         {
             CalculateTorque();
-            string resultReducer = "";
-            fittingReductors.Clear();               
+            string resultReducer = "";                          
             foreach (var reducer in reducerList)
             {
                 if (reducer != null && reducer._maxTorque > CalculatedTorque && reducer._maxTorque / CalculatedTorque < 1.25)
@@ -248,9 +247,9 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
                 {    
                     resultReducer += reducer + "\n";
                 }
-                FittingReducer = resultReducer.Remove(resultReducer.Length - 2, 2);
-               
+                FittingReducer = resultReducer.Remove(resultReducer.Length - 1, 1);               
             }
+            fittingReductors.Clear();
         }
 
         public void CalculateHaedPulleyCharacteristics()
