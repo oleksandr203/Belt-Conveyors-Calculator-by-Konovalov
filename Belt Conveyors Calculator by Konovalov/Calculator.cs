@@ -29,6 +29,7 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
         private int _mainPulleyDiameter = 600;
         List<string> fittingReductors = new List<string>();
 
+
         public int Density { get; private set; }
         public int LenghtOfConveyor { get; private set; }
         public int Productivity { get; private set; }

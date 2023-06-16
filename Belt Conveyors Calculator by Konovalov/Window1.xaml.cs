@@ -19,6 +19,11 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
     /// </summary>
     public partial class Window1 : Window
     {
+        //public string dataSourse = "reducers";
+        //public string initialCatalog = "COKONOVALOV";
+        public string dataSourse = "COKONOVALOV";
+        public string initialCatalog = "";
+
         public Window1()
         {
             InitializeComponent();
@@ -26,12 +31,22 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
 
         private void okButton_Click(object sender, RoutedEventArgs e)
         {
-            
+            this.DialogResult = true;            
         }
 
         private void cancelButton_Click(object sender, RoutedEventArgs e)
+        { 
+           
+        }
+
+        private void initialCatalogTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            Close();
+           initialCatalog = initialCatalogTextBox.Text;
+        }
+
+        private void dataSourseTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            dataSourse = dataSourseTextBox.Text;
         }
     }
 }

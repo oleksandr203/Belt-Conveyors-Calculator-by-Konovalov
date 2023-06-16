@@ -1,10 +1,13 @@
 ﻿using Microsoft.Data.SqlClient;
 using System;
+using System.Data;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Media;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Belt_Conveyors_Calculator_by_Konovalov
 {
@@ -14,17 +17,18 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
     public partial class MainWindow : Window
     {
         Calculator calculator;
-        Window1 win = new Window1();
         private StringBuilder sb = new StringBuilder();
+        string _dataSourseMW = "COKONOVALOV";
+        string _initialCatalogMW = "reducers1";
 
         public MainWindow()
         {
-            InitializeComponent();
+            InitializeComponent();           
         }
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            calculator = new Calculator();
+        {            
+            calculator = new Calculator();           
             widthComboBoxList.ItemsSource = calculator.standartBeltWidth;
             productivityValueTextBox.Text = calculator.Productivity.ToString();
             widthComboBoxList.SelectedIndex = 0;
@@ -36,15 +40,15 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
             //sb.AppendLine("000ourst");
             //sb.AppendLine(" ");            
             textBlockTest.Text = sb.ToString();
-            await Task.Run(() => ConnectDB());            
+            await Task.Run(() => ConnectDB(_initialCatalogMW, _dataSourseMW));
         }
 
-        private async void ConnectDB()//to realize right configuration
-        {
+        private Task ConnectDB(string initialCatalogMW, string dataSourseMW)//to realize right configuration
+        {                      
             var cStringBuilder = new SqlConnectionStringBuilder
             {
-                InitialCatalog = "reducer0s",
-                DataSource = @"COKONOVALOV",
+                InitialCatalog = initialCatalogMW,
+                DataSource = $@"{dataSourseMW}",
                 ConnectTimeout = 10,
                 IntegratedSecurity = true,
                 TrustServerCertificate = true
@@ -53,27 +57,39 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
             connection.ConnectionString = cStringBuilder.ConnectionString;
             try
             {
-                connection.Open();                
-                string sql = "Select * From Models";
-                SqlCommand sqlCommand = new SqlCommand(sql, connection);
-                using (SqlDataReader sqlDataReader = sqlCommand.ExecuteReader())
-                {
-                    while (sqlDataReader.Read())
-                    {
-                        Reducer reducer = new Reducer((int)sqlDataReader["Id"], (string)sqlDataReader["Name"], (int)sqlDataReader["Torque"], (double)sqlDataReader["Ratio"]);
-                        calculator.reducerList.Add(reducer);
-                    }
-                }
-                this.Dispatcher.Invoke(() => statusBar_1.Content = "DB onnection success");
-                await Task.Delay(3000);
-                this.Dispatcher.Invoke(() => statusBar_1.Content = "Ready!");
+                TryOpenConnection(connection);
             }
-            catch(SqlException ex)
+            catch
             {
-                MessageBox.Show(ex.Message);
-                this.Dispatcher.Invoke(() => win.Show());                
-                calculator.FillListOfReducerByConfigBase();
-            }           
+
+            } 
+            if (connection.State != ConnectionState.Open)
+            {   
+                    calculator.FillListOfReducerByConfigBase();
+                    this.Dispatcher.Invoke(() => statusBar_1.Content = "Using inner DB");
+                    this.Dispatcher.Invoke(() => BorderDB.BorderBrush = Brushes.Orange);
+            }
+            return Task.CompletedTask;
+        }
+
+        private void TryOpenConnection(SqlConnection _connection)
+        {
+            _connection.Open();
+            string sql = "Select * From Models";
+            SqlCommand sqlCommand = new SqlCommand(sql, _connection);
+            using (SqlDataReader sqlDataReader = sqlCommand.ExecuteReader())
+            {
+                while (sqlDataReader.Read())
+                {
+                    Reducer reducer = new Reducer((int)sqlDataReader["Id"], (string)sqlDataReader["Name"], (int)sqlDataReader["Torque"], (double)sqlDataReader["Ratio"]);
+                    calculator.reducerList.Add(reducer);
+                }
+            }
+            this.Dispatcher.Invoke(() => statusBar_1.Content = "DB onnection success");
+            this.Dispatcher.Invoke(() => BorderDB.BorderBrush = Brushes.Green);
+            this.Dispatcher.Invoke(() => textBlockUsingData.Text = "DB is connected");
+            //Task.Delay(3000);
+            this.Dispatcher.Invoke(() => statusBar_1.Content = "Ready!");
         }
 
         private void btnCalculate_Click(object sender, RoutedEventArgs e)
@@ -90,7 +106,13 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
             textBlockHeadPulley.Text = $"Diameter of pulley: {((double)calculator.HeadPulleyDiameter/1000):F2} m";
             textBlockRatio.Text = $"Ratio of reducer: {calculator.Ratio:F1}";
             TextBlockAddiotionInfo.Text = $" step of idlers = {calculator._stepOfWorkingIdler} mm,\n step of return  = {calculator._stepOfIdleIdler} mm,\n thickness of belt = {calculator._thicknessOfBelt} mm";            
+            
             statusBar_1.Content = "Ready";
+        }
+        
+        public void FillCalcReduser(Reducer reducer)
+        {
+            calculator.reducerList.Add(reducer);
         }
 
         private void GetRatioOrPulleyDiamenet()
@@ -225,6 +247,21 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
             {
                 this.Close();
             }
+        }
+
+        public void SetSMT(int a)
+        {
+
+        }
+
+        private void bd_Click(object sender, RoutedEventArgs e)
+        {
+            Window1 win = new Window1();
+            //win.Owner = this;
+            win.ShowDialog();
+            
+                ConnectDB(win.initialCatalog, win.dataSourse);
+            
         }
     }
 }
