@@ -34,4 +34,8 @@
     <Resource Include="reducer1.ico" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="bin\Debug\net6.0-windows\" />
+  </ItemGroup>
+
 </Project>

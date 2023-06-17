@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
+using System.Configuration;
 using System;
 using System.Data;
 using System.Text;
@@ -17,9 +18,10 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
     public partial class MainWindow : Window
     {
         Calculator calculator;
-        private StringBuilder sb = new StringBuilder();
-        string _dataSourseMW = "COKONOVALOV";
-        string _initialCatalogMW = "reducers1";
+        StringBuilder resultSB = new StringBuilder();
+        SqlConnection connection = new SqlConnection();
+        string provider;       
+        string catalog;       
 
         public MainWindow()
         {
@@ -28,46 +30,45 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {            
-            calculator = new Calculator();           
+            calculator = new Calculator();            
             widthComboBoxList.ItemsSource = calculator.standartBeltWidth;
             productivityValueTextBox.Text = calculator.Productivity.ToString();
             widthComboBoxList.SelectedIndex = 0;
             lenghtOfConveyorTextBox.Text = calculator.LenghtOfConveyor.ToString();
             angleOfBeltTextBox.Text = calculator.AngleOfConveyor.ToString();
             speedOfBeltTextBox.Text = calculator.SpeedOfConveyor.ToString();
-            TextBoxRatioOrDiametr.Text = calculator.Ratio.ToString();
-            //sb.Append("00004llihgi");
-            //sb.AppendLine("000ourst");
-            //sb.AppendLine(" ");            
-            textBlockTest.Text = sb.ToString();
-            await Task.Run(() => ConnectDB(_initialCatalogMW, _dataSourseMW));
+            TextBoxRatioOrDiametr.Text = calculator.Ratio.ToString();            
+            AppSettingsReader ar = new AppSettingsReader();
+            catalog = (string)ar.GetValue("initialCatalog", typeof(string));
+            provider = (string)ar.GetValue("provider", typeof(string));
+            await Task.Run(() => ConnectDB(catalog, provider));
         }
 
-        private Task ConnectDB(string initialCatalogMW, string dataSourseMW)//to realize right configuration
-        {                      
+        private Task ConnectDB(string _initialCatalog, string _dataSourse)
+        {            
             var cStringBuilder = new SqlConnectionStringBuilder
             {
-                InitialCatalog = initialCatalogMW,
-                DataSource = $@"{dataSourseMW}",
+                InitialCatalog = _initialCatalog,
+                DataSource = _dataSourse,
                 ConnectTimeout = 10,
                 IntegratedSecurity = true,
                 TrustServerCertificate = true
             };
-            SqlConnection connection = new SqlConnection();
+           // SqlConnection connection = new SqlConnection();
             connection.ConnectionString = cStringBuilder.ConnectionString;
             try
             {
                 TryOpenConnection(connection);
             }
-            catch
+            catch(Exception ex)
             {
-
+                this.Dispatcher.Invoke(() => statusBar_1.Content = ex.Message);
             } 
             if (connection.State != ConnectionState.Open)
             {   
-                    calculator.FillListOfReducerByConfigBase();
-                    this.Dispatcher.Invoke(() => statusBar_1.Content = "Using inner DB");
-                    this.Dispatcher.Invoke(() => BorderDB.BorderBrush = Brushes.Orange);
+                 calculator.FillListOfReducerByConfigBase();
+                 this.Dispatcher.Invoke(() => statusBar_1.Content = "Using inner DB");
+                 this.Dispatcher.Invoke(() => bdButtonBorder.BorderBrush = Brushes.Orange);
             }
             return Task.CompletedTask;
         }
@@ -84,16 +85,17 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
                     Reducer reducer = new Reducer((int)sqlDataReader["Id"], (string)sqlDataReader["Name"], (int)sqlDataReader["Torque"], (double)sqlDataReader["Ratio"]);
                     calculator.reducerList.Add(reducer);
                 }
-            }
-            this.Dispatcher.Invoke(() => statusBar_1.Content = "DB onnection success");
-            this.Dispatcher.Invoke(() => BorderDB.BorderBrush = Brushes.Green);
-            this.Dispatcher.Invoke(() => textBlockUsingData.Text = "DB is connected");
-            //Task.Delay(3000);
-            this.Dispatcher.Invoke(() => statusBar_1.Content = "Ready!");
+            }            
+            this.Dispatcher.Invoke(() => bdButtonBorder.BorderBrush = Brushes.Green);           
+            this.Dispatcher.Invoke(() => statusBar_1.Content = "Ready");
+            this.Dispatcher.Invoke(() => bdButton.Content = "DB connected");
+            
+           //this.Dispatcher.Invoke(() => bdButton.IsEnabled = false);            
         }
 
         private void btnCalculate_Click(object sender, RoutedEventArgs e)
         {
+            resultSB.Clear();
             calculator.CalculateSimpleEnginePower();
             calculator.CalculateExtendedEnginePower();
             resultTextBlock.Text = $"Required power (simple method): {calculator.SimpleMethodEnginePower:F2} kW\r\n" +
@@ -105,11 +107,19 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
             GetRatioOrPulleyDiamenet();
             textBlockHeadPulley.Text = $"Diameter of pulley: {((double)calculator.HeadPulleyDiameter/1000):F2} m";
             textBlockRatio.Text = $"Ratio of reducer: {calculator.Ratio:F1}";
-            TextBlockAddiotionInfo.Text = $" step of idlers = {calculator._stepOfWorkingIdler} mm,\n step of return  = {calculator._stepOfIdleIdler} mm,\n thickness of belt = {calculator._thicknessOfBelt} mm";            
-            
-            statusBar_1.Content = "Ready";
+            TextBlockAddiotionInfo.Text = $" step of idlers = {calculator._stepOfWorkingIdler} mm,\n step of return  = {calculator._stepOfIdleIdler} mm,\n thickness of belt = {calculator._thicknessOfBelt} mm";
+            FillResultSb();
+            statusBar_1.Content = "Done!";
+            textBlockTest.Text = resultSB.ToString();
         }
         
+        private void FillResultSb()
+        {
+            resultSB.AppendLine($"Main characteristics of conveyor by Belt Conveyor Calculator by Konovalov, date: {DateTime.Now}");
+            resultSB.AppendLine($"$\"Required power (simple method): {{calculator.SimpleMethodEnginePower:F2}} kW\\r\\n\" " +
+                $"Required power (extension method): {{calculator.ExtendedMethodEnginePower:F2}} kW *\"");
+        }
+
         public void FillCalcReduser(Reducer reducer)
         {
             calculator.reducerList.Add(reducer);
@@ -254,14 +264,14 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
 
         }
 
-        private void bd_Click(object sender, RoutedEventArgs e)
+        private void bdButton_Click(object sender, RoutedEventArgs e)
         {
-            Window1 win = new Window1();
-            //win.Owner = this;
-            win.ShowDialog();
-            
-                ConnectDB(win.initialCatalog, win.dataSourse);
-            
+            if(connection.State != ConnectionState.Open)
+            {
+                Window1 win = new Window1();
+                win.ShowDialog();
+                ConnectDB(win.initialCatalog, win.provider);
+            }                        
         }
     }
 }

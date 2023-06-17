@@ -5,13 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Belt_Conveyors_Calculator_by_Konovalov"
         mc:Ignorable="d"        
-        Title="Connection" 
+        Title="Manual DataBase Connection" 
         Height="150" 
         Width="250"        
         ResizeMode="NoResize"
         WindowStartupLocation="CenterOwner"
         ShowInTaskbar="False"        
-        SizeToContent="WidthAndHeight" Topmost="True">
+        SizeToContent="WidthAndHeight" Topmost="True" Loaded="Window_Loaded">
     <Grid Margin="15">
         <Grid.Resources>           
             <Style TargetType="{x:Type Label}">
@@ -40,7 +40,7 @@
             <RowDefinition />
         </Grid.RowDefinitions>
        
-        <Label Grid.Column="0" Grid.Row="0">Data Source:</Label>
+        <Label Grid.Column="0" Grid.Row="0">Provider:</Label>
         <TextBox x:Name="dataSourseTextBox" Grid.Column="1" Grid.Row="0"
                  LostFocus="dataSourseTextBox_LostFocus"/>
         <Label Grid.Column="0" Grid.Row="1">Inital catalog:</Label>
@@ -48,9 +48,15 @@
                  LostFocus="initialCatalogTextBox_LostFocus"/>
         <StackPanel Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="4"
                     Orientation="Horizontal"
-                    HorizontalAlignment="Center">
-            <Button Name="okButton" Click="okButton_Click">OK</Button>
-            <Button Name="cancelButton" IsCancel="True"                    
+                    HorizontalAlignment="Center" >
+            <Button Name="okButton"
+                    Width="100"
+                    Margin="5"
+                    Click="okButton_Click">OK</Button>
+            <Button Name="cancelButton"
+                    Width="100"
+                    Margin="5"
+                    IsCancel="True"                    
                     Click="cancelButton_Click">Cancel</Button>
         </StackPanel>
     </Grid >

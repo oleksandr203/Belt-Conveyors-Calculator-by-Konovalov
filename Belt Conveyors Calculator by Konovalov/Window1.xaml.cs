@@ -19,10 +19,8 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
     /// </summary>
     public partial class Window1 : Window
     {
-        //public string dataSourse = "reducers";
-        //public string initialCatalog = "COKONOVALOV";
-        public string dataSourse = "COKONOVALOV";
-        public string initialCatalog = "";
+        public string provider = "ALEX\\SQLEXPRESS";
+        public string initialCatalog = "reducers";
 
         public Window1()
         {
@@ -46,7 +44,13 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
 
         private void dataSourseTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            dataSourse = dataSourseTextBox.Text;
+            provider = dataSourseTextBox.Text;
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            dataSourseTextBox.Text = provider;
+            initialCatalogTextBox.Text = initialCatalog;
         }
     }
 }
