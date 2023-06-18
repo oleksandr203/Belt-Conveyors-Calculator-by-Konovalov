@@ -53,8 +53,7 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
                 ConnectTimeout = 10,
                 IntegratedSecurity = true,
                 TrustServerCertificate = true
-            };
-           // SqlConnection connection = new SqlConnection();
+            };           
             connection.ConnectionString = cStringBuilder.ConnectionString;
             try
             {
@@ -107,7 +106,8 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
             GetRatioOrPulleyDiamenet();
             textBlockHeadPulley.Text = $"Diameter of pulley: {((double)calculator.HeadPulleyDiameter/1000):F2} m";
             textBlockRatio.Text = $"Ratio of reducer: {calculator.Ratio:F1}";
-            TextBlockAddiotionInfo.Text = $" step of idlers = {calculator._stepOfWorkingIdler} mm,\n step of return  = {calculator._stepOfIdleIdler} mm,\n thickness of belt = {calculator._thicknessOfBelt} mm";
+            TextBlockAddiotionInfo.Text = $" step of idlers: {calculator._stepOfWorkingIdler} mm,\n step of return idlers: {calculator._stepOfIdleIdler} mm" +
+                $",\n thickness of belt: {calculator._thicknessOfBelt} mm";
             FillResultSb();
             statusBar_1.Content = "Done!";
             textBlockTest.Text = resultSB.ToString();
@@ -115,9 +115,25 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
         
         private void FillResultSb()
         {
-            resultSB.AppendLine($"Main characteristics of conveyor by Belt Conveyor Calculator by Konovalov, date: {DateTime.Now}");
-            resultSB.AppendLine($"$\"Required power (simple method): {{calculator.SimpleMethodEnginePower:F2}} kW\\r\\n\" " +
-                $"Required power (extension method): {{calculator.ExtendedMethodEnginePower:F2}} kW *\"");
+            resultSB.AppendLine($"***Main characteristics of conveyor by Belt Conveyor Calculator by Konovalov*** \n");           
+            resultSB.AppendLine("Calculation based on:");
+            resultSB.AppendLine($"\tProducticity: \t\t{calculator.Productivity} tonns per hour");
+            resultSB.AppendLine($"\tWidth of belt: \t\t{calculator.WidthOfBelt} mm");
+            resultSB.AppendLine($"\tLenght of conveyor: \t{calculator.LenghtOfConveyor} m");
+            resultSB.AppendLine($"\tAngle of conveyor: \t{calculator.AngleOfConveyor} degree");
+            resultSB.AppendLine($"\tSpeed of belt: \t\t{calculator.SpeedOfConveyor} m/s \n" +
+                $"\tStep of idlers: \t\t{calculator._stepOfWorkingIdler} mm,\n " +
+                $"\tStep of return idlers: \t{calculator._stepOfIdleIdler} mm,\n" +
+                $"\tThickness of belt: \t\t{calculator._thicknessOfBelt} mm");
+            resultSB.AppendLine($"Required power (simple method): \t{calculator.SimpleMethodEnginePower:F2} kW \n" +
+                $"Required power (extension method): \t{calculator.ExtendedMethodEnginePower:F2} kW \n" +
+                $"Standart power of engine: \t\t{calculator.SelectMotorPower()} kW \n" +
+                $"Fitting reducer: \t\t\t{calculator.FittingReducer} \n" +
+                $"Ratio: \t\t\t\t{calculator.Ratio} (motor speed: {calculator.rpmBase[2]})\n" +
+                $"Diameter of Head Pulley: \t\t{calculator.HeadPulleyDiameter} mm \n" +
+                $" ");
+            
+            resultSB.AppendLine($"\tDate: {DateTime.Now}");
         }
 
         public void FillCalcReduser(Reducer reducer)
@@ -242,7 +258,7 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
             {
                 try
                 {
-                    calculator.SetDiameterOfHeadPulley (Convert.ToInt32(TextBoxRatioOrDiametr.Text));
+                    calculator.SetDiameterOfHeadPulley(Convert.ToInt32(TextBoxRatioOrDiametr.Text));
                 }
                 catch
                 {
@@ -254,14 +270,12 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
         private void Window_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
         {
             if(e.Key == System.Windows.Input.Key.Escape)
-            {
-                this.Close();
+            {                
+                if(MessageBox.Show("Are you sure?", "Exit", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                {
+                    this.Close();
+                }                
             }
-        }
-
-        public void SetSMT(int a)
-        {
-
         }
 
         private void bdButton_Click(object sender, RoutedEventArgs e)
@@ -270,7 +284,10 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
             {
                 Window1 win = new Window1();
                 win.ShowDialog();
-                ConnectDB(win.initialCatalog, win.provider);
+                if(win.DialogResult == true)
+                {
+                    ConnectDB(win.initialCatalog, win.provider);
+                }                
             }                        
         }
     }

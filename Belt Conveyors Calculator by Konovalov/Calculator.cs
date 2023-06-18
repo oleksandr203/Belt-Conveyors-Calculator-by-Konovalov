@@ -28,16 +28,14 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
         private double _ratio = 31.5;
         private int _mainPulleyDiameter = 600;
         List<string> fittingReductors = new List<string>();
-
-
-        public int Density { get; private set; }
+                        
         public int LenghtOfConveyor { get; private set; }
         public int Productivity { get; private set; }
         public int WidthOfBelt { get; private set; }
         public int AngleOfConveyor { get; private set; }
         public double SpeedOfConveyor { get; private set; }
         public double SimpleMethodEnginePower { get; private set; }
-        public double ExtendedMethodEnginePower { get; private set; }
+        public double ExtendedMethodEnginePower { get; private set; }        
         public int CalculatedTorque { get; private set; }
         public string FittingReducer { get; private set; }
         public double Ratio { get; private set; }
@@ -220,7 +218,7 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
             foreach (var m in randeOfElectricMotors)
             {
                 if (ExtendedMethodEnginePower - m <= 0 && ExtendedMethodEnginePower / m < 1.2)
-                {
+                {                   
                     return m.ToString();
                 }                
             }
