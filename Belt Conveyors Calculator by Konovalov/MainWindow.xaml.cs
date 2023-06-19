@@ -11,6 +11,7 @@ using System.Windows.Media;
 using static System.Net.Mime.MediaTypeNames;
 using Microsoft.Win32;
 using System.IO;
+using System.Windows.Documents;
 
 namespace Belt_Conveyors_Calculator_by_Konovalov
 {
@@ -81,6 +82,7 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
             SqlCommand sqlCommand = new SqlCommand(sql, _connection);
             using (SqlDataReader sqlDataReader = sqlCommand.ExecuteReader())
             {
+                calculator.reducerList.Clear();
                 while (sqlDataReader.Read())
                 {
                     Reducer reducer = new Reducer((int)sqlDataReader["Id"], (string)sqlDataReader["Name"], (int)sqlDataReader["Torque"], (double)sqlDataReader["Ratio"]);
@@ -97,43 +99,42 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
             resultSB.Clear();
             calculator.CalculateSimpleEnginePower();
             calculator.CalculateExtendedEnginePower();
-            resultTextBlock.Text = $"Required power (simple method): {calculator.SimpleMethodEnginePower:F2} kW\r\n" +
-                $"Required power (extension method): {calculator.ExtendedMethodEnginePower:F2} kW *";                
-            resultTextBlockMotor.Text = $"Standart electric motor: {calculator.SelectMotorPower()} kW {calculator.rpmBase[2]} rpm";
+            resultTextBlock.Text = $"\tRequired power (simple method): {calculator.SimpleMethodEnginePower:F2} kW\r\n" +
+                $"\tRequired power (extension method): {calculator.ExtendedMethodEnginePower:F2} kW *";                
+            resultTextBlockMotor.Text = $"\tStandart electric motor: {calculator.SelectMotorPower()} kW {calculator.rpmBase[2]} rpm";
             statusBar_1.Content = "Done!";
             calculator.SelectReducer();            
             resultTextBlockReducer.Text = calculator.FittingReducer;
             GetRatioOrPulleyDiamenet();
-            textBlockHeadPulley.Text = $"Diameter of pulley: {((double)calculator.HeadPulleyDiameter/1000):F2} m";
-            textBlockRatio.Text = $"Ratio of reducer: {calculator.Ratio:F1}";
-            TextBlockAddiotionInfo.Text = $" step of idlers: {calculator._stepOfWorkingIdler} mm,\n step of return idlers: {calculator._stepOfIdleIdler} mm" +
-                $",\n thickness of belt: {calculator._thicknessOfBelt} mm";
+            textBlockHeadPulley.Text = $"\tDiameter of pulley: {((double)calculator.HeadPulleyDiameter/1000):F2} m";
+            textBlockRatio.Text = $"\tRatio of reducer: {calculator.Ratio:F1}";
+            TextBlockAddiotionInfo.Text = $"\tStep of idlers: {calculator._stepOfWorkingIdler} mm\n" +
+                $" \tStep of return idlers: {calculator._stepOfIdleIdler} mm\n" +
+                $" \tThickness of belt: {calculator._thicknessOfBelt} mm";
             FillResultSb();
-            statusBar_1.Content = "Done!";
-            textBlockTest.Text = resultSB.ToString();
+            statusBar_1.Content = "Done!";           
         }
         
         private void FillResultSb()
         {
             resultSB.AppendLine($"***Main characteristics of conveyor by Belt Conveyor Calculator by Konovalov*** \n");           
-            resultSB.AppendLine("Calculation based on:");
-            resultSB.AppendLine($"\tProducticity: \t\t{calculator.Productivity} tonns per hour");
-            resultSB.AppendLine($"\tWidth of belt: \t\t{calculator.WidthOfBelt} mm");
-            resultSB.AppendLine($"\tLenght of conveyor: \t{calculator.LenghtOfConveyor} m");
-            resultSB.AppendLine($"\tAngle of conveyor: \t{calculator.AngleOfConveyor} degree");
-            resultSB.AppendLine($"\tSpeed of belt: \t\t{calculator.SpeedOfConveyor} m/s \n" +
-                $"\tStep of idlers: \t\t{calculator._stepOfWorkingIdler} mm,\n " +
-                $"\tStep of return idlers: \t{calculator._stepOfIdleIdler} mm,\n" +
-                $"\tThickness of belt: \t\t{calculator._thicknessOfBelt} mm");
-            resultSB.AppendLine($"Required power (simple method): \t{calculator.SimpleMethodEnginePower:F2} kW \n" +
+            resultSB.AppendLine("Calculation based on:\n" +
+                $"\tProducticity: {calculator.Productivity, 40} tonns per hour\n" +
+                $"\tWidth of belt: {calculator.WidthOfBelt, 40} mm\n" +
+                $"\tLenght of conveyor: {calculator.LenghtOfConveyor, 30} m\n" +
+                $"\tAngle of conveyor: {calculator.AngleOfConveyor, 30} degree\n" +
+                $"\tSpeed of belt: {calculator.SpeedOfConveyor,40} m/s \n" +
+                $"\tStep of idlers: {calculator._stepOfWorkingIdler,40} mm\n " +
+                $"\tStep of return idlers: {calculator._stepOfIdleIdler,30} mm\n" +
+                $"\tThickness of belt: {calculator._thicknessOfBelt,35} mm\n" +
+                $"Required power (simple method): \t\t{calculator.SimpleMethodEnginePower:F2} kW \n" +
                 $"Required power (extension method): \t{calculator.ExtendedMethodEnginePower:F2} kW \n" +
-                $"Standart power of engine: \t\t{calculator.SelectMotorPower()} kW \n" +
-                $"Fitting reducer: \t\t\t{calculator.FittingReducer} \n" +
-                $"Ratio: \t\t\t\t{calculator.Ratio} (motor speed: {calculator.rpmBase[2]})\n" +
-                $"Diameter of Head Pulley: \t\t{calculator.HeadPulleyDiameter} mm \n" +
-                $" ");
+                $"Standart power of engine: {calculator.SelectMotorPower(),35} kW \n" +
+                $"Fitting reducer: \n{calculator.FittingReducer} \n" +
+                $"Ratio: {calculator.Ratio,50} (motor speed: {calculator.rpmBase[2]})\n" +
+                $"Diameter of Head Pulley: {calculator.HeadPulleyDiameter,35} mm \n");
             
-            resultSB.AppendLine($"\tDate: {DateTime.Now}");
+            resultSB.AppendLine($"\t\t\t\tDate: {DateTime.Now}");
         }
 
         public void FillCalcReduser(Reducer reducer)
@@ -297,8 +298,7 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
             if (openFDialog.ShowDialog() == true)
             {
                 {
-                    string dataFromFile = File.ReadAllText(openFDialog.FileName);
-                    textBlockTest.Text = dataFromFile;
+                    string dataFromFile = File.ReadAllText(openFDialog.FileName);//to do
                 }
             }
         }
@@ -319,7 +319,39 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
 
         private void CommandBinding_CanExecute_1(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
         {
+            if(resultSB.Length > 1)
             e.CanExecute = true;
+        }
+
+        private void CommandBinding_Executed_2(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+        {           
+            PrintDialog printDialog = new PrintDialog();
+            if(printDialog.ShowDialog() == true)
+            {                
+                FlowDocument flowDocument = new FlowDocument();
+                flowDocument.PageHeight = printDialog.PrintableAreaHeight;                
+                flowDocument.ColumnWidth = 800;
+                Paragraph paragraph = new Paragraph();
+                paragraph.FontSize = 14;
+                paragraph.FontFamily = new FontFamily("Palatino Linotype");
+                paragraph.TextAlignment = TextAlignment.Left;
+                paragraph.Margin = new Thickness(100, 150, 5, 50);
+                paragraph.Inlines.Add(new Run(resultSB.ToString()));
+                flowDocument.Blocks.Add(paragraph);
+                DocumentPaginator paginator = ((IDocumentPaginatorSource)flowDocument).DocumentPaginator;
+                printDialog.PrintDocument(paginator, "Result");
+            }         
+        }
+
+        private void CommandBinding_CanExecute_2(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
+        {
+            if (resultSB.Length > 1)
+                e.CanExecute = true;
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("I am a calculator designed for learning and helping! Thank You for using me!", "About me");
         }
     }
 }

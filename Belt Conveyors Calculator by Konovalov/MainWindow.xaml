@@ -23,6 +23,9 @@
         <CommandBinding Command="ApplicationCommands.Save"
                         Executed="CommandBinding_Executed_1"
                         CanExecute="CommandBinding_CanExecute_1"/>
+        <CommandBinding Command="ApplicationCommands.Print"
+                        Executed="CommandBinding_Executed_2"
+                        CanExecute="CommandBinding_CanExecute_2"/>
     </Window.CommandBindings>
     <Grid>
         <Grid.Background>
@@ -56,7 +59,8 @@
             <MenuItem Header="_About"
                       Height="22"
                       FontSize="14">
-                <MenuItem Header="_About me" />
+                <MenuItem Header="_About me" 
+                          Click="MenuItem_Click"/>
             </MenuItem>
         </Menu>
         <StackPanel           
@@ -268,11 +272,6 @@
                                    HorizontalAlignment="Right"
                                    Text="* Recomended value"
                            Margin="5, 5, 5, 5"/>
-                        <TextBlock x:Name="textBlockTest"
-                                   FontSize="14"
-                                   TextWrapping="WrapWithOverflow"
-                                   Text="No data"
-                           Margin="50, 5, 5, 5"/>                        
                     </StackPanel>
                 </ScrollViewer>                   
              </Border>

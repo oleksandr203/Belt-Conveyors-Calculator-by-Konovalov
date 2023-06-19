@@ -238,13 +238,13 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
             } 
             if (fittingReductors.Count == 0)
             {
-                FittingReducer = ($"No fits in data base");
+                FittingReducer = ($"\tSorry, no fits in data base");
             }
             else
             {  
                 foreach(var reducer in fittingReductors)
                 {    
-                    resultReducer += reducer + "\n";
+                    resultReducer += "\t" + reducer + "\n";
                 }
                 FittingReducer = resultReducer.Remove(resultReducer.Length - 1, 1);               
             }

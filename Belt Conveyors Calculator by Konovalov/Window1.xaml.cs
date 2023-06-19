@@ -33,8 +33,8 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
         }
 
         private void cancelButton_Click(object sender, RoutedEventArgs e)
-        { 
-           
+        {
+            this.Close();
         }
 
         private void initialCatalogTextBox_LostFocus(object sender, RoutedEventArgs e)
