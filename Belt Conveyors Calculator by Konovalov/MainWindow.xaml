@@ -13,7 +13,17 @@
         FontFamily="Bodoni mt"
         FontSize="25"        
         WindowStartupLocation="CenterScreen"
-        Loaded="Window_Loaded" Icon="/conveyor1_122376.ico" KeyUp="Window_KeyUp">
+        Loaded="Window_Loaded"
+        Icon="/conveyor1_122376.ico" 
+        KeyUp="Window_KeyUp">
+    <Window.CommandBindings>
+        <CommandBinding Command="ApplicationCommands.Open"
+                        Executed="CommandBinding_Executed"
+                        CanExecute="CommandBinding_CanExecute"/>
+        <CommandBinding Command="ApplicationCommands.Save"
+                        Executed="CommandBinding_Executed_1"
+                        CanExecute="CommandBinding_CanExecute_1"/>
+    </Window.CommandBindings>
     <Grid>
         <Grid.Background>
             <LinearGradientBrush EndPoint="0.5,1" 

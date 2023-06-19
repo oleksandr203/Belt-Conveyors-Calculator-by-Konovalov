@@ -9,6 +9,8 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using static System.Net.Mime.MediaTypeNames;
+using Microsoft.Win32;
+using System.IO;
 
 namespace Belt_Conveyors_Calculator_by_Konovalov
 {
@@ -87,9 +89,7 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
             }            
             this.Dispatcher.Invoke(() => bdButtonBorder.BorderBrush = Brushes.Green);           
             this.Dispatcher.Invoke(() => statusBar_1.Content = "Ready");
-            this.Dispatcher.Invoke(() => bdButton.Content = "DB connected");
-            
-           //this.Dispatcher.Invoke(() => bdButton.IsEnabled = false);            
+            this.Dispatcher.Invoke(() => bdButton.Content = "DB connected");     
         }
 
         private void btnCalculate_Click(object sender, RoutedEventArgs e)
@@ -289,6 +289,37 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
                     ConnectDB(win.initialCatalog, win.provider);
                 }                
             }                        
+        }
+
+        private void CommandBinding_Executed(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+        {
+            var openFDialog = new OpenFileDialog { Filter = "Text Files | *.txt" };
+            if (openFDialog.ShowDialog() == true)
+            {
+                {
+                    string dataFromFile = File.ReadAllText(openFDialog.FileName);
+                    textBlockTest.Text = dataFromFile;
+                }
+            }
+        }
+
+        private void CommandBinding_CanExecute(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void CommandBinding_Executed_1(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+        {
+            var saveFDialog = new SaveFileDialog { Filter = "Text Files | *.txt" };
+            if(saveFDialog.ShowDialog() == true)
+            {
+                File.WriteAllText(saveFDialog.FileName, resultSB.ToString());
+            }
+        }
+
+        private void CommandBinding_CanExecute_1(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
         }
     }
 }
