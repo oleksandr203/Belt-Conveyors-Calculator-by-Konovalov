@@ -52,5 +52,21 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
             dataSourseTextBox.Text = provider;
             initialCatalogTextBox.Text = initialCatalog;
         }
+
+        private void dataSourseTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (dataSourseTextBox.Text != provider)
+            {
+                okButton.IsEnabled = true;
+            }           
+        }
+
+        private void initialCatalogTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (initialCatalogTextBox.Text != initialCatalog)
+            {
+                okButton.IsEnabled = true;
+            }
+        }
     }
 }

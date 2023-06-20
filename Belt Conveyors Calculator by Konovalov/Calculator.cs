@@ -1,11 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Configuration;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows;
-using System.Data;
-using System.Data.SqlClient;
 using static Belt_Conveyors_Calculator_by_Konovalov.AdditonMath;
-using System.Xml;
-using System;
 
 namespace Belt_Conveyors_Calculator_by_Konovalov
 {
@@ -26,8 +22,9 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
         public readonly int _thicknessOfBelt = 20;
         private int[] _speedOfDrive = new int[] { 735, 950, 1450, 3000 };        
         private double _ratio = 31.5;
+        private double forceOnDrivePulley = 0;
         private int _mainPulleyDiameter = 600;
-        List<string> fittingReductors = new List<string>();
+        List<string> matchingReductors = new List<string>();
                         
         public int LenghtOfConveyor { get; private set; }
         public int Productivity { get; private set; }
@@ -37,9 +34,10 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
         public double SimpleMethodEnginePower { get; private set; }
         public double ExtendedMethodEnginePower { get; private set; }        
         public int CalculatedTorque { get; private set; }
-        public string FittingReducer { get; private set; }
+        public string matchingReducer { get; private set; }
         public double Ratio { get; private set; }
         public int HeadPulleyDiameter { get; private set; }
+        public int ForseTakeUp { get; private set; }
 
         public Calculator()
         {
@@ -167,33 +165,33 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
             return _weightOfI_Idler * 9.8 / 10 / 1.2;
         }
 
-        public int GetForseWeightOfBelt()
+        private int GetForseWeightOfBelt()
         {
             return (int)(1.13 * 0.001 * WidthOfBelt * 2 * _thicknessOfBelt * 10);
         }
 
-        public double ForseForAllRollers()
+        private double ForseForAllRollers()
         {
             return GetForseOfV_Roller() + GetForseOfI_Roller();
         }
 
-        public void CalculateSimpleEnginePower()
+        private void CalculateSimpleEnginePower()
         {
             double powerUseful = ((Productivity * ProjectionLengthOfConveyor(LenghtOfConveyor, AngleOfConveyor) * 0.042 / 367) + (Productivity * HeightOfConveyor(LenghtOfConveyor, AngleOfConveyor) / 367));
             double powerParasite = (SpeedOfConveyor * ProjectionLengthOfConveyor(LenghtOfConveyor, AngleOfConveyor) * 0.042);
             SimpleMethodEnginePower = (powerUseful + powerParasite) * 1.1 / 0.8;
         }
 
-        public void CalculateExtendedEnginePower()
+        private void CalculateExtendedEnginePower()
         {
-            double forseOnDrivePulley = (CoefficientOfLenght(LenghtOfConveyor) * ProjectionLengthOfConveyor(LenghtOfConveyor, AngleOfConveyor) * 0.045 *
+            forceOnDrivePulley = (CoefficientOfLenght(LenghtOfConveyor) * ProjectionLengthOfConveyor(LenghtOfConveyor, AngleOfConveyor) * 0.045 *
                 (LoadOfCargoPerMeter(Productivity, SpeedOfConveyor) + ForseForAllRollers() + 2 * GetForseWeightOfBelt()))
                 + LoadOfCargoPerMeter(Productivity, SpeedOfConveyor) * HeightOfConveyor(LenghtOfConveyor, AngleOfConveyor);
 
-            ExtendedMethodEnginePower = 1.1 * forseOnDrivePulley / 0.8 / 1000;
+            ExtendedMethodEnginePower = 1.1 * forceOnDrivePulley / 0.8 / 1000;
         }
 
-        public void CalculateTorque()
+        private void CalculateTorque()
         {
             CalculatedTorque = (int)(ExtendedMethodEnginePower * 9549 * 1.2 / _speedOfDrive[3] * 31.5);
         }
@@ -222,44 +220,59 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
                     return m.ToString();
                 }                
             }
-           return "No fitting engine is found";
+           return "No matching engine is found";
         }
 
-        public void SelectReducer()
+        private void CalculateForceTakeUp()
         {
-            CalculateTorque();
+            ForseTakeUp = (int)(forceOnDrivePulley * 10 / 6);
+        }
+
+        private void SelectReducer()
+        {           
             string resultReducer = "";                          
             foreach (var reducer in reducerList)
             {
                 if (reducer != null && reducer._maxTorque > CalculatedTorque && reducer._maxTorque / CalculatedTorque < 1.25)
                 {
-                    fittingReductors.Add(reducer._name);                     
+                    matchingReductors.Add(reducer._name);                     
                 }
             } 
-            if (fittingReductors.Count == 0)
+            if (matchingReductors.Count == 0)
             {
-                FittingReducer = ($"\tSorry, no fits in data base");
+                matchingReducer = ($"\tSorry, no match in database");
             }
             else
             {  
-                foreach(var reducer in fittingReductors)
+                foreach(var reducer in matchingReductors)
                 {    
                     resultReducer += "\t" + reducer + "\n";
                 }
-                FittingReducer = resultReducer.Remove(resultReducer.Length - 1, 1);               
+                matchingReducer = resultReducer.Remove(resultReducer.Length - 1, 1);               
             }
-            fittingReductors.Clear();
+            matchingReductors.Clear();
         }
 
-        public void CalculateHaedPulleyCharacteristics()
-        {   
-            HeadPulleyDiameter = (int)(1000 * SpeedOfConveyor / (rpmBase[2] / Ratio / 60 )/ Math.PI); 
+        private void CalculateRatioOrHaedPulleyCharacteristics(bool RatioOrDiameter)
+        {
+            if (RatioOrDiameter)
+            {
+                HeadPulleyDiameter = (int)(1000 * SpeedOfConveyor / (rpmBase[2] / Ratio / 60) / Math.PI);
+            }
+            else
+            {
+                Ratio = rpmBase[2] / ((SpeedOfConveyor * 1000 * 60) / (3.14 * HeadPulleyDiameter));                
+            }
         }
 
-        public void CalculateRatio()
-        {            
-            double n2 = (SpeedOfConveyor * 1000 * 60) / (3.14 * HeadPulleyDiameter);
-            Ratio = rpmBase[2] /n2;
+        public void GetResults(bool getRatio)
+        {
+            CalculateSimpleEnginePower();
+            CalculateExtendedEnginePower();
+            CalculateTorque();
+            SelectReducer();
+            CalculateForceTakeUp();
+            CalculateRatioOrHaedPulleyCharacteristics(getRatio);
         }
     }
 }

@@ -56,8 +56,13 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
                 ConnectTimeout = 10,
                 IntegratedSecurity = true,
                 TrustServerCertificate = true
-            };           
-            connection.ConnectionString = cStringBuilder.ConnectionString;
+            };
+            try
+            {
+                connection.ConnectionString = cStringBuilder.ConnectionString;
+            }
+            catch { }
+            
             try
             {
                 TryOpenConnection(connection);
@@ -97,17 +102,14 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
         private void btnCalculate_Click(object sender, RoutedEventArgs e)
         {
             resultSB.Clear();
-            calculator.CalculateSimpleEnginePower();
-            calculator.CalculateExtendedEnginePower();
+            calculator.GetResults(ratioOrDiameterComboBox.SelectedIndex == 0);          
             resultTextBlock.Text = $"\tRequired power (simple method): {calculator.SimpleMethodEnginePower:F2} kW\r\n" +
                 $"\tRequired power (extension method): {calculator.ExtendedMethodEnginePower:F2} kW *";                
-            resultTextBlockMotor.Text = $"\tStandart electric motor: {calculator.SelectMotorPower()} kW {calculator.rpmBase[2]} rpm";
-            statusBar_1.Content = "Done!";
-            calculator.SelectReducer();            
-            resultTextBlockReducer.Text = calculator.FittingReducer;
-            GetRatioOrPulleyDiamenet();
+            resultTextBlockMotor.Text = $"\tStandart electric motor: {calculator.SelectMotorPower()} kW {calculator.rpmBase[2]} rpm";                    
+            resultTextBlockReducer.Text = calculator.matchingReducer;
             textBlockHeadPulley.Text = $"\tDiameter of pulley: {((double)calculator.HeadPulleyDiameter/1000):F2} m";
             textBlockRatio.Text = $"\tRatio of reducer: {calculator.Ratio:F1}";
+            textForceOfTakeUp.Text = $"\tForce: {calculator.ForseTakeUp} N";
             TextBlockAddiotionInfo.Text = $"\tStep of idlers: {calculator._stepOfWorkingIdler} mm\n" +
                 $" \tStep of return idlers: {calculator._stepOfIdleIdler} mm\n" +
                 $" \tThickness of belt: {calculator._thicknessOfBelt} mm";
@@ -117,7 +119,7 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
         
         private void FillResultSb()
         {
-            resultSB.AppendLine($"***Main characteristics of conveyor by Belt Conveyor Calculator by Konovalov*** \n");           
+            resultSB.AppendLine($"***Main characteristics of conveyor*** \n");           
             resultSB.AppendLine("Calculation based on:\n" +
                 $"\tProducticity: {calculator.Productivity, 40} tonns per hour\n" +
                 $"\tWidth of belt: {calculator.WidthOfBelt, 40} mm\n" +
@@ -130,10 +132,10 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
                 $"Required power (simple method): \t\t{calculator.SimpleMethodEnginePower:F2} kW \n" +
                 $"Required power (extension method): \t{calculator.ExtendedMethodEnginePower:F2} kW \n" +
                 $"Standart power of engine: {calculator.SelectMotorPower(),35} kW \n" +
-                $"Fitting reducer: \n{calculator.FittingReducer} \n" +
+                $"Matching reducer: \n{calculator.matchingReducer} \n" +
                 $"Ratio: {calculator.Ratio,50} (motor speed: {calculator.rpmBase[2]})\n" +
-                $"Diameter of Head Pulley: {calculator.HeadPulleyDiameter,35} mm \n");
-            
+                $"Force of Take-Up: {calculator.ForseTakeUp, 35} N" +
+                $"Diameter of Head Pulley: {calculator.HeadPulleyDiameter,35} mm \n");            
             resultSB.AppendLine($"\t\t\t\tDate: {DateTime.Now}");
         }
 
@@ -141,20 +143,6 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
         {
             calculator.reducerList.Add(reducer);
         }
-
-        private void GetRatioOrPulleyDiamenet()
-        {
-            if (ratioOrDiameterComboBox.SelectedIndex == 0)
-            {
-                calculator.CalculateHaedPulleyCharacteristics();
-            }
-            else
-            if (ratioOrDiameterComboBox.SelectedIndex == 1)
-            {
-                calculator.CalculateRatio();
-            }
-        }
-
 
         private void productivityValue_LostFocus(object sender, RoutedEventArgs e)
         {

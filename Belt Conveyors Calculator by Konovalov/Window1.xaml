@@ -41,17 +41,27 @@
         </Grid.RowDefinitions>
        
         <Label Grid.Column="0" Grid.Row="0">Provider:</Label>
-        <TextBox x:Name="dataSourseTextBox" Grid.Column="1" Grid.Row="0"
-                 LostFocus="dataSourseTextBox_LostFocus"/>
+        <TextBox x:Name="dataSourseTextBox"
+                 Grid.Column="1"
+                 Grid.Row="0"                 
+                 LostFocus="dataSourseTextBox_LostFocus"
+                 TextChanged="dataSourseTextBox_TextChanged"/>
         <Label Grid.Column="0" Grid.Row="1">Inital catalog:</Label>
-        <TextBox x:Name="initialCatalogTextBox" Grid.Column="1" Grid.Row="1" 
-                 LostFocus="initialCatalogTextBox_LostFocus"/>
-        <StackPanel Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="4"
+        <TextBox x:Name="initialCatalogTextBox"
+                 Grid.Column="1"
+                 Grid.Row="1" 
+                 LostFocus="initialCatalogTextBox_LostFocus"
+                 TextChanged="initialCatalogTextBox_TextChanged"/>
+        <StackPanel Grid.Column="0" 
+                    Grid.ColumnSpan="2"
+                    Grid.Row="4"
                     Orientation="Horizontal"
                     HorizontalAlignment="Center" >
             <Button Name="okButton"
                     Width="100"
                     Margin="5"
+                    IsEnabled="False"
+                    IsDefault="True"
                     Click="okButton_Click">OK</Button>
             <Button Name="cancelButton"
                     Width="100"
