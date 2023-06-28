@@ -20,11 +20,11 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
     /// </summary>
     public partial class MainWindow : Window
     {
-        Calculator calculator;
+        Calculator calculator = new Calculator();
         StringBuilder resultSB = new StringBuilder();
         SqlConnection connection = new SqlConnection();
-        string provider;       
-        string catalog;       
+        string provider = "";       
+        string catalog = "";       
 
         public MainWindow()
         {
@@ -32,8 +32,7 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
         }
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
-        {            
-            calculator = new Calculator();            
+        {          
             widthComboBoxList.ItemsSource = calculator.standartBeltWidth;
             productivityValueTextBox.Text = calculator.Productivity.ToString();
             widthComboBoxList.SelectedIndex = 0;
@@ -146,11 +145,12 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
 
         private void productivityValue_LostFocus(object sender, RoutedEventArgs e)
         {
+
             if (productivityValueTextBox.Text != "")
             {
                 try
                 {
-                    calculator.SetProductivity(Convert.ToInt32(productivityValueTextBox.Text));
+                    calculator.Productivity = Convert.ToInt32(productivityValueTextBox.Text);
                 }
                 catch (FormatException)
                 {
@@ -163,13 +163,13 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
             }
         }
 
-        private void TextBox_LostFocus(object sender, RoutedEventArgs e)
+        private void lengthValueTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
             if (lenghtOfConveyorTextBox.Text != "")
             {
                 try
                 {
-                    calculator.SetLenght(Convert.ToInt32(lenghtOfConveyorTextBox.Text));
+                    calculator.LenghtOfConveyor = Convert.ToInt32(lenghtOfConveyorTextBox.Text);
                 }
                 catch (FormatException)
                 {
@@ -184,7 +184,7 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
 
         private void widthComboBoxList_LostFocus(object sender, RoutedEventArgs e)
         {
-            calculator.SetWidthOfBelt(Convert.ToInt32(widthComboBoxList.Text));
+            calculator.WidthOfBelt = Convert.ToInt32(widthComboBoxList.Text);
         }
 
         private void angleOfBelt_LostFocus(object sender, RoutedEventArgs e)
@@ -193,7 +193,7 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
             {
                 try
                 {
-                    calculator.SetAngle(Convert.ToInt32(angleOfBeltTextBox.Text));
+                    calculator.AngleOfConveyor = Convert.ToInt32(angleOfBeltTextBox.Text);
                 }
                 catch
                 {
@@ -212,7 +212,7 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
             {
                 try
                 {
-                    calculator.SetSpeed(Convert.ToDouble(speedOfBeltTextBox.Text));
+                    calculator.SpeedOfConveyor = Convert.ToDouble(speedOfBeltTextBox.Text);
                 }
                 catch
                 {
@@ -236,7 +236,7 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
             {
                 try
                 {
-                    calculator.SetRatio(Convert.ToDouble(TextBoxRatioOrDiametr.Text));
+                    calculator.Ratio = Convert.ToDouble(TextBoxRatioOrDiametr.Text);
                 }
                 catch
                 {
@@ -247,7 +247,7 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
             {
                 try
                 {
-                    calculator.SetDiameterOfHeadPulley(Convert.ToInt32(TextBoxRatioOrDiametr.Text));
+                    calculator.HeadPulleyDiameter = Convert.ToInt32(TextBoxRatioOrDiametr.Text);
                 }
                 catch
                 {

@@ -94,7 +94,7 @@
             <TextBox x:Name="lenghtOfConveyorTextBox" 
                      HorizontalAlignment="Center"
                      Style="{StaticResource textBoxStyle}"
-                     LostFocus="TextBox_LostFocus"/>
+                     LostFocus="lengthValueTextBox_LostFocus"/>
             <TextBlock Text="Angle of conveyor, grad"
                        Style ="{StaticResource textEnterStyle}"/>
             <TextBox x:Name="angleOfBeltTextBox"

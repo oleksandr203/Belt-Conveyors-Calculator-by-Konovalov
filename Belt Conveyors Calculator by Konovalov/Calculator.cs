@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection.Metadata;
 using System.Windows;
+using System.Windows.Interop;
+using System.Windows.Media.Media3D;
 using static Belt_Conveyors_Calculator_by_Konovalov.AdditonMath;
 
 namespace Belt_Conveyors_Calculator_by_Konovalov
@@ -11,10 +14,11 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
         public readonly double[] randeOfElectricMotors = new double[] { 1.1, 1.5, 2.2, 3, 4, 5.5, 7.5, 11, 15, 18.5, 22, 30, 37, 45, 55, 75, 90, 110, 132, 160, 200, 250, 315};
         public readonly int[] rpmBase = new int[] { 750, 1000, 1500, 3000 };
         public List<Reducer> reducerList = new List<Reducer>();
-        private int _producticity = 200;
+        private int _productivity = 200;
+        private int _widthOfBelt = 800;
         private int _angleOfConveyor = 10;
         private int _lenghtOfConveyor = 15;
-        private double _speedOfBeltLinear = 1.5;
+        private double _speedOfBelt = 1.5;
         private int _weightOfV_Idler = 20;
         private int _weightOfI_Idler = 20;
         public readonly int _stepOfWorkingIdler = 1000;
@@ -23,122 +27,133 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
         private int[] _speedOfDrive = new int[] { 735, 950, 1450, 3000 };        
         private double _ratio = 31.5;
         private double forceOnDrivePulley = 0;
-        private int _mainPulleyDiameter = 600;
-        List<string> matchingReductors = new List<string>();
-                        
-        public int LenghtOfConveyor { get; private set; }
-        public int Productivity { get; private set; }
-        public int WidthOfBelt { get; private set; }
-        public int AngleOfConveyor { get; private set; }
-        public double SpeedOfConveyor { get; private set; }
+        private int _headPulleyDiameter = 600;
+
+        List<string> matchingReductors = new List<string>();                      
+        public int Productivity
+        {
+            get { return _productivity; }
+            set
+            {
+                if (value < 0 | value > 2000)
+                {
+                    MessageBox.Show("Set Productivity value from 0 to 2000");
+                    _productivity = 0;                    
+                }
+                else
+                {
+                    _productivity  = value;
+                }
+            }
+        }
+        public int LenghtOfConveyor
+        {
+            get { return _lenghtOfConveyor; }
+            set {                
+                if (value < 1)
+                {
+                    MessageBox.Show("Set lenght from 1 to 999 m");
+                    _lenghtOfConveyor = 1;
+                }
+                else
+                {
+                    _lenghtOfConveyor = value;
+                }
+            }
+        }
+        public int WidthOfBelt
+        {
+            get { return _widthOfBelt; }
+            set
+            {
+                if (value <= 200)
+                {
+                    MessageBox.Show("Incorrect value");
+                }
+                else
+                {
+                    _widthOfBelt = value;
+                }
+            }
+        }
+       
+        public int AngleOfConveyor
+        {
+            get { return _angleOfConveyor; }
+            set
+            {
+                if (value < 0 || value> 19)
+                {
+                    MessageBox.Show("Set angle from 0 to 19 degrees");
+                }
+                else
+                {
+                    _angleOfConveyor = value;
+                }
+            }
+        }
+        public double SpeedOfConveyor
+        {
+            get { return _speedOfBelt; }
+            set
+            {
+                if ((value < 0) || (value > 2))
+                {
+                    MessageBox.Show("Set speed from 0,1 to 2 m/s");
+                }
+                else
+                {
+                    _speedOfBelt = value;
+                }
+            }
+        }
+        public double Ratio
+        {
+            get { return _ratio; }
+            set
+            {                
+                if ((value <= 1) || (value > 50))
+                {
+                    MessageBox.Show("Set ratio from 1 to 50 m/s");
+                }
+                else
+                {
+                    _ratio = value;
+                }
+            }
+        }
+        public int HeadPulleyDiameter
+        {
+            get { return _headPulleyDiameter; }
+            set
+            {
+                if ((value <= 100) || (value > 2500))
+                {
+                    MessageBox.Show("Set diameter from 100 to 2500 mm");
+                }
+                else
+                {
+                    _headPulleyDiameter = value;
+                }
+            }
+        }
         public double SimpleMethodEnginePower { get; private set; }
         public double ExtendedMethodEnginePower { get; private set; }        
         public int CalculatedTorque { get; private set; }
-        public string matchingReducer { get; private set; }
-        public double Ratio { get; private set; }
-        public int HeadPulleyDiameter { get; private set; }
+        public string matchingReducer { get; private set; } = string.Empty;
         public int ForseTakeUp { get; private set; }
 
         public Calculator()
         {
-            Productivity = _producticity;
+            Productivity = _productivity;
             LenghtOfConveyor = _lenghtOfConveyor;
             AngleOfConveyor = _angleOfConveyor;
             WidthOfBelt = standartBeltWidth[0];
-            SpeedOfConveyor = _speedOfBeltLinear;
+            SpeedOfConveyor = _speedOfBelt;
             Ratio = _ratio;
-            HeadPulleyDiameter = _mainPulleyDiameter;
-        }
+            HeadPulleyDiameter = _headPulleyDiameter;            
+        }        
         
-        public void SetProductivity(int productivity)
-        {
-            if (productivity < 0)
-            {
-                MessageBox.Show("Incorrect value");
-            }
-            else
-            {
-                Productivity = productivity;
-            }
-        }
-
-        public void SetWidthOfBelt(int widthOfBelt)
-        {
-            if (widthOfBelt <= 200)
-            {
-                MessageBox.Show("Incorrect value");
-            }
-            else
-            {
-                WidthOfBelt = widthOfBelt;
-            }
-        }
-
-        public void SetAngle(int angle)
-        {
-            string msg = "Set angle from 0 to 19 degrees";
-            if (angle < 0 || angle > 19)
-            {
-                MessageBox.Show(msg);
-            }            
-            else 
-            {
-                AngleOfConveyor = angle;
-            }
-        }
-
-        public void SetLenght(int lenght)
-        {
-            string msg = "Set lenght from 1 to 999 m"; 
-            if (lenght <= 0)
-            {
-                MessageBox.Show(msg);
-            }
-            else
-            {
-                LenghtOfConveyor = lenght;
-            }
-        }
-
-        public void SetSpeed(double speed)
-        {
-            string msg = "Set speed from 0,1 to 2 m/s";
-            if ((speed < 0) || (speed > 2))
-            {
-                MessageBox.Show(msg);
-            }            
-            else
-            {
-                SpeedOfConveyor = speed;
-            }
-        }
-
-        public void SetRatio(double ratio)
-        {
-            string msg = "Set ratio from 1 to 50 m/s";
-            if ((ratio <= 1 ) || (ratio > 50))
-            {
-                MessageBox.Show(msg);
-            }
-            else
-            {
-                Ratio = ratio;
-            }
-        }
-
-        public void SetDiameterOfHeadPulley(int diameter)
-        {
-            string msg = "Set diameter from 100 to 2500 mm";
-            if ((diameter <= 100) || (diameter > 2500))
-            {
-                MessageBox.Show(msg);
-            }
-            else
-            {
-                HeadPulleyDiameter = diameter;
-            }
-        }
-
         private double GetForseOfV_Roller()
         {
             if (WidthOfBelt == 650 || WidthOfBelt == 800)
