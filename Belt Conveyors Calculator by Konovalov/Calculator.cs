@@ -13,7 +13,7 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
         public readonly int[] standartBeltWidth = new int[] { 650, 800, 1000, 1200, 1400 };
         public readonly double[] randeOfElectricMotors = new double[] { 1.1, 1.5, 2.2, 3, 4, 5.5, 7.5, 11, 15, 18.5, 22, 30, 37, 45, 55, 75, 90, 110, 132, 160, 200, 250, 315};
         public readonly int[] rpmBase = new int[] { 750, 1000, 1500, 3000 };
-        public List<Reducer> reducerList = new List<Reducer>();
+        public List<Reducer<int, double>> reducerList = new List<Reducer<int, double>>();
         private int _productivity = 200;
         private int _widthOfBelt = 800;
         private int _angleOfConveyor = 10;
@@ -215,13 +215,13 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
         {                 
             if(reducerList.Count == 0)
             {
-                Reducer reducer1 = new Reducer(1, "Ц2У-100", 315, 31.5);
+                Reducer<int, double> reducer1 = new Reducer<int, double>(1, "Ц2У-100", 315, 31.5);
                 reducerList.Add(reducer1);
-                Reducer reducer2 = new Reducer(2, "Ц2У-160", 630, 31.5);
+                Reducer<int, double> reducer2 = new Reducer<int, double>(2, "Ц2У-160", 630, 31.5);
                 reducerList.Add(reducer2);
-                Reducer reducer3 = new Reducer(3, "Ц2У-200", 1250, 31.5);
+                Reducer<int, double> reducer3 = new Reducer<int, double>(3, "Ц2У-200", 1250, 31.5);
                 reducerList.Add(reducer3);
-                Reducer reducer4 = new Reducer(4, "Ц2У-250", 2500, 31.5);
+                Reducer<int, double> reducer4 = new Reducer<int, double>(4, "Ц2У-250", 2500, 31.5);
                 reducerList.Add(reducer3);
             }            
         }

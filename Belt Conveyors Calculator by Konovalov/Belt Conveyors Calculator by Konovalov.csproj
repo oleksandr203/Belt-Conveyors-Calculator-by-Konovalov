@@ -12,9 +12,6 @@
     <None Remove="conv2.ico" />
     <None Remove="conv2.png" />
     <None Remove="conveyor1_122376.ico" />
-    <None Remove="Images\conv1.png" />
-    <None Remove="Images\power1.png" />
-    <None Remove="Images\power2.png" />
     <None Remove="power1.ico" />
     <None Remove="reducer1.ico" />
   </ItemGroup>
@@ -27,15 +24,13 @@
     <Resource Include="conv2.ico" />
     <Resource Include="conv2.png" />
     <Resource Include="conveyor1_122376.ico" />
-    <Resource Include="Images\conv1.png" />
-    <Resource Include="Images\power1.png" />
-    <Resource Include="Images\power2.png" />
     <Resource Include="power1.ico" />
     <Resource Include="reducer1.ico" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="bin\Debug\net6.0-windows\" />
+    <Folder Include="Images\" />
   </ItemGroup>
 
 </Project>

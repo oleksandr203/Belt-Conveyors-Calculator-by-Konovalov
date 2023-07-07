@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -18,7 +19,7 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
     /// Логика взаимодействия для Window1.xaml
     /// </summary>
     public partial class Window1 : Window
-    {
+    {        
         public string provider = "ALEX\\SQLEXPRESS";
         public string initialCatalog = "reducers";
 
@@ -39,7 +40,7 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
 
         private void initialCatalogTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-           initialCatalog = initialCatalogTextBox.Text;
+           initialCatalog = initialCatalogTextBox.Text;           
         }
 
         private void dataSourseTextBox_LostFocus(object sender, RoutedEventArgs e)

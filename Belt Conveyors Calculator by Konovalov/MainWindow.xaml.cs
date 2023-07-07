@@ -89,7 +89,7 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
                 calculator.reducerList.Clear();
                 while (sqlDataReader.Read())
                 {
-                    Reducer reducer = new Reducer((int)sqlDataReader["Id"], (string)sqlDataReader["Name"], (int)sqlDataReader["Torque"], (double)sqlDataReader["Ratio"]);
+                    Reducer<int, double> reducer = new ((int)sqlDataReader["Id"], (string)sqlDataReader["Name"], (int)sqlDataReader["Torque"], (double)sqlDataReader["Ratio"]);
                     calculator.reducerList.Add(reducer);
                 }
             }            
@@ -138,7 +138,7 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
             resultSB.AppendLine($"\t\t\t\tDate: {DateTime.Now}");
         }
 
-        public void FillCalcReduser(Reducer reducer)
+        public void FillCalcReduser(Reducer<int, double> reducer)
         {
             calculator.reducerList.Add(reducer);
         }

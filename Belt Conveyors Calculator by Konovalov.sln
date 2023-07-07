@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33530.505
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Belt Conveyors Calculator by Konovalov", "Belt Conveyors Calculator by Konovalov\Belt Conveyors Calculator by Konovalov.csproj", "{243A1EEF-21DA-452E-89D1-BFBED4E30BDE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Belt Conveyors Calculator by Konovalov", "Belt Conveyors Calculator by Konovalov\Belt Conveyors Calculator by Konovalov.csproj", "{243A1EEF-21DA-452E-89D1-BFBED4E30BDE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Model", "Model", "{54A90BE8-7654-4CC8-A788-11381674A1C2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "View", "View", "{38BED132-B89A-424E-A18E-D2F78C6B8055}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

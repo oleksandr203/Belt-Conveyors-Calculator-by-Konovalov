@@ -1,13 +1,15 @@
 ﻿namespace Belt_Conveyors_Calculator_by_Konovalov
 {
-    public class Reducer
+    public class Reducer <T, K>
+        where T : struct
+        where K : struct
     {
-        public readonly int _id;
+        public readonly T _id;
         public readonly string _name;
-        public readonly int _maxTorque;
-        public readonly double _ratio;
+        public readonly T _maxTorque;
+        public readonly K _ratio;
 
-        public Reducer(int id, string name, int maxTorque, double ratio)
+        public Reducer(T id, string name, T maxTorque, K ratio)
         {
             _id = id;
             _name = name;
