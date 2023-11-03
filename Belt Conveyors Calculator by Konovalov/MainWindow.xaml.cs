@@ -39,7 +39,8 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
             lenghtOfConveyorTextBox.Text = calculator.LenghtOfConveyor.ToString();
             angleOfBeltTextBox.Text = calculator.AngleOfConveyor.ToString();
             speedOfBeltTextBox.Text = calculator.SpeedOfConveyor.ToString();
-            TextBoxRatioOrDiametr.Text = calculator.Ratio.ToString();            
+            TextBoxRatioOrDiametr.Text = calculator.Ratio.ToString();
+            calculator.FillListOfReducerByConfigBase();
             AppSettingsReader ar = new AppSettingsReader();
             catalog = (string)ar.GetValue("initialCatalog", typeof(string));
             provider = (string)ar.GetValue("provider", typeof(string));
@@ -101,17 +102,19 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
         private void btnCalculate_Click(object sender, RoutedEventArgs e)
         {
             resultSB.Clear();
+            resultTextBlockReducer.Text = string.Empty;
             calculator.GetResults(ratioOrDiameterComboBox.SelectedIndex == 0);          
             resultTextBlock.Text = $"\tRequired power (simple method): {calculator.SimpleMethodEnginePower:F2} kW\r\n" +
                 $"\tRequired power (extension method): {calculator.ExtendedMethodEnginePower:F2} kW *";                
             resultTextBlockMotor.Text = $"\tStandart electric motor: {calculator.SelectMotorPower()} kW {calculator.rpmBase[2]} rpm";                    
-            resultTextBlockReducer.Text = calculator.matchingReducer;
+            resultTextBlockReducer.Text = calculator.MatchingReducer;
             textBlockHeadPulley.Text = $"\tDiameter of pulley: {((double)calculator.HeadPulleyDiameter/1000):F2} m";
             textBlockRatio.Text = $"\tRatio of reducer: {calculator.Ratio:F1}";
             textForceOfTakeUp.Text = $"\tForce: {calculator.ForseTakeUp} N";
             TextBlockAddiotionInfo.Text = $"\tStep of idlers: {calculator._stepOfWorkingIdler} mm\n" +
                 $" \tStep of return idlers: {calculator._stepOfIdleIdler} mm\n" +
-                $" \tThickness of belt: {calculator._thicknessOfBelt} mm";
+                $" \tThickness of belt: {calculator._thicknessOfBelt} mm\n";
+            textRecommendBelt.Text = $"\tRecommended width of belt:{calculator.RecommendedWidthOfBelt} mm";
             FillResultSb();
             statusBar_1.Content = "Done!";           
         }
@@ -131,7 +134,7 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
                 $"Required power (simple method): \t\t{calculator.SimpleMethodEnginePower:F2} kW \n" +
                 $"Required power (extension method): \t{calculator.ExtendedMethodEnginePower:F2} kW \n" +
                 $"Standart power of engine: {calculator.SelectMotorPower(),35} kW \n" +
-                $"Matching reducer: \n{calculator.matchingReducer} \n" +
+                $"Matching reducer: \n{calculator.MatchingReducer} \n" +
                 $"Ratio: {calculator.Ratio,50} (motor speed: {calculator.rpmBase[2]})\n" +
                 $"Force of Take-Up: {calculator.ForseTakeUp, 35} N" +
                 $"Diameter of Head Pulley: {calculator.HeadPulleyDiameter,35} mm \n");            

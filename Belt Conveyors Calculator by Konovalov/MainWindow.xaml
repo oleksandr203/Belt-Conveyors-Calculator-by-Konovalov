@@ -6,9 +6,9 @@
         xmlns:local="clr-namespace:Belt_Conveyors_Calculator_by_Konovalov"
         mc:Ignorable="d"
         Title="Belt Calculator 1.0"
-        Height="820"
+        Height="850"
         Width="820"
-        MinHeight="500"
+        MinHeight="580"
         MinWidth="700"  
         FontFamily="Bodoni mt"
         FontSize="25"        
@@ -256,6 +256,21 @@
                         <TextBlock Grid.Row="1"                           
                            Grid.Column="1"
                            x:Name="textForceOfTakeUp"
+                           Margin="50, 5, 5, 5"
+                           FontSize="16"
+                               Text="No data">
+                        </TextBlock>
+                        <Separator
+                           Margin="20, 4, 20, 4"
+                            BorderThickness="2"
+                            BorderBrush="Black">
+                        </Separator>
+                        <TextBlock Text="Width of belt:"
+                           Margin="25, 5, 5, 5">
+                        </TextBlock>
+                        <TextBlock Grid.Row="1"                           
+                           Grid.Column="1"
+                           x:Name="textRecommendBelt"
                            Margin="50, 5, 5, 5"
                            FontSize="16"
                                Text="No data">

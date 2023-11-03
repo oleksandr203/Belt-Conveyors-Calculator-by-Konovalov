@@ -28,8 +28,9 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
         private double _ratio = 31.5;
         private double forceOnDrivePulley = 0;
         private int _headPulleyDiameter = 600;
+        private string matchingReductors = "";
 
-        List<string> matchingReductors = new List<string>();                      
+        //List<string> matchingReductors = new List<string>();       
         public int Productivity
         {
             get { return _productivity; }
@@ -76,7 +77,7 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
                 }
             }
         }
-       
+        public string RecommendedWidthOfBelt { get; private set; }
         public int AngleOfConveyor
         {
             get { return _angleOfConveyor; }
@@ -140,8 +141,9 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
         public double SimpleMethodEnginePower { get; private set; }
         public double ExtendedMethodEnginePower { get; private set; }        
         public int CalculatedTorque { get; private set; }
-        public string matchingReducer { get; private set; } = string.Empty;
+        public string MatchingReducer { get; private set; } = string.Empty;
         public int ForseTakeUp { get; private set; }
+       
 
         public Calculator()
         {
@@ -210,6 +212,19 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
         {
             CalculatedTorque = (int)(ExtendedMethodEnginePower * 9549 * 1.2 / _speedOfDrive[3] * 31.5);
         }
+
+        private void MatchTheWidthOfBelt()
+        {
+            int resultBelt = (int)(1.1*(Math.Sqrt(Productivity/(500*SpeedOfConveyor*1.4*0.9))+0.05)*1000);
+            for (int i = 0; i < standartBeltWidth.Length; i++)
+            {
+                if (standartBeltWidth[i] > resultBelt)
+                {
+                    RecommendedWidthOfBelt = standartBeltWidth[i].ToString();
+                    break;
+                }                    
+            }  
+        }
        
         public void FillListOfReducerByConfigBase()
         {                 
@@ -222,7 +237,15 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
                 Reducer<int, double> reducer3 = new Reducer<int, double>(3, "Ц2У-200", 1250, 31.5);
                 reducerList.Add(reducer3);
                 Reducer<int, double> reducer4 = new Reducer<int, double>(4, "Ц2У-250", 2500, 31.5);
-                reducerList.Add(reducer3);
+                reducerList.Add(reducer4);
+                Reducer<int, double> reducer5 = new Reducer<int, double>(4, "Ц2У-315", 5000, 31.5);
+                reducerList.Add(reducer5);
+                Reducer<int, double> reducer6 = new Reducer<int, double>(4, "Ц2У-350", 10000, 31.5);
+                reducerList.Add(reducer6);
+                Reducer<int, double> reducer7 = new Reducer<int, double>(4, "Ц2У-400", 16300, 31.5);
+                reducerList.Add(reducer7);
+                Reducer<int, double> reducer8 = new Reducer<int, double>(4, "Ц2У-500", 56000, 31.5);
+                reducerList.Add(reducer8);
             }            
         }
 
@@ -244,28 +267,39 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
         }
 
         private void SelectReducer()
-        {           
-            string resultReducer = "";                          
+        {
+            MatchingReducer = "";
             foreach (var reducer in reducerList)
             {
-                if (reducer != null && reducer._maxTorque > CalculatedTorque && reducer._maxTorque / CalculatedTorque < 1.25)
+                if(reducer != null && reducer._maxTorque > CalculatedTorque && reducer._maxTorque / CalculatedTorque < 1.15)
                 {
-                    matchingReductors.Add(reducer._name);                     
-                }
-            } 
-            if (matchingReductors.Count == 0)
-            {
-                matchingReducer = ($"\tSorry, no match in database");
+                    MatchingReducer += $"\t{reducer._name}";
+                }                
             }
-            else
-            {  
-                foreach(var reducer in matchingReductors)
-                {    
-                    resultReducer += "\t" + reducer + "\n";
-                }
-                matchingReducer = resultReducer.Remove(resultReducer.Length - 1, 1);               
-            }
-            matchingReductors.Clear();
+            if (MatchingReducer == "")
+                MatchingReducer = "Sorry! No matches";
+
+            // string resultReducer = "";
+            //// matchingReductors.Clear();
+            // foreach (var reducer in reducerList)
+            // {
+            //     if (reducer != null && reducer._maxTorque > CalculatedTorque && reducer._maxTorque / CalculatedTorque < 1.15)
+            //     {                    
+            //         matchingReductors.Add(reducer._name);                     
+            //     }
+            // } 
+            // if (matchingReductors.Count == 0)
+            // {
+            //     matchingReducer = ($"\tSorry, no match in database");
+            // }
+            // else
+            // {  
+            //     foreach(var reducer in matchingReductors)
+            //     {    
+            //         resultReducer += "\t" + reducer + "\n";
+            //     }
+            //     matchingReducer = resultReducer.Remove(resultReducer.Length - 1, 1);               
+            // }
         }
 
         private void CalculateRatioOrHaedPulleyCharacteristics(bool RatioOrDiameter)
@@ -288,6 +322,7 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
             SelectReducer();
             CalculateForceTakeUp();
             CalculateRatioOrHaedPulleyCharacteristics(getRatio);
+            MatchTheWidthOfBelt();
         }
     }
 }
