@@ -114,7 +114,7 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
             TextBlockAddiotionInfo.Text = $"\tStep of idlers: {calculator._stepOfWorkingIdler} mm\n" +
                 $" \tStep of return idlers: {calculator._stepOfIdleIdler} mm\n" +
                 $" \tThickness of belt: {calculator._thicknessOfBelt} mm\n";
-            textRecommendBelt.Text = $"\tRecommended width of belt:{calculator.RecommendedWidthOfBelt} mm";
+            textRecommendBelt.Text = $"\t{calculator.RecommendedWidthOfBelt} mm *";
             FillResultSb();
             statusBar_1.Content = "Done!";           
         }
@@ -135,8 +135,8 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
                 $"Required power (extension method): \t{calculator.ExtendedMethodEnginePower:F2} kW \n" +
                 $"Standart power of engine: {calculator.SelectMotorPower(),35} kW \n" +
                 $"Matching reducer: \n{calculator.MatchingReducer} \n" +
-                $"Ratio: {calculator.Ratio,50} (motor speed: {calculator.rpmBase[2]})\n" +
-                $"Force of Take-Up: {calculator.ForseTakeUp, 35} N" +
+                $"Ratio: {calculator.Ratio,50} (motor speed: {calculator.rpmBase[2]} n-1)\n" +
+                $"Force of Take-Up: {calculator.ForseTakeUp, 35} \n" +
                 $"Diameter of Head Pulley: {calculator.HeadPulleyDiameter,35} mm \n");            
             resultSB.AppendLine($"\t\t\t\tDate: {DateTime.Now}");
         }
@@ -281,32 +281,12 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
                     ConnectDB(win.initialCatalog, win.provider);
                 }                
             }                        
-        }
-
-        private void CommandBinding_Executed(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
-        {
-            var openFDialog = new OpenFileDialog { Filter = "Text Files | *.txt" };
-            if (openFDialog.ShowDialog() == true)
-            {
-                {
-                    string dataFromFile = File.ReadAllText(openFDialog.FileName);//to do
-                }
-            }
-        }
+        }       
 
         private void CommandBinding_CanExecute(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = true;
-        }
-
-        private void CommandBinding_Executed_1(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
-        {
-            var saveFDialog = new SaveFileDialog { Filter = "Text Files | *.txt" };
-            if(saveFDialog.ShowDialog() == true)
-            {
-                File.WriteAllText(saveFDialog.FileName, resultSB.ToString());
-            }
-        }
+        }       
 
         private void CommandBinding_CanExecute_1(object sender, System.Windows.Input.CanExecuteRoutedEventArgs e)
         {
@@ -342,7 +322,7 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("I am a calculator designed for learning and helping! Thank You for using me!", "About me");
+            MessageBox.Show("I am a calculator designed for learning and to help! Thank You for using me!", "About me");
         }
     }
 }

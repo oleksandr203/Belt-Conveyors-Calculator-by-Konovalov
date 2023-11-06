@@ -29,8 +29,6 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
         private double forceOnDrivePulley = 0;
         private int _headPulleyDiameter = 600;
         private string matchingReductors = "";
-
-        //List<string> matchingReductors = new List<string>();       
         public int Productivity
         {
             get { return _productivity; }
@@ -278,28 +276,6 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
             }
             if (MatchingReducer == "")
                 MatchingReducer = "Sorry! No matches";
-
-            // string resultReducer = "";
-            //// matchingReductors.Clear();
-            // foreach (var reducer in reducerList)
-            // {
-            //     if (reducer != null && reducer._maxTorque > CalculatedTorque && reducer._maxTorque / CalculatedTorque < 1.15)
-            //     {                    
-            //         matchingReductors.Add(reducer._name);                     
-            //     }
-            // } 
-            // if (matchingReductors.Count == 0)
-            // {
-            //     matchingReducer = ($"\tSorry, no match in database");
-            // }
-            // else
-            // {  
-            //     foreach(var reducer in matchingReductors)
-            //     {    
-            //         resultReducer += "\t" + reducer + "\n";
-            //     }
-            //     matchingReducer = resultReducer.Remove(resultReducer.Length - 1, 1);               
-            // }
         }
 
         private void CalculateRatioOrHaedPulleyCharacteristics(bool RatioOrDiameter)
@@ -314,14 +290,14 @@ namespace Belt_Conveyors_Calculator_by_Konovalov
             }
         }
 
-        public void GetResults(bool getRatio)
+        public void GetResults(bool isRatioOrDiameter)
         {
             CalculateSimpleEnginePower();
             CalculateExtendedEnginePower();
             CalculateTorque();
             SelectReducer();
             CalculateForceTakeUp();
-            CalculateRatioOrHaedPulleyCharacteristics(getRatio);
+            CalculateRatioOrHaedPulleyCharacteristics(isRatioOrDiameter);
             MatchTheWidthOfBelt();
         }
     }

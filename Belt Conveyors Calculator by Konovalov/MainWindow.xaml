@@ -13,16 +13,10 @@
         FontFamily="Bodoni mt"
         FontSize="25"        
         WindowStartupLocation="CenterScreen"
-        Loaded="Window_Loaded"
-        Icon="/conveyor1_122376.ico" 
-        KeyUp="Window_KeyUp">
-    <Window.CommandBindings>
-        <CommandBinding Command="ApplicationCommands.Open"
-                        Executed="CommandBinding_Executed"
-                        CanExecute="CommandBinding_CanExecute"/>
-        <CommandBinding Command="ApplicationCommands.Save"
-                        Executed="CommandBinding_Executed_1"
-                        CanExecute="CommandBinding_CanExecute_1"/>
+        Loaded="Window_Loaded" 
+        
+        KeyUp="Window_KeyUp" Icon="/2180532.png">
+    <Window.CommandBindings>       
         <CommandBinding Command="ApplicationCommands.Print"
                         Executed="CommandBinding_Executed_2"
                         CanExecute="CommandBinding_CanExecute_2"/>
@@ -48,9 +42,7 @@
         <Menu Height="auto" Grid.ColumnSpan="2">
             <MenuItem Header="_File" 
                       Height="22"
-                      FontSize="14">
-                <MenuItem Command ="ApplicationCommands.Open"/>
-                <MenuItem Command ="ApplicationCommands.Save"/>
+                      FontSize="14">                
                 <MenuItem Command ="ApplicationCommands.Print"/>
                 <Separator/>
                 <MenuItem Header ="_Exit"/>

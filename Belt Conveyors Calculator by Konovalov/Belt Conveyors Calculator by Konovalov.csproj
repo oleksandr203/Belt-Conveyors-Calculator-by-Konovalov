@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="2180532.png" />
     <None Remove="conv2.ico" />
     <None Remove="conv2.png" />
     <None Remove="conveyor1_122376.ico" />
@@ -21,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="2180532.png" />
     <Resource Include="conv2.ico" />
     <Resource Include="conv2.png" />
     <Resource Include="conveyor1_122376.ico" />
